@@ -14,6 +14,7 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import hooklib as hl
 from scaffold_hook import build_entry
+from fetch_source import fetch_contract
 
 # Maps a submit-hook.yml field label -> the build_entry kwarg it feeds.
 LABEL_TO_KEY = {
@@ -63,6 +64,15 @@ def main():
     if not chain or not address:
         sys.exit("issue is missing a chain or an address")
 
+    # If the submitter left the name blank, best-effort fetch it from the verified
+    # source on the explorer (keyless for blockscout, ETHERSCAN_API_KEY for the rest).
+    name_from_source = False
+    if not kwargs.get("name") and hl.ADDR_RE.match(address):
+        got = fetch_contract(chain, address)
+        if got:
+            kwargs["name"] = got["name"]
+            name_from_source = True
+
     # First-listed date = the submission date (overridable for reproducible runs).
     import datetime
     kwargs.setdefault("date", os.environ.get("SUBMISSION_DATE") or datetime.date.today().isoformat())
@@ -78,8 +88,9 @@ def main():
     # stdout = path (consumed by the workflow); stderr = human summary.
     print(os.path.relpath(path, hl.REPO_ROOT))
     bits = int(entry["flags"], 16)
+    src_note = " (name from verified source)" if name_from_source else ""
     print(
-        f"{entry['name']} on {chain}: flags {entry['flags']} -> "
+        f"{entry['name']} on {chain}{src_note}: flags {entry['flags']} -> "
         f"{', '.join(hl.callbacks_of(bits)) or '(none)'}",
         file=sys.stderr,
     )

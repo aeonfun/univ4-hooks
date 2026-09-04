@@ -11,6 +11,13 @@ the permission flags from the address, scaffolds `hooks/<slug>.json`, and opens 
 PR. A maintainer fills any missing prose and merges. On merge, `hooklist.json` is
 regenerated and the website picks up the new hook.
 
+If you leave the name blank, the workflow best-effort fetches the verified
+contract name from the block explorer (`scripts/fetch_source.py`). Etherscan-family
+chains need an `ETHERSCAN_API_KEY` repo secret (the unified v2 API covers Ethereum,
+Base, BNB, Arbitrum, Unichain, Monad); without it, or on a Cloudflare-gated
+explorer, the fetch is skipped and your submitted name is used. Nothing else is
+auto-fetched - the flags come from the address, the prose from you or a maintainer.
+
 You can do the same by hand: run the scaffolder and open a PR.
 
 ```
