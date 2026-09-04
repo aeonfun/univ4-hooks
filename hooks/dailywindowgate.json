@@ -1,0 +1,21 @@
+{
+  "name": "DailyWindowGate",
+  "source": "aeon",
+  "verified": true,
+  "category": "Access",
+  "klass": "GATE",
+  "template": "freeform",
+  "stage": "deployed",
+  "flags": "0x80",
+  "addresses": {
+    "base": "0x752B180116f5110dCBEa9564a43ACBEF82ebc080"
+  },
+  "mechanic": "Swaps clear only during a fixed 10-minute daily window (00:00-00:10 UTC); every other time reverts.",
+  "plain": "This pool only lets swaps go through during a 10-minute window at the very start of each UTC day - from 00:00:00 up to, but not including, 00:10:00. At any other time a swap attempt reverts. Adding and removing liquidity is never blocked, so liquidity providers can enter or exit whenever they want and can never get locked in.",
+  "rules": [
+    "Swaps succeed only when (block.timestamp mod 86400) is in [0, 600) - 00:00:00 to 00:10:00 UTC, open inclusive, close exclusive.",
+    "Every swap outside that daily 10-minute window reverts with TradingWindowClosed.",
+    "Liquidity add and remove are ungated at all times, so LPs are never locked."
+  ],
+  "date": "2026-09-04"
+}
