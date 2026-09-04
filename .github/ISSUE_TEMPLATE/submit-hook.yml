@@ -6,14 +6,21 @@ body:
   - type: markdown
     attributes:
       value: |
-        Give us a **chain** and a deployed **hook address** and that is enough - the
-        permission flags and callbacks are decoded straight from the address. The
-        rest is optional; a maintainer fills any gaps before the listing is merged.
-        Community submissions list as **Unaudited** until they clear aeon's gates.
+        ## List your hook on [aeon.fun/hooks](https://www.aeon.fun/hooks)
+
+        Give us a **chain** and a deployed **hook address** and that is all we need.
+        A Uniswap v4 hook encodes its permission flags in the low 14 bits of its own
+        address, so the flags, the bitmap, and the exact callbacks are decoded straight
+        from the address. No API key, no config, nothing to compute yourself.
+
+        Everything below the address is **optional** - fill in what you can and a
+        maintainer polishes the rest. Community hooks list as **Unaudited** until they
+        clear aeon's three gates (static audit, behavioral test, fork sim).
   - type: dropdown
     id: chain
     attributes:
       label: Chain
+      description: The chain the hook is deployed on.
       options:
         - ethereum
         - base
@@ -28,21 +35,27 @@ body:
     id: address
     attributes:
       label: Hook address
-      description: The deployed hook contract address (its low 14 bits are the v4 flags).
-      placeholder: "0x..."
+      description: The deployed hook contract address. Its low 14 bits carry the v4 flags.
+      placeholder: "0x0000000000000000000000000000000000000000"
     validations:
       required: true
+  - type: markdown
+    attributes:
+      value: |
+        ### Optional - the listing polish
+
+        Skip anything you are unsure about. A maintainer fills the gaps before merge.
   - type: input
     id: name
     attributes:
       label: Hook name
-      description: Optional - the contract name as you want it listed.
+      description: The contract name as you want it listed. Auto-detected from verified source if left blank.
       placeholder: "MyHook"
   - type: dropdown
     id: category
     attributes:
       label: Category
-      description: Optional - the marketplace bucket it fits best.
+      description: The marketplace bucket it fits best.
       options:
         - Fees
         - Rewards
@@ -54,18 +67,19 @@ body:
     id: summary
     attributes:
       label: One-line summary
-      description: Optional - the punchy line shown on the tile.
+      description: The punchy line shown on the hook's tile.
       placeholder: "Charges a higher fee when the market is volatile."
   - type: textarea
     id: description
     attributes:
       label: Plain-language description
-      description: Optional - a few sentences a non-dev can follow, shown in the modal.
+      description: A few sentences a non-dev can follow, shown when the tile opens.
+      placeholder: "Explain what a trader actually experiences with this hook."
   - type: textarea
     id: rules
     attributes:
       label: Rules
-      description: Optional - the exact rules it enforces, one per line.
+      description: The exact rules the hook enforces, one per line.
       placeholder: |
         Only exact-input swaps are allowed.
         Exact-output swaps are rejected.
@@ -73,11 +87,19 @@ body:
     id: audit_url
     attributes:
       label: Audit URL
-      description: Optional - link to a security audit.
+      description: Link to a security audit, if the hook has one.
       placeholder: "https://..."
   - type: input
     id: deployer
     attributes:
       label: Deployer address
-      description: Optional.
+      description: The wallet that deployed the hook.
       placeholder: "0x..."
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        **What happens next:** opening this issue kicks off a bot that decodes the
+        flags, scaffolds the listing, and opens a pull request with a preview. Track
+        it in the comments here - once a maintainer merges, your hook is live on
+        [aeon.fun/hooks](https://www.aeon.fun/hooks).

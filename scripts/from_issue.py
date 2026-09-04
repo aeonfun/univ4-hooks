@@ -85,13 +85,37 @@ def main():
     os.makedirs(hl.HOOKS_DIR, exist_ok=True)
     with open(path, "w") as f:
         f.write(json.dumps(entry, indent=2) + "\n")
-    # stdout = path (consumed by the workflow); stderr = human summary.
-    print(os.path.relpath(path, hl.REPO_ROOT))
+
+    # A formatted markdown card the analyze-hook workflow drops into the issue
+    # comment and the PR body, so both read like a proper listing preview.
     bits = int(entry["flags"], 16)
-    src_note = " (name from verified source)" if name_from_source else ""
+    callbacks = hl.callbacks_of(bits)
+    chains = hl.load_chains()
+    meta = chains.get(chain, {})
+    chain_name = meta.get("name", chain)
+    explorer = meta.get("explorer", "")
+    addr_cell = f"[`{address}`]({explorer}/address/{address})" if explorer else f"`{address}`"
+    cb_cell = " ".join(f"`{c}`" for c in callbacks) or "`(none)`"
+    src_note = "\n\n> Name auto-filled from the verified contract source." if name_from_source else ""
+    summary = (
+        f"### `{entry['name']}` on {chain_name}\n\n"
+        "| Field | Value |\n| --- | --- |\n"
+        f"| Address | {addr_cell} |\n"
+        f"| Flags | `{entry['flags']}` |\n"
+        f"| Callbacks | {cb_cell} |\n"
+        f"| Category | {entry['category']} |\n"
+        f"| Class | {entry['klass']} |"
+        f"{src_note}\n"
+    )
+    with open(os.path.join(hl.REPO_ROOT, "submission_summary.md"), "w") as f:
+        f.write(summary)
+
+    # stdout = path (consumed by the workflow); stderr = one-line log line.
+    print(os.path.relpath(path, hl.REPO_ROOT))
+    src_log = " (name from verified source)" if name_from_source else ""
     print(
-        f"{entry['name']} on {chain}{src_note}: flags {entry['flags']} -> "
-        f"{', '.join(hl.callbacks_of(bits)) or '(none)'}",
+        f"{entry['name']} on {chain}{src_log}: flags {entry['flags']} -> "
+        f"{', '.join(callbacks) or '(none)'}",
         file=sys.stderr,
     )
 
