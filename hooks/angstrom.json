@@ -1,0 +1,20 @@
+{
+  "name": "Angstrom",
+  "source": "community",
+  "verified": false,
+  "category": "Orders",
+  "klass": "VALUE",
+  "template": "freeform",
+  "stage": "deployed",
+  "flags": "0x3AD4",
+  "addresses": {
+    "ethereum": "0x0000000aa232009084Bd71A5797d089AA4Edfad4"
+  },
+  "mechanic": "Runs its own auction to internalize MEV and hand the value back to traders and LPs.",
+  "plain": "TODO: plain-language explainer for the modal.",
+  "rules": [
+    "Batches swaps into a per-block auction.",
+    "Captured MEV is redistributed to LPs and traders."
+  ],
+  "date": "2026-09-04"
+}
