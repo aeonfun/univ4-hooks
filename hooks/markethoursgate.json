@@ -1,0 +1,22 @@
+{
+  "name": "MarketHoursGate",
+  "source": "aeon",
+  "verified": true,
+  "category": "Access",
+  "klass": "GATE",
+  "template": "freeform",
+  "stage": "deployed",
+  "flags": "0x80",
+  "addresses": {
+    "base": "0x82086452Fe75Cb217F44Cf8c33af638bf9018080"
+  },
+  "mechanic": "Swaps only clear during standard U.S. market hours; every other window reverts.",
+  "plain": "This hook gates every swap on the pool behind the regular U.S. stock market schedule: 9:30 AM to 4:00 PM Eastern time, Monday through Friday. Attempt a trade outside that window - nights, weekends, or before the open - and the swap reverts instead of executing. The check reads the block's timestamp at the moment of execution, so it can't be front-run by timing a transaction ahead of the open.",
+  "rules": [
+    "Swaps are only allowed Monday-Friday, 09:30-16:00 America/New_York.",
+    "Any swap attempted outside that window reverts in beforeSwap.",
+    "The time check uses block.timestamp at execution, not the time the transaction was submitted."
+  ],
+  "date": "2026-09-04",
+  "deployer": "0x0DE98e661606EcFC448da7A8276DdE4de45200C8"
+}
