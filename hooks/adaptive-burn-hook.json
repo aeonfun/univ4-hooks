@@ -1,0 +1,20 @@
+{
+  "name": "Adaptive Burn Hook",
+  "source": "community",
+  "verified": false,
+  "category": "Rewards",
+  "klass": "VALUE",
+  "template": "freeform",
+  "stage": "deployed",
+  "flags": "0x44",
+  "addresses": {
+    "base": "0x5798a5e371346c8e4af1dbc166549d360e008044"
+  },
+  "mechanic": "Burns a slice of tokens bought and banks ETH from tokens sold.",
+  "plain": "On buys it burns a configurable percentage of the token output; on sells it captures ETH into a vault. Both rates are admin-adjustable and capped at 5%.",
+  "rules": [
+    "Buys burn a configurable share of the token output (max 5%).",
+    "Sells divert a configurable share of ETH into a vault."
+  ],
+  "date": "2026-09-03"
+}

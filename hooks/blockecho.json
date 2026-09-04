@@ -1,0 +1,24 @@
+{
+  "name": "BlockEcho",
+  "source": "aeon",
+  "verified": true,
+  "category": "Games",
+  "klass": "GATE",
+  "template": "freeform",
+  "stage": "deployed",
+  "flags": "0xC4",
+  "addresses": {
+    "robinhood": "0xf2f992Fe611f64ECFcc413c420F558C85A7480c4",
+    "ethereum": "0x66F4a8433885d2838AE760393c3BDbdCBd8D40C4",
+    "base": "0x5e48f905661D75501CA756eDB3403dA98F0400C4",
+    "monad": "0x15d90705718D052D32eB8e34271E8743C26E40C4"
+  },
+  "mechanic": "A playful lock: your trade clears only when its amount matches the current block number.",
+  "plain": "Every block on the chain has a number that ticks up over time. Your trade only clears if the amount you're swapping ends in the same last digits as the current block number. A playful lock tied to the chain's own clock - retry on the next block and it changes.",
+  "rules": [
+    "A swap clears only when its amount matches the current block number's last digits.",
+    "Miss and the swap reverts - the target moves each block.",
+    "Retry on the next block for a fresh number."
+  ],
+  "date": "2026-08-01"
+}

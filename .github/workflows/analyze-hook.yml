@@ -1,0 +1,93 @@
+name: analyze-hook
+
+# When someone opens a "Submit a hook" issue, decode the flags from the address,
+# scaffold hooks/<slug>.json, regenerate the registry, and open a PR for review.
+# Everything here is keyless: the v4 flags come straight from the address, so no
+# block-explorer API key is needed.
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  scaffold:
+    if: contains(join(github.event.issue.labels.*.name, ','), 'hook-submission')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+
+      - name: Scaffold hook JSON from the issue
+        id: scaffold
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          # Optional: enables auto-filling the name from verified source on
+          # etherscan-family chains. Blockscout (Robinhood) works without it.
+          ETHERSCAN_API_KEY: ${{ secrets.ETHERSCAN_API_KEY }}
+        run: |
+          set -euo pipefail
+          path="$(python3 scripts/from_issue.py 2> summary.txt)"
+          echo "path=$path" >> "$GITHUB_OUTPUT"
+          echo "summary=$(cat summary.txt)" >> "$GITHUB_OUTPUT"
+
+      - name: Regenerate registry + validate
+        run: |
+          set -euo pipefail
+          python3 scripts/aggregate.py
+          python3 scripts/validate.py
+
+      - name: Open a PR
+        id: pr
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE: ${{ github.event.issue.number }}
+          PATHFILE: ${{ steps.scaffold.outputs.path }}
+          SUMMARY: ${{ steps.scaffold.outputs.summary }}
+        run: |
+          set -euo pipefail
+          slug="$(basename "$PATHFILE" .json)"
+          branch="hook-submission/${slug}-${ISSUE}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$branch"
+          git add hooks/ hooklist.json HOOKS.md
+          git commit -F - <<EOF
+          feat: scaffold ${slug} hook from #${ISSUE}
+
+          Flags decoded from the address. Prose/tags need a maintainer pass before merge.
+          Closes #${ISSUE}
+          EOF
+          git push -u origin "$branch"
+          url="$(gh pr create --base main --head "$branch" \
+            --label hook-submission \
+            --title "hook: ${slug} (from #${ISSUE})" \
+            --body "Scaffolded from #${ISSUE}. ${SUMMARY}
+
+          Review checklist: name, category, klass, mechanic, plain, rules. Flags + callbacks are decoded from the address and validated by CI.")"
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+
+      - name: Comment on the issue
+        if: success()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE: ${{ github.event.issue.number }}
+          PR_URL: ${{ steps.pr.outputs.url }}
+          SUMMARY: ${{ steps.scaffold.outputs.summary }}
+        run: |
+          gh issue comment "$ISSUE" --body "Thanks! Decoded the flags and opened ${PR_URL} for review. ${SUMMARY}"
+
+      - name: Report failure on the issue
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE: ${{ github.event.issue.number }}
+        run: |
+          gh issue comment "$ISSUE" --body "Could not auto-scaffold this submission (bad chain/address, or a field needs fixing). A maintainer will take it from here. See the workflow run for details."

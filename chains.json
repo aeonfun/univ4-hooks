@@ -1,0 +1,9 @@
+{
+  "ethereum": { "chainId": 1,     "name": "Ethereum",   "explorer": "https://etherscan.io",                     "explorerApiType": "etherscan",  "explorerApi": "https://api.etherscan.io/v2/api" },
+  "base":     { "chainId": 8453,  "name": "Base",       "explorer": "https://basescan.org",                     "explorerApiType": "etherscan",  "explorerApi": "https://api.etherscan.io/v2/api" },
+  "robinhood":{ "chainId": 4663,  "name": "Robinhood",  "explorer": "https://robinhoodchain.blockscout.com",    "explorerApiType": "blockscout", "explorerApi": "https://robinhoodchain.blockscout.com/api" },
+  "monad":    { "chainId": 143,   "name": "Monad",      "explorer": "https://monadscan.com",                    "explorerApiType": "etherscan",  "explorerApi": "https://api.etherscan.io/v2/api" },
+  "bnb":      { "chainId": 56,    "name": "BNB Chain",  "explorer": "https://bscscan.com",                      "explorerApiType": "etherscan",  "explorerApi": "https://api.etherscan.io/v2/api" },
+  "arbitrum": { "chainId": 42161, "name": "Arbitrum",   "explorer": "https://arbiscan.io",                      "explorerApiType": "etherscan",  "explorerApi": "https://api.etherscan.io/v2/api" },
+  "unichain": { "chainId": 130,   "name": "Unichain",   "explorer": "https://uniscan.xyz",                      "explorerApiType": "etherscan",  "explorerApi": "https://api.etherscan.io/v2/api" }
+}

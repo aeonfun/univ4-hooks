@@ -1,0 +1,20 @@
+{
+  "name": "Flaunch PositionManager",
+  "source": "community",
+  "verified": false,
+  "category": "Launch",
+  "klass": "VALUE",
+  "template": "freeform",
+  "stage": "deployed",
+  "flags": "0x25DC",
+  "addresses": {
+    "unichain": "0x5cf8e499c7c466c7e2cf127bdf129f57151e65dc"
+  },
+  "mechanic": "Runs Flaunch memecoin launches and fills fee inventory via an internal swap pool.",
+  "plain": "The core hook for the Flaunch launch platform. It manages memecoin pool creation and runs an internal swap pool that fills fee inventory against incoming trades.",
+  "rules": [
+    "Manages memecoin pool creation for the Flaunch platform.",
+    "An internal swap pool converts collected fees against incoming trades."
+  ],
+  "date": "2026-09-03"
+}

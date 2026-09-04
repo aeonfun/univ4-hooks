@@ -1,0 +1,125 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "aeon univ4 hook",
+  "description": "One entry per hook. A hook may be deployed to several chains (aeon fleet hooks ship to all four); the address' low 14 bits encode the v4 permission flags, so `flags` and the callbacks are cross-checked against every address by scripts/validate.py.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "name",
+    "source",
+    "verified",
+    "category",
+    "klass",
+    "template",
+    "stage",
+    "flags",
+    "addresses",
+    "mechanic",
+    "plain",
+    "rules",
+    "date"
+  ],
+  "properties": {
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100,
+      "description": "Hook contract name as deployed / as listed."
+    },
+    "source": {
+      "type": "string",
+      "enum": ["aeon", "community"],
+      "description": "aeon = shipped by the aeon fleet; community = third-party submission."
+    },
+    "verified": {
+      "type": "boolean",
+      "description": "Cleared aeon's three pre-deploy gates (static audit, behavioral test, fork sim). Community submissions start false."
+    },
+    "category": {
+      "type": "string",
+      "enum": ["Fees", "Rewards", "Access", "Games", "Orders", "Launch"],
+      "description": "Marketplace category on aeon.fun/hooks."
+    },
+    "klass": {
+      "type": "string",
+      "enum": ["VALUE", "FEE", "GATE"],
+      "description": "The hook's own character on top of the universal AeonFee: VALUE moves tokens, FEE sets a dynamic LP fee, GATE decides yes/no on a swap."
+    },
+    "template": {
+      "type": "string",
+      "enum": ["dynamic", "noop", "freeform"],
+      "description": "Which deploy-uni-hook template it was built from."
+    },
+    "stage": {
+      "type": "string",
+      "enum": ["template", "deployed", "frontend"],
+      "description": "Lifecycle: template = pre-audited template set, deployed = live onchain, frontend = also has a wallet-connectable demo."
+    },
+    "flags": {
+      "type": "string",
+      "pattern": "^0x[0-9A-Fa-f]{1,4}$",
+      "description": "Permission flags in hex, e.g. 0x10C4. Must equal (address & 0x3FFF) for every address below. Callbacks + flagBits are derived from this in hooklist.json."
+    },
+    "addresses": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": false,
+      "description": "One deployed address per chain. aeon fleet hooks ship to all four; a community submission is usually one chain.",
+      "properties": {
+        "ethereum": { "$ref": "#/$defs/address" },
+        "base": { "$ref": "#/$defs/address" },
+        "robinhood": { "$ref": "#/$defs/address" },
+        "monad": { "$ref": "#/$defs/address" },
+        "bnb": { "$ref": "#/$defs/address" },
+        "arbitrum": { "$ref": "#/$defs/address" },
+        "unichain": { "$ref": "#/$defs/address" }
+      }
+    },
+    "mechanic": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 280,
+      "description": "One-line punchy summary shown on the tile."
+    },
+    "plain": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 700,
+      "description": "Plain-language explainer shown in the modal."
+    },
+    "rules": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 8,
+      "items": { "type": "string", "minLength": 1, "maxLength": 200 },
+      "description": "The exact rules the hook enforces, one per line."
+    },
+    "auditUrl": {
+      "type": "string",
+      "pattern": "^(https://.*)?$",
+      "default": "",
+      "description": "Link to a security audit, if any."
+    },
+    "demoPoolId": {
+      "type": "string",
+      "description": "Demo pool id for hooks with a wallet-connectable dapp."
+    },
+    "deployer": {
+      "type": "string",
+      "pattern": "^(0x[a-fA-F0-9]{40})?$",
+      "default": "",
+      "description": "Deployer address, if known."
+    },
+    "date": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+      "description": "First-shipped / first-listed date (ISO)."
+    }
+  },
+  "$defs": {
+    "address": {
+      "type": "string",
+      "pattern": "^0x[a-fA-F0-9]{40}$"
+    }
+  }
+}

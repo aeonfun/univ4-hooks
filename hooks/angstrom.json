@@ -1,0 +1,20 @@
+{
+  "name": "Angstrom",
+  "source": "community",
+  "verified": false,
+  "category": "Orders",
+  "klass": "VALUE",
+  "template": "freeform",
+  "stage": "deployed",
+  "flags": "0x3AD4",
+  "addresses": {
+    "ethereum": "0x0000000aa232009084Bd71A5797d089AA4Edfad4"
+  },
+  "mechanic": "Runs its own auction to internalize MEV and hand the value back to traders and LPs.",
+  "plain": "Angstrom takes control of transaction ordering and runs an application-specific auction, so the value that would otherwise be extracted through sandwiching and arbitrage is captured and redirected back to users.",
+  "rules": [
+    "Swaps are ordered by an application-specific auction, not first-come.",
+    "Captured MEV is redirected back to traders and liquidity providers."
+  ],
+  "date": "2026-09-03"
+}

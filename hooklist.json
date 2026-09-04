@@ -1,0 +1,966 @@
+{
+  "name": "aeon univ4 hook list",
+  "aeonFee": {
+    "bps": 10,
+    "recipient": "0xF1E958db7D1e4C074377946018Ad645db4FB158e"
+  },
+  "chains": {
+    "ethereum": {
+      "chainId": 1,
+      "name": "Ethereum",
+      "explorer": "https://etherscan.io",
+      "explorerApiType": "etherscan",
+      "explorerApi": "https://api.etherscan.io/v2/api"
+    },
+    "base": {
+      "chainId": 8453,
+      "name": "Base",
+      "explorer": "https://basescan.org",
+      "explorerApiType": "etherscan",
+      "explorerApi": "https://api.etherscan.io/v2/api"
+    },
+    "robinhood": {
+      "chainId": 4663,
+      "name": "Robinhood",
+      "explorer": "https://robinhoodchain.blockscout.com",
+      "explorerApiType": "blockscout",
+      "explorerApi": "https://robinhoodchain.blockscout.com/api"
+    },
+    "monad": {
+      "chainId": 143,
+      "name": "Monad",
+      "explorer": "https://monadscan.com",
+      "explorerApiType": "etherscan",
+      "explorerApi": "https://api.etherscan.io/v2/api"
+    },
+    "bnb": {
+      "chainId": 56,
+      "name": "BNB Chain",
+      "explorer": "https://bscscan.com",
+      "explorerApiType": "etherscan",
+      "explorerApi": "https://api.etherscan.io/v2/api"
+    },
+    "arbitrum": {
+      "chainId": 42161,
+      "name": "Arbitrum",
+      "explorer": "https://arbiscan.io",
+      "explorerApiType": "etherscan",
+      "explorerApi": "https://api.etherscan.io/v2/api"
+    },
+    "unichain": {
+      "chainId": 130,
+      "name": "Unichain",
+      "explorer": "https://uniscan.xyz",
+      "explorerApiType": "etherscan",
+      "explorerApi": "https://api.etherscan.io/v2/api"
+    }
+  },
+  "count": 31,
+  "verifiedCount": 10,
+  "communityCount": 21,
+  "hooks": [
+    {
+      "name": "DynamicFee",
+      "source": "aeon",
+      "verified": true,
+      "category": "Fees",
+      "klass": "FEE",
+      "template": "dynamic",
+      "stage": "template",
+      "flags": "0x10C4",
+      "addresses": {
+        "robinhood": "0x7566a3BFbE88C06BC5F33FEA927f461e8279d0C4",
+        "ethereum": "0x80F48fDCa095D081a3fE7843AB234C5533a450c4",
+        "base": "0x723b16eF13a1b9A2BD63238BEC47cDF1d4A010C4",
+        "monad": "0x86037d62EceCd7E380984Ad9d24dd0c5112d50C4"
+      },
+      "mechanic": "The swap fee goes up when the market is volatile and back down when it's calm.",
+      "plain": "The trading fee isn't fixed. When lots of people are trading and the price is swinging around, the fee goes up. When things settle down, it drops back. So you only pay extra when the market is wild - and the pool earns more exactly when it's busiest.",
+      "rules": [
+        "Swap fee floats with recent volatility - calm markets pay the floor.",
+        "The fee climbs as price swings widen, so the pool earns most when it's busiest.",
+        "Fee changes are automatic and onchain - no operator sets them by hand."
+      ],
+      "date": "2026-07-30",
+      "flagBits": 4292,
+      "callbacks": [
+        "afterInitialize",
+        "beforeSwap",
+        "afterSwap",
+        "afterSwapReturnDelta"
+      ],
+      "auditUrl": ""
+    },
+    {
+      "name": "NoOp",
+      "source": "aeon",
+      "verified": true,
+      "category": "Access",
+      "klass": "GATE",
+      "template": "noop",
+      "stage": "template",
+      "flags": "0xC4",
+      "addresses": {
+        "robinhood": "0x8EF1699f78F830375239F6f3165cB72D5b64c0c4",
+        "ethereum": "0xc8FA143077D632A056a9A970cE71E3BdcF01C0c4",
+        "base": "0xFBa729A7d8fc48cBb261A845A0f26281ED7800C4",
+        "monad": "0x707A3072E285A2e2398253A30Bf6Bd7b5a7B40c4"
+      },
+      "mechanic": "Does nothing to your trade - the blank template to build your own hook on.",
+      "plain": "This hook does nothing to your trade. It lets every swap go through exactly as-is and only takes the standard protocol fee. It's the empty template: start here, then add your own rule to make it do something.",
+      "rules": [
+        "Every swap passes through exactly as submitted.",
+        "No rule beyond the standard protocol fee applies.",
+        "The blank template - fork it and add your own logic."
+      ],
+      "date": "2026-07-31",
+      "flagBits": 196,
+      "callbacks": [
+        "beforeSwap",
+        "afterSwap",
+        "afterSwapReturnDelta"
+      ],
+      "auditUrl": ""
+    },
+    {
+      "name": "BlockEcho",
+      "source": "aeon",
+      "verified": true,
+      "category": "Games",
+      "klass": "GATE",
+      "template": "freeform",
+      "stage": "deployed",
+      "flags": "0xC4",
+      "addresses": {
+        "robinhood": "0xf2f992Fe611f64ECFcc413c420F558C85A7480c4",
+        "ethereum": "0x66F4a8433885d2838AE760393c3BDbdCBd8D40C4",
+        "base": "0x5e48f905661D75501CA756eDB3403dA98F0400C4",
+        "monad": "0x15d90705718D052D32eB8e34271E8743C26E40C4"
+      },
+      "mechanic": "A playful lock: your trade clears only when its amount matches the current block number.",
+      "plain": "Every block on the chain has a number that ticks up over time. Your trade only clears if the amount you're swapping ends in the same last digits as the current block number. A playful lock tied to the chain's own clock - retry on the next block and it changes.",
+      "rules": [
+        "A swap clears only when its amount matches the current block number's last digits.",
+        "Miss and the swap reverts - the target moves each block.",
+        "Retry on the next block for a fresh number."
+      ],
+      "date": "2026-08-01",
+      "flagBits": 196,
+      "callbacks": [
+        "beforeSwap",
+        "afterSwap",
+        "afterSwapReturnDelta"
+      ],
+      "auditUrl": ""
+    },
+    {
+      "name": "HeavierHand",
+      "source": "aeon",
+      "verified": true,
+      "category": "Access",
+      "klass": "GATE",
+      "template": "freeform",
+      "stage": "deployed",
+      "flags": "0xC4",
+      "addresses": {
+        "robinhood": "0x6Df3BeBfBeC267221b819aC30Bb32e2F02C700c4",
+        "ethereum": "0x240339F2114F066016f36639e522a8A9C3b840c4",
+        "base": "0x2AD6936032d4201fc74041AfbC801FAAb1bf40c4",
+        "monad": "0x6F0FE61cae116edC23F00E74eB8604ADef4800c4"
+      },
+      "mechanic": "Only lets you sell the token the pool has too much of, keeping it balanced.",
+      "plain": "A pool holds two tokens. This only lets you sell the one there's currently more of, so every trade pushes the pool back toward a 50/50 split. You can't pile more into the side that's already heavy - it self-corrects.",
+      "rules": [
+        "You may only sell whichever token the pool currently holds more of.",
+        "Every trade nudges the pool back toward a 50/50 balance.",
+        "Swaps that deepen the heavier side are rejected."
+      ],
+      "date": "2026-08-01",
+      "flagBits": 196,
+      "callbacks": [
+        "beforeSwap",
+        "afterSwap",
+        "afterSwapReturnDelta"
+      ],
+      "auditUrl": ""
+    },
+    {
+      "name": "TailTwins",
+      "source": "aeon",
+      "verified": true,
+      "category": "Games",
+      "klass": "GATE",
+      "template": "freeform",
+      "stage": "deployed",
+      "flags": "0xC4",
+      "addresses": {
+        "robinhood": "0x971Df49844604E44514120682eAc3fcDC4F5C0c4",
+        "ethereum": "0x50220C80DA4280afB2D86AD4a6B28f9dfF46C0c4",
+        "base": "0x9818dDD1102c9606Cd693aC17A7B8B17609480c4",
+        "monad": "0x75e7B5A738884F37086c2Be7789A883Ca6ce80C4"
+      },
+      "mechanic": "Your trade must match the pool's live price on its last digit - a moving target.",
+      "plain": "The pool has a live price that changes a little with every trade. Your swap only goes through if its last digit matches the price's last digit. Since each trade moves the price, the target keeps moving - you're aiming at a number that won't hold still.",
+      "rules": [
+        "A swap clears only if its last digit matches the pool price's last digit.",
+        "Each trade moves the price, so the target keeps shifting.",
+        "You're aiming at a number that won't hold still."
+      ],
+      "date": "2026-08-02",
+      "flagBits": 196,
+      "callbacks": [
+        "beforeSwap",
+        "afterSwap",
+        "afterSwapReturnDelta"
+      ],
+      "auditUrl": ""
+    },
+    {
+      "name": "TotalizerTrap",
+      "source": "aeon",
+      "verified": true,
+      "category": "Games",
+      "klass": "GATE",
+      "template": "freeform",
+      "stage": "deployed",
+      "flags": "0xC4",
+      "addresses": {
+        "robinhood": "0x1e27183E12a9C108DD850E022f26870B12a200C4",
+        "ethereum": "0x190bCa1A2f6CAd09efAE5d0BAb9564553Ba640C4",
+        "base": "0xA7a62422d13C7648cA53ad91E9268ac4bFC6C0c4",
+        "monad": "0x57E6efF5Cc442EFeEebB79D108CCb7C01086c0c4"
+      },
+      "mechanic": "Blocks your trade if it pushes the pool's all-time volume onto a multiple of 11.",
+      "plain": "The pool adds up every trade ever made into one running total. If your trade would push that total onto an exact multiple of 11, it gets blocked. Almost every swap passes fine - now and then one lands on the trap and bounces.",
+      "rules": [
+        "The pool tracks all-time cumulative volume.",
+        "A swap that would land the running total on a multiple of 11 is blocked.",
+        "Every other swap passes normally."
+      ],
+      "date": "2026-08-02",
+      "flagBits": 196,
+      "callbacks": [
+        "beforeSwap",
+        "afterSwap",
+        "afterSwapReturnDelta"
+      ],
+      "auditUrl": ""
+    },
+    {
+      "name": "CapGate",
+      "source": "aeon",
+      "verified": true,
+      "category": "Access",
+      "klass": "GATE",
+      "template": "freeform",
+      "stage": "deployed",
+      "flags": "0xC4",
+      "addresses": {
+        "robinhood": "0x6B567e25CC6E9d77f1A030A68Db39F86c03540c4",
+        "ethereum": "0xfebC2D261c006409eD765bAcfF039846770280C4",
+        "base": "0x0A914acb246063B4ED0F3a0FC13D0C0e8C8500c4",
+        "monad": "0xD4F21c282c7c1e8098D511039Ad39044488cC0c4"
+      },
+      "mechanic": "Rejects any trade above a size cap, so only small swaps go through.",
+      "plain": "There's a maximum trade size. Any swap bigger than that cap is rejected before it runs, so the pool only ever fills small trades. Big players ('whales') have to break their order into smaller pieces or take it somewhere else.",
+      "rules": [
+        "Any swap above the fixed size cap is rejected before it runs.",
+        "Only small trades fill - whales must split their order or leave."
+      ],
+      "date": "2026-08-03",
+      "flagBits": 196,
+      "callbacks": [
+        "beforeSwap",
+        "afterSwap",
+        "afterSwapReturnDelta"
+      ],
+      "auditUrl": ""
+    },
+    {
+      "name": "CrownClash",
+      "source": "aeon",
+      "verified": true,
+      "category": "Rewards",
+      "klass": "VALUE",
+      "template": "freeform",
+      "stage": "deployed",
+      "flags": "0x44",
+      "addresses": {
+        "robinhood": "0xcbbc0818c555bFf795a2ab6261D224E793678044",
+        "ethereum": "0xb09AbA41D397474e6C25a625f87eF8c200480044",
+        "base": "0xD24D29a47Adb8786072Ab2Cb9925dC8Ba36Bc044",
+        "monad": "0xb268D7930580E7717B72804190FE910d2c200044"
+      },
+      "mechanic": "A live volume leaderboard - trade the most to hold the crown. 0.07% of each trade to the treasury.",
+      "plain": "Every trade pays a tiny 0.07% into the treasury and adds that amount to your personal running score. Whoever has traded the most holds the 'crown'. It's a live leaderboard kept entirely onchain - trade more than the current leader to take the top spot.",
+      "rules": [
+        "Every trade pays 0.07% to the treasury and adds that amount to your score.",
+        "Whoever has traded the most holds the onchain crown.",
+        "The leaderboard lives entirely onchain - out-trade the leader to take it."
+      ],
+      "date": "2026-08-03",
+      "flagBits": 68,
+      "callbacks": [
+        "afterSwap",
+        "afterSwapReturnDelta"
+      ],
+      "auditUrl": ""
+    },
+    {
+      "name": "ExactInGate",
+      "source": "aeon",
+      "verified": true,
+      "category": "Access",
+      "klass": "GATE",
+      "template": "freeform",
+      "stage": "deployed",
+      "flags": "0xC4",
+      "addresses": {
+        "robinhood": "0x2c10AfB513a6505beFB74dFdF5800B392C9f00c4",
+        "ethereum": "0x95c9Fa3cd4067A0fd69fB41D291C79193B5500C4",
+        "base": "0xeC78eE3F1FC117415a8006A0344Ccaff30aa40C4",
+        "monad": "0x7810753D326c0E4b9755b5FA09a8b8998C75C0C4"
+      },
+      "mechanic": "Only allows \"spend exactly this much\" trades; \"get exactly this much\" is blocked.",
+      "plain": "There are two ways to place a swap: say exactly how much you'll spend, or say exactly how much you want to receive. This hook only allows the first - 'spend exactly this much'. Orders that demand an exact amount out are turned away.",
+      "rules": [
+        "Only exact-input swaps ('spend exactly this much') are allowed.",
+        "Exact-output swaps ('receive exactly this much') are rejected."
+      ],
+      "date": "2026-08-03",
+      "flagBits": 196,
+      "callbacks": [
+        "beforeSwap",
+        "afterSwap",
+        "afterSwapReturnDelta"
+      ],
+      "auditUrl": ""
+    },
+    {
+      "name": "LegacyLedger",
+      "source": "aeon",
+      "verified": true,
+      "category": "Rewards",
+      "klass": "VALUE",
+      "template": "freeform",
+      "stage": "deployed",
+      "flags": "0x44",
+      "addresses": {
+        "robinhood": "0x70dEc3A54943fd96Fe460ff74172038F57208044",
+        "ethereum": "0x9c9f5e18c8530E96c735704471542E72a7a00044",
+        "base": "0xDb4a0eb0410407d6C22A35c27288834e0D9F4044",
+        "monad": "0xf50C9B994A5A0Aba3EB1b7E044f88B2f12f1c044"
+      },
+      "mechanic": "The more you trade, the higher your onchain loyalty tier. 0.05% of each trade to the treasury.",
+      "plain": "Every trade pays 0.05% to the treasury and earns you a loyalty mark. Those marks add up over time and move you into higher loyalty tiers. The more you trade, the higher your standing - status that builds up and stays recorded onchain.",
+      "rules": [
+        "Every trade pays 0.05% to the treasury and earns a loyalty mark.",
+        "Marks accumulate into higher loyalty tiers over time.",
+        "Your standing is recorded permanently onchain."
+      ],
+      "date": "2026-08-03",
+      "flagBits": 68,
+      "callbacks": [
+        "afterSwap",
+        "afterSwapReturnDelta"
+      ],
+      "auditUrl": ""
+    },
+    {
+      "name": "AccessControlDynamicFeeHook",
+      "source": "community",
+      "verified": false,
+      "category": "Access",
+      "klass": "GATE",
+      "template": "freeform",
+      "stage": "deployed",
+      "flags": "0x880",
+      "addresses": {
+        "ethereum": "0xb89e1dd2c843a967d47a79406f33496468bb8880"
+      },
+      "mechanic": "Whitelists who can provide liquidity and lets the owner set the swap fee.",
+      "plain": "Only the owner and approved addresses may add liquidity, and the owner can override the LP fee applied to every swap. A permissioned pool with an operator-controlled fee.",
+      "rules": [
+        "Only whitelisted addresses may add liquidity.",
+        "The owner sets the LP fee applied to all swaps."
+      ],
+      "date": "2026-09-03",
+      "flagBits": 2176,
+      "callbacks": [
+        "beforeAddLiquidity",
+        "beforeSwap"
+      ],
+      "auditUrl": ""
+    },
+    {
+      "name": "Adaptive Burn Hook",
+      "source": "community",
+      "verified": false,
+      "category": "Rewards",
+      "klass": "VALUE",
+      "template": "freeform",
+      "stage": "deployed",
+      "flags": "0x44",
+      "addresses": {
+        "base": "0x5798a5e371346c8e4af1dbc166549d360e008044"
+      },
+      "mechanic": "Burns a slice of tokens bought and banks ETH from tokens sold.",
+      "plain": "On buys it burns a configurable percentage of the token output; on sells it captures ETH into a vault. Both rates are admin-adjustable and capped at 5%.",
+      "rules": [
+        "Buys burn a configurable share of the token output (max 5%).",
+        "Sells divert a configurable share of ETH into a vault."
+      ],
+      "date": "2026-09-03",
+      "flagBits": 68,
+      "callbacks": [
+        "afterSwap",
+        "afterSwapReturnDelta"
+      ],
+      "auditUrl": ""
+    },
+    {
+      "name": "Aegis DFM",
+      "source": "community",
+      "verified": false,
+      "category": "Fees",
+      "klass": "FEE",
+      "template": "dynamic",
+      "stage": "deployed",
+      "flags": "0x10CC",
+      "addresses": {
+        "monad": "0xe620421BDE7D6A367d2c3b7E8dfA09B90AEa90CC"
+      },
+      "mechanic": "Oracle-driven base + surge fee, with fees reinvested into full-range liquidity.",
+      "plain": "A dynamic-fee market maker that uses a truncated geometric oracle to set base and surge fees, takes a protocol share of each swap, and reinvests collected fees into a full-range liquidity position.",
+      "rules": [
+        "Base and surge fees are set from a truncated geometric oracle.",
+        "Collected protocol fees reinvest into full-range liquidity."
+      ],
+      "date": "2026-09-03",
+      "flagBits": 4300,
+      "callbacks": [
+        "afterInitialize",
+        "beforeSwap",
+        "afterSwap",
+        "beforeSwapReturnDelta",
+        "afterSwapReturnDelta"
+      ],
+      "auditUrl": ""
+    },
+    {
+      "name": "Aegis v3 Hook",
+      "source": "community",
+      "verified": false,
+      "category": "Fees",
+      "klass": "FEE",
+      "template": "dynamic",
+      "stage": "deployed",
+      "flags": "0x1ACC",
+      "addresses": {
+        "unichain": "0x88c9ff9fc0b22cca42265d3f1d1c2c39e41cdacc"
+      },
+      "mechanic": "Surge dynamic fees from a truncated geometric oracle, plus a protocol POL share.",
+      "plain": "A dynamic-fee hook using a truncated geometric oracle to apply surge fees when the market moves, and taking a protocol-owned-liquidity share of each swap.",
+      "rules": [
+        "Fees surge with market movement, read from a truncated geometric oracle.",
+        "A protocol-owned-liquidity share is taken from each swap."
+      ],
+      "date": "2026-09-03",
+      "flagBits": 6860,
+      "callbacks": [
+        "afterInitialize",
+        "beforeAddLiquidity",
+        "beforeRemoveLiquidity",
+        "beforeSwap",
+        "afterSwap",
+        "beforeSwapReturnDelta",
+        "afterSwapReturnDelta"
+      ],
+      "auditUrl": ""
+    },
+    {
+      "name": "AlphaHook3Pct",
+      "source": "community",
+      "verified": false,
+      "category": "Fees",
+      "klass": "FEE",
+      "template": "dynamic",
+      "stage": "deployed",
+      "flags": "0x20C4",
+      "addresses": {
+        "bnb": "0x10d46c0ea45c5257a1e29c8dced7ede70125e0c4"
+      },
+      "mechanic": "Dynamic LP fee from 0.30% to 3.00%, driven by volatility and volume EMAs.",
+      "plain": "A fee hook for BSC token/stablecoin pools. It moves the LP fee between 0.30% and 3.00% from exponential moving averages of volatility and volume, and seeds new pools at the fee ceiling.",
+      "rules": [
+        "LP fee floats between 0.30% and 3.00%.",
+        "The fee is driven by volatility and volume EMAs, not set by hand."
+      ],
+      "date": "2026-09-03",
+      "flagBits": 8388,
+      "callbacks": [
+        "beforeInitialize",
+        "beforeSwap",
+        "afterSwap",
+        "afterSwapReturnDelta"
+      ],
+      "auditUrl": ""
+    },
+    {
+      "name": "AlphixLVRFee",
+      "source": "community",
+      "verified": false,
+      "category": "Fees",
+      "klass": "FEE",
+      "template": "freeform",
+      "stage": "deployed",
+      "flags": "0x1044",
+      "addresses": {
+        "base": "0x7cBbfF9C4fcd74B221C535F4fB4B1Db04F1B9044"
+      },
+      "mechanic": "Admin-tuned per-pool LP fee plus a protocol fee skimmed to a treasury.",
+      "plain": "Combines a per-pool LP fee that a restricted admin can adjust with a protocol fee captured from each swap's output as ERC-6909 claims and forwarded to a treasury.",
+      "rules": [
+        "A restricted admin sets the per-pool LP fee.",
+        "A protocol fee is skimmed from swap output to a treasury."
+      ],
+      "date": "2026-09-03",
+      "flagBits": 4164,
+      "callbacks": [
+        "afterInitialize",
+        "afterSwap",
+        "afterSwapReturnDelta"
+      ],
+      "auditUrl": ""
+    },
+    {
+      "name": "Angstrom",
+      "source": "community",
+      "verified": false,
+      "category": "Orders",
+      "klass": "VALUE",
+      "template": "freeform",
+      "stage": "deployed",
+      "flags": "0x3AD4",
+      "addresses": {
+        "ethereum": "0x0000000aa232009084Bd71A5797d089AA4Edfad4"
+      },
+      "mechanic": "Runs its own auction to internalize MEV and hand the value back to traders and LPs.",
+      "plain": "Angstrom takes control of transaction ordering and runs an application-specific auction, so the value that would otherwise be extracted through sandwiching and arbitrage is captured and redirected back to users.",
+      "rules": [
+        "Swaps are ordered by an application-specific auction, not first-come.",
+        "Captured MEV is redirected back to traders and liquidity providers."
+      ],
+      "date": "2026-09-03",
+      "flagBits": 15060,
+      "callbacks": [
+        "beforeInitialize",
+        "afterInitialize",
+        "beforeAddLiquidity",
+        "beforeRemoveLiquidity",
+        "beforeSwap",
+        "afterSwap",
+        "afterDonate",
+        "afterSwapReturnDelta"
+      ],
+      "auditUrl": ""
+    },
+    {
+      "name": "Aquinas Hook",
+      "source": "community",
+      "verified": false,
+      "category": "Access",
+      "klass": "GATE",
+      "template": "freeform",
+      "stage": "deployed",
+      "flags": "0x2000",
+      "addresses": {
+        "base": "0xd3c1f2174f37f88811f99b1b1b4c1356c0246000"
+      },
+      "mechanic": "Only factory-approved Safe addresses can initialize the pool.",
+      "plain": "Restricts pool initialization to Safe addresses pre-approved by the Aquinas factory, preventing anyone from frontrunning LP initialization.",
+      "rules": [
+        "Only Aquinas-factory-approved Safe addresses can initialize a pool.",
+        "Unapproved initialization attempts revert."
+      ],
+      "date": "2026-09-03",
+      "flagBits": 8192,
+      "callbacks": [
+        "beforeInitialize"
+      ],
+      "auditUrl": ""
+    },
+    {
+      "name": "ArcheryFeeHookV2",
+      "source": "community",
+      "verified": false,
+      "category": "Launch",
+      "klass": "GATE",
+      "template": "freeform",
+      "stage": "deployed",
+      "flags": "0x20CC",
+      "addresses": {
+        "robinhood": "0xd790922706d434f7925b4998a4fe72feb68ae0cc"
+      },
+      "mechanic": "Swaps pay up to 20% unless you present a voucher won in an archery mini-game.",
+      "plain": "Every swap pays a configurable fee (up to 20%) collected in ETH, unless the swapper presents a short-lived signed voucher earned in an off-chain archery mini-game. The registrar can only ever lower the fee.",
+      "rules": [
+        "Swaps pay the default fee unless a valid game voucher is shown.",
+        "The fee can only be ratcheted down, never up."
+      ],
+      "date": "2026-09-03",
+      "flagBits": 8396,
+      "callbacks": [
+        "beforeInitialize",
+        "beforeSwap",
+        "afterSwap",
+        "beforeSwapReturnDelta",
+        "afterSwapReturnDelta"
+      ],
+      "auditUrl": ""
+    },
+    {
+      "name": "ArkHook",
+      "source": "community",
+      "verified": false,
+      "category": "Rewards",
+      "klass": "VALUE",
+      "template": "freeform",
+      "stage": "deployed",
+      "flags": "0x44",
+      "addresses": {
+        "ethereum": "0x30ca6f7b31b65b7977bd3991c532ce255bff0044"
+      },
+      "mechanic": "Charges a configurable buy/sell fee on each swap and routes it to a fee router.",
+      "plain": "Takes a configurable fee from the output of every buy and sell, pulls it from the pool manager and forwards it to an external fee router. Can also trigger onchain maintenance like a buyback after a swap.",
+      "rules": [
+        "Every buy and sell pays a configurable fee, skimmed from the output.",
+        "Collected fees route to an external fee router set by the owner."
+      ],
+      "date": "2026-09-03",
+      "flagBits": 68,
+      "callbacks": [
+        "afterSwap",
+        "afterSwapReturnDelta"
+      ],
+      "auditUrl": ""
+    },
+    {
+      "name": "AsyncSwap",
+      "source": "community",
+      "verified": false,
+      "category": "Orders",
+      "klass": "VALUE",
+      "template": "freeform",
+      "stage": "deployed",
+      "flags": "0x2888",
+      "addresses": {
+        "unichain": "0x91db9941a44c19a5409345c5f2f8a2c1f81ba888"
+      },
+      "mechanic": "An onchain async order book: exact-input swaps become resting limit orders.",
+      "plain": "Intercepts exact-input swaps and turns the maker's input into an ERC-6909 claim, opening a resting order at a limit price. A later taker fills it, so trades settle asynchronously rather than instantly.",
+      "rules": [
+        "Exact-input swaps are parked as resting orders, not filled instantly.",
+        "The maker's input is held as an ERC-6909 claim until a taker fills it."
+      ],
+      "date": "2026-09-03",
+      "flagBits": 10376,
+      "callbacks": [
+        "beforeInitialize",
+        "beforeAddLiquidity",
+        "beforeSwap",
+        "beforeSwapReturnDelta"
+      ],
+      "auditUrl": ""
+    },
+    {
+      "name": "BuybackBurnHookV1",
+      "source": "community",
+      "verified": false,
+      "category": "Rewards",
+      "klass": "VALUE",
+      "template": "freeform",
+      "stage": "deployed",
+      "flags": "0x20CC",
+      "addresses": {
+        "robinhood": "0x7aa716e1a2dad5309abeca3e8c75abfed287a0cc"
+      },
+      "mechanic": "Directional fees fund buying the pool's token back and burning it.",
+      "plain": "Charges fixed buy and sell fees depending on trade shape, takes a protocol cut, and spends the rest buying the pool's own token on sells and burning it.",
+      "rules": [
+        "Buys and sells pay fixed directional fees.",
+        "Sell fees buy back the pool token and burn it."
+      ],
+      "date": "2026-09-03",
+      "flagBits": 8396,
+      "callbacks": [
+        "beforeInitialize",
+        "beforeSwap",
+        "afterSwap",
+        "beforeSwapReturnDelta",
+        "afterSwapReturnDelta"
+      ],
+      "auditUrl": ""
+    },
+    {
+      "name": "Clanker Dynamic Fee Hook",
+      "source": "community",
+      "verified": false,
+      "category": "Fees",
+      "klass": "FEE",
+      "template": "dynamic",
+      "stage": "deployed",
+      "flags": "0x28CC",
+      "addresses": {
+        "robinhood": "0x65efdf8cce99b53c925df878df275df21cb6e8cc"
+      },
+      "mechanic": "LP fee scales with realized volatility, bounded by a base and a max.",
+      "plain": "Estimates each swap's post-trade tick, builds a volatility accumulator from how far the tick moves, and sets an LP fee that grows quadratically with volatility, capped between configurable base and max fees.",
+      "rules": [
+        "The LP fee rises quadratically with realized volatility.",
+        "The fee is bounded by configurable base and max values."
+      ],
+      "date": "2026-09-03",
+      "flagBits": 10444,
+      "callbacks": [
+        "beforeInitialize",
+        "beforeAddLiquidity",
+        "beforeSwap",
+        "afterSwap",
+        "beforeSwapReturnDelta",
+        "afterSwapReturnDelta"
+      ],
+      "auditUrl": ""
+    },
+    {
+      "name": "EMADynamicFeeHook",
+      "source": "community",
+      "verified": false,
+      "category": "Fees",
+      "klass": "FEE",
+      "template": "dynamic",
+      "stage": "deployed",
+      "flags": "0x1BC0",
+      "addresses": {
+        "arbitrum": "0xe025cb6c58826ac79e2052c350250881f8f51bc0"
+      },
+      "mechanic": "Fee follows an EMA of price across a 30-step schedule (0.01% to 3.00%).",
+      "plain": "Sets the swap fee from an exponential moving average of price, mapping it onto a 30-step schedule that ranges from 0.01% to 3.00%.",
+      "rules": [
+        "The fee tracks an exponential moving average of price.",
+        "It snaps to a 30-step schedule from 0.01% to 3.00%."
+      ],
+      "date": "2026-09-03",
+      "flagBits": 7104,
+      "callbacks": [
+        "afterInitialize",
+        "beforeAddLiquidity",
+        "beforeRemoveLiquidity",
+        "afterRemoveLiquidity",
+        "beforeSwap",
+        "afterSwap"
+      ],
+      "auditUrl": ""
+    },
+    {
+      "name": "Flaunch PositionManager",
+      "source": "community",
+      "verified": false,
+      "category": "Launch",
+      "klass": "VALUE",
+      "template": "freeform",
+      "stage": "deployed",
+      "flags": "0x25DC",
+      "addresses": {
+        "unichain": "0x5cf8e499c7c466c7e2cf127bdf129f57151e65dc"
+      },
+      "mechanic": "Runs Flaunch memecoin launches and fills fee inventory via an internal swap pool.",
+      "plain": "The core hook for the Flaunch launch platform. It manages memecoin pool creation and runs an internal swap pool that fills fee inventory against incoming trades.",
+      "rules": [
+        "Manages memecoin pool creation for the Flaunch platform.",
+        "An internal swap pool converts collected fees against incoming trades."
+      ],
+      "date": "2026-09-03",
+      "flagBits": 9692,
+      "callbacks": [
+        "beforeInitialize",
+        "afterAddLiquidity",
+        "afterRemoveLiquidity",
+        "beforeSwap",
+        "afterSwap",
+        "afterDonate",
+        "beforeSwapReturnDelta",
+        "afterSwapReturnDelta"
+      ],
+      "auditUrl": ""
+    },
+    {
+      "name": "GlueHook",
+      "source": "community",
+      "verified": false,
+      "category": "Rewards",
+      "klass": "VALUE",
+      "template": "freeform",
+      "stage": "deployed",
+      "flags": "0x20C8",
+      "addresses": {
+        "monad": "0xb216070c3509047ea597e2e626a29cea427a60c8"
+      },
+      "mechanic": "A pot absorbs sells at execution price and uses buys to buy back and burn.",
+      "plain": "On sells of the main token a pot absorbs part of the flow at the exact execution price; on buys the pot's funds purchase more of the token and send it to a recipient or burn it. An optional hook-held LP position auto-compounds its fees.",
+      "rules": [
+        "Sells are partly absorbed by a pot at the pool's execution price.",
+        "Buys spend pot funds to buy back and burn the main token."
+      ],
+      "date": "2026-09-03",
+      "flagBits": 8392,
+      "callbacks": [
+        "beforeInitialize",
+        "beforeSwap",
+        "afterSwap",
+        "beforeSwapReturnDelta"
+      ],
+      "auditUrl": ""
+    },
+    {
+      "name": "IQFAntiBotHook",
+      "source": "community",
+      "verified": false,
+      "category": "Launch",
+      "klass": "GATE",
+      "template": "freeform",
+      "stage": "deployed",
+      "flags": "0x20C0",
+      "addresses": {
+        "bnb": "0x22e19ee7d646a3b02ff1c1b3923ef30bb80ca0c0"
+      },
+      "mechanic": "Launch protection: allowlist-only swaps and size caps during an anti-snipe window.",
+      "plain": "Protects IQF/USDT launches with time-based phases. During the opening anti-snipe window only allowlisted addresses can swap, under per-transaction size caps and per-address limits, easing as the phases advance.",
+      "rules": [
+        "The opening phase allows only allowlisted addresses to swap.",
+        "Per-transaction and per-address size caps apply until the window ends."
+      ],
+      "date": "2026-09-03",
+      "flagBits": 8384,
+      "callbacks": [
+        "beforeInitialize",
+        "beforeSwap",
+        "afterSwap"
+      ],
+      "auditUrl": ""
+    },
+    {
+      "name": "IndexHook",
+      "source": "community",
+      "verified": false,
+      "category": "Access",
+      "klass": "GATE",
+      "template": "freeform",
+      "stage": "deployed",
+      "flags": "0x15D8",
+      "addresses": {
+        "bnb": "0x91fb28d8f4906df4e8c71806dfeb882dd82815d8"
+      },
+      "mechanic": "Gates swaps and liquidity to owner-approved IndexToken pools, with a zero-fee option.",
+      "plain": "For IndexToken pools: swaps and liquidity add/remove are restricted to pools the owner has approved. Supports dynamic LP fees with a zero-fee override.",
+      "rules": [
+        "Only owner-approved pools may swap or change liquidity.",
+        "The LP fee is dynamic, with an optional zero-fee override."
+      ],
+      "date": "2026-09-03",
+      "flagBits": 5592,
+      "callbacks": [
+        "afterInitialize",
+        "afterAddLiquidity",
+        "afterRemoveLiquidity",
+        "beforeSwap",
+        "afterSwap",
+        "afterDonate",
+        "beforeSwapReturnDelta"
+      ],
+      "auditUrl": ""
+    },
+    {
+      "name": "Limit Order Hook",
+      "source": "community",
+      "verified": false,
+      "category": "Orders",
+      "klass": "VALUE",
+      "template": "freeform",
+      "stage": "deployed",
+      "flags": "0xC0",
+      "addresses": {
+        "arbitrum": "0xd73339564ac99f3e09b0ebc80603ff8b796500c0"
+      },
+      "mechanic": "Onchain limit orders: records the pre-swap tick and fills resting orders after.",
+      "plain": "Enables limit-order functionality on a v4 pool. It records the tick before each swap and, after the swap, delegates to a LimitOrderManager that fills any resting orders the price crossed.",
+      "rules": [
+        "Resting limit orders fill when a swap crosses their tick.",
+        "Order bookkeeping is delegated to a LimitOrderManager contract."
+      ],
+      "date": "2026-09-03",
+      "flagBits": 192,
+      "callbacks": [
+        "beforeSwap",
+        "afterSwap"
+      ],
+      "auditUrl": ""
+    },
+    {
+      "name": "SafeSwap",
+      "source": "community",
+      "verified": false,
+      "category": "Launch",
+      "klass": "GATE",
+      "template": "freeform",
+      "stage": "deployed",
+      "flags": "0x20C0",
+      "addresses": {
+        "arbitrum": "0x3e61d0519d598bf2dfaef5b8fa0256bf7e1d60c0"
+      },
+      "mechanic": "Anti-rug and anti-whale: sell rate limits, cooldowns and progressive fees.",
+      "plain": "Protects a pool with sell rate limiting, per-address cooldowns, progressive fees and a launch-protection mode. The config is immutable per pool once set.",
+      "rules": [
+        "Sells are rate-limited with per-address cooldowns.",
+        "Progressive fees and a launch-protection mode deter rug and whale activity."
+      ],
+      "date": "2026-09-03",
+      "flagBits": 8384,
+      "callbacks": [
+        "beforeInitialize",
+        "beforeSwap",
+        "afterSwap"
+      ],
+      "auditUrl": ""
+    },
+    {
+      "name": "Spot",
+      "source": "community",
+      "verified": false,
+      "category": "Fees",
+      "klass": "FEE",
+      "template": "dynamic",
+      "stage": "deployed",
+      "flags": "0x10CC",
+      "addresses": {
+        "monad": "0xb4f4949e8d0a177bb6d2fea33e9516bb219610cc"
+      },
+      "mechanic": "Full-range AMM with an oracle-set base + surge fee, reinvesting the protocol cut.",
+      "plain": "A full-range AMM hook with a truncated geometric-mean oracle that adjusts LP fees (base plus surge) from tick movement, takes a protocol fee share on each swap and reinvests it into a full-range position.",
+      "rules": [
+        "LP fees combine a base rate and an oracle-driven surge.",
+        "The protocol fee share reinvests into a full-range position."
+      ],
+      "date": "2026-09-03",
+      "flagBits": 4300,
+      "callbacks": [
+        "afterInitialize",
+        "beforeSwap",
+        "afterSwap",
+        "beforeSwapReturnDelta",
+        "afterSwapReturnDelta"
+      ],
+      "auditUrl": ""
+    }
+  ]
+}

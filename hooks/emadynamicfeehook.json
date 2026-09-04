@@ -1,0 +1,20 @@
+{
+  "name": "EMADynamicFeeHook",
+  "source": "community",
+  "verified": false,
+  "category": "Fees",
+  "klass": "FEE",
+  "template": "dynamic",
+  "stage": "deployed",
+  "flags": "0x1BC0",
+  "addresses": {
+    "arbitrum": "0xe025cb6c58826ac79e2052c350250881f8f51bc0"
+  },
+  "mechanic": "Fee follows an EMA of price across a 30-step schedule (0.01% to 3.00%).",
+  "plain": "Sets the swap fee from an exponential moving average of price, mapping it onto a 30-step schedule that ranges from 0.01% to 3.00%.",
+  "rules": [
+    "The fee tracks an exponential moving average of price.",
+    "It snaps to a 30-step schedule from 0.01% to 3.00%."
+  ],
+  "date": "2026-09-03"
+}

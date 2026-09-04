@@ -1,0 +1,20 @@
+{
+  "name": "Clanker Dynamic Fee Hook",
+  "source": "community",
+  "verified": false,
+  "category": "Fees",
+  "klass": "FEE",
+  "template": "dynamic",
+  "stage": "deployed",
+  "flags": "0x28CC",
+  "addresses": {
+    "robinhood": "0x65efdf8cce99b53c925df878df275df21cb6e8cc"
+  },
+  "mechanic": "LP fee scales with realized volatility, bounded by a base and a max.",
+  "plain": "Estimates each swap's post-trade tick, builds a volatility accumulator from how far the tick moves, and sets an LP fee that grows quadratically with volatility, capped between configurable base and max fees.",
+  "rules": [
+    "The LP fee rises quadratically with realized volatility.",
+    "The fee is bounded by configurable base and max values."
+  ],
+  "date": "2026-09-03"
+}

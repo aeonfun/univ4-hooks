@@ -1,0 +1,23 @@
+{
+  "name": "CapGate",
+  "source": "aeon",
+  "verified": true,
+  "category": "Access",
+  "klass": "GATE",
+  "template": "freeform",
+  "stage": "deployed",
+  "flags": "0xC4",
+  "addresses": {
+    "robinhood": "0x6B567e25CC6E9d77f1A030A68Db39F86c03540c4",
+    "ethereum": "0xfebC2D261c006409eD765bAcfF039846770280C4",
+    "base": "0x0A914acb246063B4ED0F3a0FC13D0C0e8C8500c4",
+    "monad": "0xD4F21c282c7c1e8098D511039Ad39044488cC0c4"
+  },
+  "mechanic": "Rejects any trade above a size cap, so only small swaps go through.",
+  "plain": "There's a maximum trade size. Any swap bigger than that cap is rejected before it runs, so the pool only ever fills small trades. Big players ('whales') have to break their order into smaller pieces or take it somewhere else.",
+  "rules": [
+    "Any swap above the fixed size cap is rejected before it runs.",
+    "Only small trades fill - whales must split their order or leave."
+  ],
+  "date": "2026-08-03"
+}

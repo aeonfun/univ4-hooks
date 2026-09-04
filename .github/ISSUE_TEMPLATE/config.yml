@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: aeon.fun/hooks
+    url: https://www.aeon.fun/hooks
+    about: Browse the live hook marketplace.
+  - name: Hook format + contributing
+    url: https://github.com/aeonfun/univ4-hooks/blob/main/CONTRIBUTING.md
+    about: How submissions are formatted, validated, and published.

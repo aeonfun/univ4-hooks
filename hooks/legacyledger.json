@@ -1,0 +1,24 @@
+{
+  "name": "LegacyLedger",
+  "source": "aeon",
+  "verified": true,
+  "category": "Rewards",
+  "klass": "VALUE",
+  "template": "freeform",
+  "stage": "deployed",
+  "flags": "0x44",
+  "addresses": {
+    "robinhood": "0x70dEc3A54943fd96Fe460ff74172038F57208044",
+    "ethereum": "0x9c9f5e18c8530E96c735704471542E72a7a00044",
+    "base": "0xDb4a0eb0410407d6C22A35c27288834e0D9F4044",
+    "monad": "0xf50C9B994A5A0Aba3EB1b7E044f88B2f12f1c044"
+  },
+  "mechanic": "The more you trade, the higher your onchain loyalty tier. 0.05% of each trade to the treasury.",
+  "plain": "Every trade pays 0.05% to the treasury and earns you a loyalty mark. Those marks add up over time and move you into higher loyalty tiers. The more you trade, the higher your standing - status that builds up and stays recorded onchain.",
+  "rules": [
+    "Every trade pays 0.05% to the treasury and earns a loyalty mark.",
+    "Marks accumulate into higher loyalty tiers over time.",
+    "Your standing is recorded permanently onchain."
+  ],
+  "date": "2026-08-03"
+}

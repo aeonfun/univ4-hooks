@@ -1,0 +1,24 @@
+{
+  "name": "CrownClash",
+  "source": "aeon",
+  "verified": true,
+  "category": "Rewards",
+  "klass": "VALUE",
+  "template": "freeform",
+  "stage": "deployed",
+  "flags": "0x44",
+  "addresses": {
+    "robinhood": "0xcbbc0818c555bFf795a2ab6261D224E793678044",
+    "ethereum": "0xb09AbA41D397474e6C25a625f87eF8c200480044",
+    "base": "0xD24D29a47Adb8786072Ab2Cb9925dC8Ba36Bc044",
+    "monad": "0xb268D7930580E7717B72804190FE910d2c200044"
+  },
+  "mechanic": "A live volume leaderboard - trade the most to hold the crown. 0.07% of each trade to the treasury.",
+  "plain": "Every trade pays a tiny 0.07% into the treasury and adds that amount to your personal running score. Whoever has traded the most holds the 'crown'. It's a live leaderboard kept entirely onchain - trade more than the current leader to take the top spot.",
+  "rules": [
+    "Every trade pays 0.07% to the treasury and adds that amount to your score.",
+    "Whoever has traded the most holds the onchain crown.",
+    "The leaderboard lives entirely onchain - out-trade the leader to take it."
+  ],
+  "date": "2026-08-03"
+}

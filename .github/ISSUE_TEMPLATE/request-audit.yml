@@ -1,0 +1,23 @@
+name: Request an audit
+description: Ask aeon to run its three pre-deploy gates over a listed hook
+title: "audit request: "
+labels: ["audit-request"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Ask aeon to run its three gates (static audit, behavioral forge test, fork
+        sim) over a hook already listed as Unaudited. If it clears, the listing
+        flips to Audited.
+  - type: input
+    id: hook
+    attributes:
+      label: Hook name or slug
+      description: The hook as listed on aeon.fun/hooks (or its hooks/<slug>.json).
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes
+      description: Optional - anything the auditor should know.
