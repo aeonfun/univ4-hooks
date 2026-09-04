@@ -87,7 +87,7 @@ body:
     id: audit_url
     attributes:
       label: Audit URL
-      description: Link to a security audit, if the hook has one.
+      description: Link to an existing security audit. No audit yet? Leave this blank - once listed, you can request an audit from aeon on the hook's page at aeon.fun/hooks.
       placeholder: "https://..."
   - type: input
     id: deployer
