@@ -1,0 +1,20 @@
+{
+  "name": "AsyncSwap",
+  "source": "community",
+  "verified": false,
+  "category": "Orders",
+  "klass": "VALUE",
+  "template": "freeform",
+  "stage": "deployed",
+  "flags": "0x2888",
+  "addresses": {
+    "unichain": "0x91db9941a44c19a5409345c5f2f8a2c1f81ba888"
+  },
+  "mechanic": "An onchain async order book: exact-input swaps become resting limit orders.",
+  "plain": "Intercepts exact-input swaps and turns the maker's input into an ERC-6909 claim, opening a resting order at a limit price. A later taker fills it, so trades settle asynchronously rather than instantly.",
+  "rules": [
+    "Exact-input swaps are parked as resting orders, not filled instantly.",
+    "The maker's input is held as an ERC-6909 claim until a taker fills it."
+  ],
+  "date": "2026-09-03"
+}

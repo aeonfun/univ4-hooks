@@ -1,0 +1,20 @@
+{
+  "name": "AccessControlDynamicFeeHook",
+  "source": "community",
+  "verified": false,
+  "category": "Access",
+  "klass": "GATE",
+  "template": "freeform",
+  "stage": "deployed",
+  "flags": "0x880",
+  "addresses": {
+    "ethereum": "0xb89e1dd2c843a967d47a79406f33496468bb8880"
+  },
+  "mechanic": "Whitelists who can provide liquidity and lets the owner set the swap fee.",
+  "plain": "Only the owner and approved addresses may add liquidity, and the owner can override the LP fee applied to every swap. A permissioned pool with an operator-controlled fee.",
+  "rules": [
+    "Only whitelisted addresses may add liquidity.",
+    "The owner sets the LP fee applied to all swaps."
+  ],
+  "date": "2026-09-03"
+}

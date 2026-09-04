@@ -1,0 +1,9 @@
+{
+  "ethereum": { "chainId": 1,     "name": "Ethereum",   "explorer": "https://etherscan.io" },
+  "base":     { "chainId": 8453,  "name": "Base",       "explorer": "https://basescan.org" },
+  "robinhood":{ "chainId": 4663,  "name": "Robinhood",  "explorer": "https://robinhoodchain.blockscout.com" },
+  "monad":    { "chainId": 143,   "name": "Monad",      "explorer": "https://monadscan.com" },
+  "bnb":      { "chainId": 56,    "name": "BNB Chain",  "explorer": "https://bscscan.com" },
+  "arbitrum": { "chainId": 42161, "name": "Arbitrum",   "explorer": "https://arbiscan.io" },
+  "unichain": { "chainId": 130,   "name": "Unichain",   "explorer": "https://uniscan.xyz" }
+}

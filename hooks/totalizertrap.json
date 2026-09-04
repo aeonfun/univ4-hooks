@@ -1,0 +1,24 @@
+{
+  "name": "TotalizerTrap",
+  "source": "aeon",
+  "verified": true,
+  "category": "Games",
+  "klass": "GATE",
+  "template": "freeform",
+  "stage": "deployed",
+  "flags": "0xC4",
+  "addresses": {
+    "robinhood": "0x1e27183E12a9C108DD850E022f26870B12a200C4",
+    "ethereum": "0x190bCa1A2f6CAd09efAE5d0BAb9564553Ba640C4",
+    "base": "0xA7a62422d13C7648cA53ad91E9268ac4bFC6C0c4",
+    "monad": "0x57E6efF5Cc442EFeEebB79D108CCb7C01086c0c4"
+  },
+  "mechanic": "Blocks your trade if it pushes the pool's all-time volume onto a multiple of 11.",
+  "plain": "The pool adds up every trade ever made into one running total. If your trade would push that total onto an exact multiple of 11, it gets blocked. Almost every swap passes fine - now and then one lands on the trap and bounces.",
+  "rules": [
+    "The pool tracks all-time cumulative volume.",
+    "A swap that would land the running total on a multiple of 11 is blocked.",
+    "Every other swap passes normally."
+  ],
+  "date": "2026-08-02"
+}

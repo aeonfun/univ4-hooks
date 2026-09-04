@@ -1,0 +1,20 @@
+{
+  "name": "Limit Order Hook",
+  "source": "community",
+  "verified": false,
+  "category": "Orders",
+  "klass": "VALUE",
+  "template": "freeform",
+  "stage": "deployed",
+  "flags": "0xC0",
+  "addresses": {
+    "arbitrum": "0xd73339564ac99f3e09b0ebc80603ff8b796500c0"
+  },
+  "mechanic": "Onchain limit orders: records the pre-swap tick and fills resting orders after.",
+  "plain": "Enables limit-order functionality on a v4 pool. It records the tick before each swap and, after the swap, delegates to a LimitOrderManager that fills any resting orders the price crossed.",
+  "rules": [
+    "Resting limit orders fill when a swap crosses their tick.",
+    "Order bookkeeping is delegated to a LimitOrderManager contract."
+  ],
+  "date": "2026-09-03"
+}

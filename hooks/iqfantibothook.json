@@ -1,0 +1,20 @@
+{
+  "name": "IQFAntiBotHook",
+  "source": "community",
+  "verified": false,
+  "category": "Launch",
+  "klass": "GATE",
+  "template": "freeform",
+  "stage": "deployed",
+  "flags": "0x20C0",
+  "addresses": {
+    "bnb": "0x22e19ee7d646a3b02ff1c1b3923ef30bb80ca0c0"
+  },
+  "mechanic": "Launch protection: allowlist-only swaps and size caps during an anti-snipe window.",
+  "plain": "Protects IQF/USDT launches with time-based phases. During the opening anti-snipe window only allowlisted addresses can swap, under per-transaction size caps and per-address limits, easing as the phases advance.",
+  "rules": [
+    "The opening phase allows only allowlisted addresses to swap.",
+    "Per-transaction and per-address size caps apply until the window ends."
+  ],
+  "date": "2026-09-03"
+}

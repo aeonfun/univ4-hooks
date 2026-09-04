@@ -1,0 +1,20 @@
+{
+  "name": "GlueHook",
+  "source": "community",
+  "verified": false,
+  "category": "Rewards",
+  "klass": "VALUE",
+  "template": "freeform",
+  "stage": "deployed",
+  "flags": "0x20C8",
+  "addresses": {
+    "monad": "0xb216070c3509047ea597e2e626a29cea427a60c8"
+  },
+  "mechanic": "A pot absorbs sells at execution price and uses buys to buy back and burn.",
+  "plain": "On sells of the main token a pot absorbs part of the flow at the exact execution price; on buys the pot's funds purchase more of the token and send it to a recipient or burn it. An optional hook-held LP position auto-compounds its fees.",
+  "rules": [
+    "Sells are partly absorbed by a pot at the pool's execution price.",
+    "Buys spend pot funds to buy back and burn the main token."
+  ],
+  "date": "2026-09-03"
+}

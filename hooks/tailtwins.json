@@ -1,0 +1,24 @@
+{
+  "name": "TailTwins",
+  "source": "aeon",
+  "verified": true,
+  "category": "Games",
+  "klass": "GATE",
+  "template": "freeform",
+  "stage": "deployed",
+  "flags": "0xC4",
+  "addresses": {
+    "robinhood": "0x971Df49844604E44514120682eAc3fcDC4F5C0c4",
+    "ethereum": "0x50220C80DA4280afB2D86AD4a6B28f9dfF46C0c4",
+    "base": "0x9818dDD1102c9606Cd693aC17A7B8B17609480c4",
+    "monad": "0x75e7B5A738884F37086c2Be7789A883Ca6ce80C4"
+  },
+  "mechanic": "Your trade must match the pool's live price on its last digit - a moving target.",
+  "plain": "The pool has a live price that changes a little with every trade. Your swap only goes through if its last digit matches the price's last digit. Since each trade moves the price, the target keeps moving - you're aiming at a number that won't hold still.",
+  "rules": [
+    "A swap clears only if its last digit matches the pool price's last digit.",
+    "Each trade moves the price, so the target keeps shifting.",
+    "You're aiming at a number that won't hold still."
+  ],
+  "date": "2026-08-02"
+}

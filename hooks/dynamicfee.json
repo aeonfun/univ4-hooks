@@ -1,0 +1,24 @@
+{
+  "name": "DynamicFee",
+  "source": "aeon",
+  "verified": true,
+  "category": "Fees",
+  "klass": "FEE",
+  "template": "dynamic",
+  "stage": "template",
+  "flags": "0x10C4",
+  "addresses": {
+    "robinhood": "0x7566a3BFbE88C06BC5F33FEA927f461e8279d0C4",
+    "ethereum": "0x80F48fDCa095D081a3fE7843AB234C5533a450c4",
+    "base": "0x723b16eF13a1b9A2BD63238BEC47cDF1d4A010C4",
+    "monad": "0x86037d62EceCd7E380984Ad9d24dd0c5112d50C4"
+  },
+  "mechanic": "The swap fee goes up when the market is volatile and back down when it's calm.",
+  "plain": "The trading fee isn't fixed. When lots of people are trading and the price is swinging around, the fee goes up. When things settle down, it drops back. So you only pay extra when the market is wild - and the pool earns more exactly when it's busiest.",
+  "rules": [
+    "Swap fee floats with recent volatility - calm markets pay the floor.",
+    "The fee climbs as price swings widen, so the pool earns most when it's busiest.",
+    "Fee changes are automatic and onchain - no operator sets them by hand."
+  ],
+  "date": "2026-07-30"
+}

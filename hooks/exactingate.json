@@ -1,0 +1,23 @@
+{
+  "name": "ExactInGate",
+  "source": "aeon",
+  "verified": true,
+  "category": "Access",
+  "klass": "GATE",
+  "template": "freeform",
+  "stage": "deployed",
+  "flags": "0xC4",
+  "addresses": {
+    "robinhood": "0x2c10AfB513a6505beFB74dFdF5800B392C9f00c4",
+    "ethereum": "0x95c9Fa3cd4067A0fd69fB41D291C79193B5500C4",
+    "base": "0xeC78eE3F1FC117415a8006A0344Ccaff30aa40C4",
+    "monad": "0x7810753D326c0E4b9755b5FA09a8b8998C75C0C4"
+  },
+  "mechanic": "Only allows \"spend exactly this much\" trades; \"get exactly this much\" is blocked.",
+  "plain": "There are two ways to place a swap: say exactly how much you'll spend, or say exactly how much you want to receive. This hook only allows the first - 'spend exactly this much'. Orders that demand an exact amount out are turned away.",
+  "rules": [
+    "Only exact-input swaps ('spend exactly this much') are allowed.",
+    "Exact-output swaps ('receive exactly this much') are rejected."
+  ],
+  "date": "2026-08-03"
+}

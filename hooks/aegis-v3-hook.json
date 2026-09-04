@@ -1,0 +1,20 @@
+{
+  "name": "Aegis v3 Hook",
+  "source": "community",
+  "verified": false,
+  "category": "Fees",
+  "klass": "FEE",
+  "template": "dynamic",
+  "stage": "deployed",
+  "flags": "0x1ACC",
+  "addresses": {
+    "unichain": "0x88c9ff9fc0b22cca42265d3f1d1c2c39e41cdacc"
+  },
+  "mechanic": "Surge dynamic fees from a truncated geometric oracle, plus a protocol POL share.",
+  "plain": "A dynamic-fee hook using a truncated geometric oracle to apply surge fees when the market moves, and taking a protocol-owned-liquidity share of each swap.",
+  "rules": [
+    "Fees surge with market movement, read from a truncated geometric oracle.",
+    "A protocol-owned-liquidity share is taken from each swap."
+  ],
+  "date": "2026-09-03"
+}

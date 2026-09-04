@@ -47,3 +47,21 @@ forge test --fork-url <eth-mainnet-rpc> --match-path test/fork/ForkDeploy.t.sol 
 ## Live addresses
 
 See `DEPLOYMENTS.md`.
+
+## The hook list (published to aeon.fun/hooks)
+
+Beyond the aeon fleet, this repo is the registry behind
+[aeon.fun/hooks](https://www.aeon.fun/hooks): a structured, validated list of v4
+hooks - the fleet plus community submissions.
+
+- One file per hook at `hooks/<slug>.json`, checked against `schema.json`.
+- A v4 hook encodes its permission flags in the low 14 bits of its address, so
+  `flags`, `flagBits`, and the callback list are all **derived from the address** -
+  a submitter only supplies a chain and an address.
+- `hooklist.json` is the aggregated, machine-readable registry the website reads;
+  `HOOKS.md` is the human catalog. Both are generated - do not hand-edit them.
+
+To submit a hook, open a
+[Submit a hook](https://github.com/aeonfun/univ4-hooks/issues/new?template=submit-hook.yml)
+issue with the chain and address; a workflow decodes the flags and opens a PR.
+See `CONTRIBUTING.md` for the full format and flow.

@@ -1,0 +1,24 @@
+{
+  "name": "NoOp",
+  "source": "aeon",
+  "verified": true,
+  "category": "Access",
+  "klass": "GATE",
+  "template": "noop",
+  "stage": "template",
+  "flags": "0xC4",
+  "addresses": {
+    "robinhood": "0x8EF1699f78F830375239F6f3165cB72D5b64c0c4",
+    "ethereum": "0xc8FA143077D632A056a9A970cE71E3BdcF01C0c4",
+    "base": "0xFBa729A7d8fc48cBb261A845A0f26281ED7800C4",
+    "monad": "0x707A3072E285A2e2398253A30Bf6Bd7b5a7B40c4"
+  },
+  "mechanic": "Does nothing to your trade - the blank template to build your own hook on.",
+  "plain": "This hook does nothing to your trade. It lets every swap go through exactly as-is and only takes the standard protocol fee. It's the empty template: start here, then add your own rule to make it do something.",
+  "rules": [
+    "Every swap passes through exactly as submitted.",
+    "No rule beyond the standard protocol fee applies.",
+    "The blank template - fork it and add your own logic."
+  ],
+  "date": "2026-07-31"
+}

@@ -1,0 +1,83 @@
+name: Submit a hook
+description: List a deployed Uniswap v4 hook on aeon.fun/hooks
+title: "hook: "
+labels: ["hook-submission"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Give us a **chain** and a deployed **hook address** and that is enough - the
+        permission flags and callbacks are decoded straight from the address. The
+        rest is optional; a maintainer fills any gaps before the listing is merged.
+        Community submissions list as **Unaudited** until they clear aeon's gates.
+  - type: dropdown
+    id: chain
+    attributes:
+      label: Chain
+      options:
+        - ethereum
+        - base
+        - robinhood
+        - monad
+        - bnb
+        - arbitrum
+        - unichain
+    validations:
+      required: true
+  - type: input
+    id: address
+    attributes:
+      label: Hook address
+      description: The deployed hook contract address (its low 14 bits are the v4 flags).
+      placeholder: "0x..."
+    validations:
+      required: true
+  - type: input
+    id: name
+    attributes:
+      label: Hook name
+      description: Optional - the contract name as you want it listed.
+      placeholder: "MyHook"
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      description: Optional - the marketplace bucket it fits best.
+      options:
+        - Fees
+        - Rewards
+        - Access
+        - Games
+        - Orders
+        - Launch
+  - type: input
+    id: summary
+    attributes:
+      label: One-line summary
+      description: Optional - the punchy line shown on the tile.
+      placeholder: "Charges a higher fee when the market is volatile."
+  - type: textarea
+    id: description
+    attributes:
+      label: Plain-language description
+      description: Optional - a few sentences a non-dev can follow, shown in the modal.
+  - type: textarea
+    id: rules
+    attributes:
+      label: Rules
+      description: Optional - the exact rules it enforces, one per line.
+      placeholder: |
+        Only exact-input swaps are allowed.
+        Exact-output swaps are rejected.
+  - type: input
+    id: audit_url
+    attributes:
+      label: Audit URL
+      description: Optional - link to a security audit.
+      placeholder: "https://..."
+  - type: input
+    id: deployer
+    attributes:
+      label: Deployer address
+      description: Optional.
+      placeholder: "0x..."
