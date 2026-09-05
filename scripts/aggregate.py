@@ -60,7 +60,7 @@ def build_catalog(hooks, chains):
         f"{len(hooks)} hooks - "
         f"{sum(1 for h in hooks if h['source'] == 'aeon')} aeon fleet, "
         f"{sum(1 for h in hooks if h['source'] == 'community')} community. "
-        "Every aeon hook inherits the mandatory 10 bps `AeonFee`. Regenerate with "
+        "Most aeon hooks inherit the mandatory 10 bps `AeonFee`; a few beforeSwap-only gates take no fee. Regenerate with "
         "`python3 scripts/aggregate.py`.",
         "",
     ]
