@@ -17,5 +17,6 @@
     "Every swap outside that daily 10-minute window reverts with TradingWindowClosed.",
     "Liquidity add and remove are ungated at all times, so LPs are never locked."
   ],
-  "date": "2026-09-04"
+  "date": "2026-09-04",
+  "deployer": "0x0DE98e661606EcFC448da7A8276DdE4de45200C8"
 }

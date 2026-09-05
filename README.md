@@ -1,14 +1,15 @@
 # univ4-hooks
 
-The aeon.fun Uniswap v4 hook fleet: 10 hooks that all inherit a mandatory 10 bps
-protocol fee (`AeonFee`), deployed on Base (8453), Robinhood Chain (4663),
-Ethereum (1), and Monad (143).
+The aeon.fun Uniswap v4 hook fleet: 12 hooks deployed on Base (8453), Robinhood
+Chain (4663), Ethereum (1), and Monad (143). Most inherit a mandatory 10 bps
+protocol fee (`AeonFee`); the two beforeSwap-only window gates (DailyWindowGate,
+MarketHoursGate) were deployed as pure gates and take no fee.
 
 ## Hooks
 
 | Hook | What it does |
 |------|--------------|
-| AeonFee | Base: mandatory non-virtual 10 bps fee on the unspecified currency, routed to a fixed treasury. Inherited by all 10. |
+| AeonFee | Base: mandatory non-virtual 10 bps fee on the unspecified currency, routed to a fixed treasury. Inherited by every fee/value hook below; the two window gates are beforeSwap-only and take no fee. |
 | DynamicFee | Higher LP fee when the market is choppy, eased when calm (one-swap lag). |
 | NoOp | Passthrough; only the base fee applies. |
 | HeavierHand | Only admits swaps paying in the heavier side; inverts past a skew cap. Virtual reserves via StateLibrary. |
@@ -19,15 +20,19 @@ Ethereum (1), and Monad (143).
 | LegacyLedger | 0.05% tax + on-chain loyalty tiers. Custody-free. |
 | ExactInGate | Admits exact-input swaps only; blocks exact-output. |
 | CapGate | Rejects swaps above a fixed size cap. |
+| DailyWindowGate | Swaps clear only in a fixed 10-minute daily window (00:00-00:10 UTC). beforeSwap-only gate, no AeonFee. |
+| MarketHoursGate | Swaps clear only during US market hours (09:30-16:00 ET, Mon-Fri). beforeSwap-only gate, no AeonFee. |
 
 ## AeonFee base
 
-Every hook inherits `AeonFee`, which takes 10 bps of each swap's unspecified
+Every fee-taking hook inherits `AeonFee`, which takes 10 bps of each swap's unspecified
 (output) currency and routes it to a fixed treasury via `poolManager.take()`.
 The recipient and rate are compile-time constants and `afterSwap` is not virtual,
 so a derived hook cannot lower, skip, or redirect the protocol fee. A hook layers
 its own post-swap logic through `_afterSwapExtra`, which runs after the fee is
-taken (effective fee = max(hook's own fee, 10 bps)).
+taken (effective fee = max(hook's own fee, 10 bps)). The two beforeSwap-only
+window gates (DailyWindowGate, MarketHoursGate) were deployed without this base,
+so they implement no fee callback and take nothing.
 
 ## Build and test
 

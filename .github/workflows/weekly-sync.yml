@@ -1,0 +1,73 @@
+name: weekly-sync
+
+# Once a week, backfill in-repo Solidity source for any listed hook that only has
+# a registry entry. scripts/sync_source.py reads each hooks/<slug>.json, and for
+# any listing with no matching src/<Name>.sol it pulls the verified source from
+# the chain explorer (by the address in the JSON) and vendors it, plus any lib/
+# file that source needs. If anything was added it opens a PR for review; a quiet
+# week is a no-op. Never merges on its own.
+
+on:
+  schedule:
+    - cron: "0 6 * * 1" # Mondays 06:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+
+      - name: Sync source for listings that have none
+        env:
+          # etherscan-family chains (all but Robinhood) need this; Robinhood is keyless.
+          ETHERSCAN_API_KEY: ${{ secrets.ETHERSCAN_API_KEY }}
+        run: python3 scripts/sync_source.py --write
+
+      - name: Anything to open?
+        id: diff
+        run: |
+          if [ -n "$(git status --porcelain src lib)" ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "No new source to sync this week."
+          fi
+
+      - name: Verify it compiles
+        if: steps.diff.outputs.changed == 'true'
+        run: forge build
+
+      - name: Open a PR
+        if: steps.diff.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          branch="chore/source-sync-$(date -u +%Y%m%d)"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$branch"
+          git add src lib
+          git commit -F - <<'EOF'
+          chore: sync verified source for listed hooks
+
+          Backfilled by scripts/sync_source.py from the chain explorers. See the PR
+          body for which listings and libraries were added.
+          EOF
+          git push -u origin "$branch"
+          gh pr create --base main --head "$branch" \
+            --title "chore: weekly hook source sync" \
+            --body-file sync_summary.md
