@@ -81,6 +81,12 @@
         "The fee climbs as price swings widen, so the pool earns most when it's busiest.",
         "Fee changes are automatic and onchain - no operator sets them by hand."
       ],
+      "fee": {
+        "kind": "dynamic",
+        "bps": null,
+        "recipient": "LP",
+        "note": "Dynamic swap fee, rises with volatility"
+      },
       "date": "2026-07-30",
       "flagBits": 4292,
       "callbacks": [
@@ -113,6 +119,12 @@
         "No rule beyond the standard protocol fee applies.",
         "The blank template - fork it and add your own logic."
       ],
+      "fee": {
+        "kind": "none",
+        "bps": 0,
+        "recipient": "",
+        "note": "No fee of its own"
+      },
       "date": "2026-07-31",
       "flagBits": 196,
       "callbacks": [
@@ -144,6 +156,12 @@
         "Miss and the swap reverts - the target moves each block.",
         "Retry on the next block for a fresh number."
       ],
+      "fee": {
+        "kind": "none",
+        "bps": 0,
+        "recipient": "",
+        "note": "No fee of its own"
+      },
       "date": "2026-08-01",
       "flagBits": 196,
       "callbacks": [
@@ -175,6 +193,12 @@
         "Every trade nudges the pool back toward a 50/50 balance.",
         "Swaps that deepen the heavier side are rejected."
       ],
+      "fee": {
+        "kind": "none",
+        "bps": 0,
+        "recipient": "",
+        "note": "No fee of its own"
+      },
       "date": "2026-08-01",
       "flagBits": 196,
       "callbacks": [
@@ -206,6 +230,12 @@
         "Each trade moves the price, so the target keeps shifting.",
         "You're aiming at a number that won't hold still."
       ],
+      "fee": {
+        "kind": "none",
+        "bps": 0,
+        "recipient": "",
+        "note": "No fee of its own"
+      },
       "date": "2026-08-02",
       "flagBits": 196,
       "callbacks": [
@@ -237,6 +267,12 @@
         "A swap that would land the running total on a multiple of 11 is blocked.",
         "Every other swap passes normally."
       ],
+      "fee": {
+        "kind": "none",
+        "bps": 0,
+        "recipient": "",
+        "note": "No fee of its own"
+      },
       "date": "2026-08-02",
       "flagBits": 196,
       "callbacks": [
@@ -267,6 +303,12 @@
         "Any swap above the fixed size cap is rejected before it runs.",
         "Only small trades fill - whales must split their order or leave."
       ],
+      "fee": {
+        "kind": "none",
+        "bps": 0,
+        "recipient": "",
+        "note": "No fee of its own"
+      },
       "date": "2026-08-03",
       "flagBits": 196,
       "callbacks": [
@@ -298,6 +340,12 @@
         "Whoever has traded the most holds the onchain crown.",
         "The leaderboard lives entirely onchain - out-trade the leader to take it."
       ],
+      "fee": {
+        "kind": "fixed",
+        "bps": 7,
+        "recipient": "treasury",
+        "note": "0.07% of each swap to the treasury"
+      },
       "date": "2026-08-03",
       "flagBits": 68,
       "callbacks": [
@@ -327,6 +375,12 @@
         "Only exact-input swaps ('spend exactly this much') are allowed.",
         "Exact-output swaps ('receive exactly this much') are rejected."
       ],
+      "fee": {
+        "kind": "none",
+        "bps": 0,
+        "recipient": "",
+        "note": "No fee of its own"
+      },
       "date": "2026-08-03",
       "flagBits": 196,
       "callbacks": [
@@ -358,6 +412,12 @@
         "Marks accumulate into higher loyalty tiers over time.",
         "Your standing is recorded permanently onchain."
       ],
+      "fee": {
+        "kind": "fixed",
+        "bps": 5,
+        "recipient": "treasury",
+        "note": "0.05% of each swap to the treasury"
+      },
       "date": "2026-08-03",
       "flagBits": 68,
       "callbacks": [
@@ -385,6 +445,12 @@
         "Every swap outside that daily 10-minute window reverts with TradingWindowClosed.",
         "Liquidity add and remove are ungated at all times, so LPs are never locked."
       ],
+      "fee": {
+        "kind": "none",
+        "bps": 0,
+        "recipient": "",
+        "note": "No fee of its own"
+      },
       "date": "2026-09-04",
       "deployer": "0x0DE98e661606EcFC448da7A8276DdE4de45200C8",
       "flagBits": 128,
@@ -412,6 +478,12 @@
         "Any swap attempted outside that window reverts in beforeSwap.",
         "The time check uses block.timestamp at execution, not the time the transaction was submitted."
       ],
+      "fee": {
+        "kind": "none",
+        "bps": 0,
+        "recipient": "",
+        "note": "No fee of its own"
+      },
       "date": "2026-09-04",
       "deployer": "0x0DE98e661606EcFC448da7A8276DdE4de45200C8",
       "flagBits": 128,

@@ -19,5 +19,11 @@
     "Any swap above the fixed size cap is rejected before it runs.",
     "Only small trades fill - whales must split their order or leave."
   ],
+  "fee": {
+    "kind": "none",
+    "bps": 0,
+    "recipient": "",
+    "note": "No fee of its own"
+  },
   "date": "2026-08-03"
 }

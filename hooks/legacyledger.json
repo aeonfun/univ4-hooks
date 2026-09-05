@@ -20,5 +20,11 @@
     "Marks accumulate into higher loyalty tiers over time.",
     "Your standing is recorded permanently onchain."
   ],
+  "fee": {
+    "kind": "fixed",
+    "bps": 5,
+    "recipient": "treasury",
+    "note": "0.05% of each swap to the treasury"
+  },
   "date": "2026-08-03"
 }

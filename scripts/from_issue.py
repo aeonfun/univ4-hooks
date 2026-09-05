@@ -25,6 +25,7 @@ LABEL_TO_KEY = {
     "one-line summary": "mechanic",
     "plain-language description": "plain",
     "rules": "_rules",
+    "fee taken": "fee",
     "audit url": "audit_url",
     "deployer address": "deployer",
 }
@@ -104,7 +105,8 @@ def main():
         f"| Flags | `{entry['flags']}` |\n"
         f"| Callbacks | {cb_cell} |\n"
         f"| Category | {entry['category']} |\n"
-        f"| Class | {entry['klass']} |"
+        f"| Class | {entry['klass']} |\n"
+        f"| Fee | {entry['fee']['note']} |"
         f"{src_note}\n"
     )
     with open(os.path.join(hl.REPO_ROOT, "submission_summary.md"), "w") as f:

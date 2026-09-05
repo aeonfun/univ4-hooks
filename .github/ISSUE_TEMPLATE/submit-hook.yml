@@ -84,6 +84,12 @@ body:
         Only exact-input swaps are allowed.
         Exact-output swaps are rejected.
   - type: input
+    id: fee
+    attributes:
+      label: Fee taken
+      description: Any fee the hook charges on a swap, beyond the pool's own LP fee. State the rate and where it goes, or "none". A maintainer confirms it before merge.
+      placeholder: "0.1% to the deployer, or 'none'"
+  - type: input
     id: audit_url
     attributes:
       label: Audit URL

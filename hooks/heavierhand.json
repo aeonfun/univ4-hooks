@@ -20,5 +20,11 @@
     "Every trade nudges the pool back toward a 50/50 balance.",
     "Swaps that deepen the heavier side are rejected."
   ],
+  "fee": {
+    "kind": "none",
+    "bps": 0,
+    "recipient": "",
+    "note": "No fee of its own"
+  },
   "date": "2026-08-01"
 }

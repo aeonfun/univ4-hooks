@@ -20,5 +20,11 @@
     "Miss and the swap reverts - the target moves each block.",
     "Retry on the next block for a fresh number."
   ],
+  "fee": {
+    "kind": "none",
+    "bps": 0,
+    "recipient": "",
+    "note": "No fee of its own"
+  },
   "date": "2026-08-01"
 }

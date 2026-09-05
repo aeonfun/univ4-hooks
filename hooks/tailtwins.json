@@ -20,5 +20,11 @@
     "Each trade moves the price, so the target keeps shifting.",
     "You're aiming at a number that won't hold still."
   ],
+  "fee": {
+    "kind": "none",
+    "bps": 0,
+    "recipient": "",
+    "note": "No fee of its own"
+  },
   "date": "2026-08-02"
 }

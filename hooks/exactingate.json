@@ -19,5 +19,11 @@
     "Only exact-input swaps ('spend exactly this much') are allowed.",
     "Exact-output swaps ('receive exactly this much') are rejected."
   ],
+  "fee": {
+    "kind": "none",
+    "bps": 0,
+    "recipient": "",
+    "note": "No fee of its own"
+  },
   "date": "2026-08-03"
 }
