@@ -58,11 +58,7 @@ contract AeonFeeTest {
         return PoolKey({currency0: c0, currency1: c1, fee: 0, tickSpacing: 60, hooks: IHooks(address(hook))});
     }
 
-    function _params(bool zeroForOne, int256 amountSpecified)
-        internal
-        pure
-        returns (IPoolManager.SwapParams memory)
-    {
+    function _params(bool zeroForOne, int256 amountSpecified) internal pure returns (IPoolManager.SwapParams memory) {
         return IPoolManager.SwapParams({zeroForOne: zeroForOne, amountSpecified: amountSpecified, sqrtPriceLimitX96: 0});
     }
 
@@ -155,7 +151,9 @@ contract SkimHooksTest {
         CrownClash hook = new CrownClash(IPoolManager(address(pm)));
         bytes memory hookData = abi.encode(address(0xBEEF));
         vm.prank(address(pm));
-        hook.afterSwap(address(this), _key(address(hook)), _params(), toBalanceDelta(int128(0), type(int128).min), hookData);
+        hook.afterSwap(
+            address(this), _key(address(hook)), _params(), toBalanceDelta(int128(0), type(int128).min), hookData
+        );
         require(pm.takeCount() == 2, "base fee + tribute both taken, no revert");
     }
 
@@ -163,7 +161,9 @@ contract SkimHooksTest {
         LegacyLedger hook = new LegacyLedger(IPoolManager(address(pm)));
         bytes memory hookData = abi.encode(address(0xBEEF));
         vm.prank(address(pm));
-        hook.afterSwap(address(this), _key(address(hook)), _params(), toBalanceDelta(int128(0), type(int128).min), hookData);
+        hook.afterSwap(
+            address(this), _key(address(hook)), _params(), toBalanceDelta(int128(0), type(int128).min), hookData
+        );
         require(pm.takeCount() == 2, "base fee + tax both taken, no revert");
     }
 }

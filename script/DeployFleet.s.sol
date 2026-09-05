@@ -80,11 +80,15 @@ contract DeployFleet {
     function _select(string memory name) internal pure returns (uint160 flags, bytes memory code) {
         bytes32 k = keccak256(bytes(name));
         if (k == keccak256("DynamicFee")) {
-            return (AFTER_INITIALIZE | BEFORE_SWAP | AFTER_SWAP | AFTER_SWAP_RETURNS_DELTA, type(DynamicFee).creationCode);
+            return
+                (AFTER_INITIALIZE | BEFORE_SWAP | AFTER_SWAP | AFTER_SWAP_RETURNS_DELTA, type(DynamicFee).creationCode);
         }
-        if (k == keccak256("NoOp")) return (BEFORE_SWAP | AFTER_SWAP | AFTER_SWAP_RETURNS_DELTA, type(NoOp).creationCode);
+        if (k == keccak256("NoOp")) {
+            return (BEFORE_SWAP | AFTER_SWAP | AFTER_SWAP_RETURNS_DELTA, type(NoOp).creationCode);
+        }
         if (k == keccak256("HeavierHand")) {
-            return (BEFORE_SWAP | AFTER_SWAP | AFTER_SWAP_RETURNS_DELTA, type(HeavierHand).creationCode);
+            return
+                (AFTER_INITIALIZE | BEFORE_SWAP | AFTER_SWAP | AFTER_SWAP_RETURNS_DELTA, type(HeavierHand).creationCode);
         }
         if (k == keccak256("BlockEcho")) {
             return (BEFORE_SWAP | AFTER_SWAP | AFTER_SWAP_RETURNS_DELTA, type(BlockEcho).creationCode);
@@ -101,7 +105,9 @@ contract DeployFleet {
         if (k == keccak256("CapGate")) {
             return (BEFORE_SWAP | AFTER_SWAP | AFTER_SWAP_RETURNS_DELTA, type(CapGate).creationCode);
         }
-        if (k == keccak256("CrownClash")) return (AFTER_SWAP | AFTER_SWAP_RETURNS_DELTA, type(CrownClash).creationCode);
+        if (k == keccak256("CrownClash")) {
+            return (AFTER_SWAP | AFTER_SWAP_RETURNS_DELTA, type(CrownClash).creationCode);
+        }
         if (k == keccak256("LegacyLedger")) {
             return (AFTER_SWAP | AFTER_SWAP_RETURNS_DELTA, type(LegacyLedger).creationCode);
         }
