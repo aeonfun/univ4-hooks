@@ -53,6 +53,7 @@ Validated against `schema.json`. Fields:
 | `mechanic` | you | one-line tile summary |
 | `plain` | you | plain-language modal explainer |
 | `rules` | you | the exact rules it enforces, one per line |
+| `fee` | you | any fee the hook itself takes on a swap: `{ kind: none/fixed/dynamic, bps, recipient, note }`. Beyond the pool LP fee and the universal 10 bps AeonFee |
 | `auditUrl` | optional | link to an audit |
 | `deployer` | optional | deployer address |
 | `date` | you | first-listed date, ISO |

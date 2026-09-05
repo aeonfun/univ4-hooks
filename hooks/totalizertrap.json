@@ -20,5 +20,11 @@
     "A swap that would land the running total on a multiple of 11 is blocked.",
     "Every other swap passes normally."
   ],
+  "fee": {
+    "kind": "none",
+    "bps": 0,
+    "recipient": "",
+    "note": "No fee of its own"
+  },
   "date": "2026-08-02"
 }

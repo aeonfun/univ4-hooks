@@ -68,7 +68,7 @@ def build_catalog(hooks, chains):
         group = [h for h in hooks if h["source"] == src]
         if not group:
             continue
-        lines += [f"## {title}", "", "| Hook | Category | Flags | Chains | What it does |", "|------|----------|-------|--------|--------------|"]
+        lines += [f"## {title}", "", "| Hook | Category | Fee | Flags | Chains | What it does |", "|------|----------|-----|-------|--------|--------------|"]
         for h in group:
             deployed = " ".join(
                 f"[{chains[c]['name']}]({chains[c]['explorer']}/address/{a})"
@@ -76,7 +76,9 @@ def build_catalog(hooks, chains):
                 if c in chains
             )
             mech = h["mechanic"].replace("|", "\\|")
-            lines.append(f"| {h['name']} | {h['category']} | `{h['flags']}` | {deployed} | {mech} |")
+            fee = h.get("fee") or {}
+            fee_cell = ("none" if fee.get("kind") == "none" else (fee.get("note") or fee.get("kind") or "-")).replace("|", "\\|")
+            lines.append(f"| {h['name']} | {h['category']} | {fee_cell} | `{h['flags']}` | {deployed} | {mech} |")
         lines.append("")
     return "\n".join(lines)
 

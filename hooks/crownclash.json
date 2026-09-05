@@ -20,5 +20,11 @@
     "Whoever has traded the most holds the onchain crown.",
     "The leaderboard lives entirely onchain - out-trade the leader to take it."
   ],
+  "fee": {
+    "kind": "fixed",
+    "bps": 7,
+    "recipient": "treasury",
+    "note": "0.07% of each swap to the treasury"
+  },
   "date": "2026-08-03"
 }

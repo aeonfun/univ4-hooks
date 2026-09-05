@@ -47,6 +47,31 @@ KLASSES = ["VALUE", "FEE", "GATE"]
 TEMPLATES = ["dynamic", "noop", "freeform"]
 STAGES = ["template", "deployed", "frontend"]
 SOURCES = ["aeon", "community"]
+FEE_KINDS = ["none", "fixed", "dynamic"]
+
+# A "Fee taken" submission is free text ("0.1% to the deployer", "none", ...).
+# We keep the submitter's words in `note`, best-effort a bps rate, and default the
+# rest so a maintainer only has to confirm during the PR polish.
+_FEE_NONE = {"none", "no", "no fee", "n/a", "0", "0%", "0 bps", "zero"}
+_PCT_RE = re.compile(r"([0-9]*\.?[0-9]+)\s*%")
+_BPS_RE = re.compile(r"([0-9]+)\s*bps", re.I)
+
+
+def parse_fee(text: str) -> dict:
+    """Turn a free-text 'Fee taken' answer into the structured `fee` object."""
+    t = (text or "").strip()
+    if not t or t.lower() in _FEE_NONE:
+        return {"kind": "none", "bps": 0, "recipient": "", "note": "No fee of its own"}
+    bps = None
+    m = _PCT_RE.search(t)
+    if m:
+        bps = round(float(m.group(1)) * 100)
+    else:
+        m = _BPS_RE.search(t)
+        if m:
+            bps = int(m.group(1))
+    kind = "dynamic" if re.search(r"dynamic|volatil|variable", t, re.I) else "fixed"
+    return {"kind": kind, "bps": None if kind == "dynamic" else bps, "recipient": "", "note": t[:160]}
 
 ADDR_RE = re.compile(r"^0x[a-fA-F0-9]{40}$")
 FLAGS_RE = re.compile(r"^0x[0-9A-Fa-f]{1,4}$")

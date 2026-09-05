@@ -20,5 +20,11 @@
     "No rule beyond the standard protocol fee applies.",
     "The blank template - fork it and add your own logic."
   ],
+  "fee": {
+    "kind": "none",
+    "bps": 0,
+    "recipient": "",
+    "note": "No fee of its own"
+  },
   "date": "2026-07-31"
 }

@@ -31,7 +31,7 @@ def guess_klass(bits):
 
 def build_entry(chain, address, name="", source="community", category="Access",
                 klass="", template="freeform", stage="deployed", mechanic="",
-                plain="", rules=None, audit_url="", deployer="", date=""):
+                plain="", rules=None, audit_url="", deployer="", date="", fee=""):
     """The canonical hook entry, with flags + callbacks decoded from the address.
     Shared by the CLI and the analyze-hook workflow. Raises ValueError on a bad
     chain or address so callers can report it."""
@@ -56,6 +56,7 @@ def build_entry(chain, address, name="", source="community", category="Access",
         "mechanic": (mechanic or "").strip() or "TODO: one-line summary of what this hook does.",
         "plain": (plain or "").strip() or "TODO: plain-language explainer for the modal.",
         "rules": [r for r in (rules or []) if r.strip()] or ["TODO: first rule the hook enforces."],
+        "fee": fee if isinstance(fee, dict) else hl.parse_fee(fee),
         "date": date or "TODO-YYYY-MM-DD",
     }
     if audit_url:
@@ -80,6 +81,7 @@ def main():
     p.add_argument("--rule", action="append", dest="rules", default=[])
     p.add_argument("--audit-url", default="")
     p.add_argument("--deployer", default="")
+    p.add_argument("--fee", default="", help="free-text fee, e.g. '0.07% to treasury' or 'none'")
     p.add_argument("--date", default="")
     p.add_argument("--stdout", action="store_true", help="print JSON instead of writing a file")
     args = p.parse_args()
@@ -90,7 +92,7 @@ def main():
             category=args.category, klass=args.klass, template=args.template,
             stage=args.stage, mechanic=args.mechanic, plain=args.plain,
             rules=args.rules, audit_url=args.audit_url, deployer=args.deployer,
-            date=args.date,
+            fee=args.fee, date=args.date,
         )
     except ValueError as e:
         p.error(str(e))

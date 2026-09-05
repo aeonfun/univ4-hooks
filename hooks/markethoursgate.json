@@ -17,6 +17,12 @@
     "Any swap attempted outside that window reverts in beforeSwap.",
     "The time check uses block.timestamp at execution, not the time the transaction was submitted."
   ],
+  "fee": {
+    "kind": "none",
+    "bps": 0,
+    "recipient": "",
+    "note": "No fee of its own"
+  },
   "date": "2026-09-04",
   "deployer": "0x0DE98e661606EcFC448da7A8276DdE4de45200C8"
 }
