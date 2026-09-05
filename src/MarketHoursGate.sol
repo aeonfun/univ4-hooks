@@ -1,12 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
-// DEPLOYED FREEFORM GATE - source verified on Basescan and vendored here verbatim
-// (three comment em dashes normalized to hyphens; no code or logic change).
-//   Base (8453): 0x82086452Fe75Cb217F44Cf8c33af638bf9018080
-// Unlike the AeonFee reference hooks in this dir, this is the raw deploy-skill
-// scaffold: a pure beforeSwap gate (flags 0x80) that does NOT inherit AeonFee and
-// therefore takes no 10 bps protocol fee. Kept as-deployed for provenance.
+// SOURCE VERIFIED ON THE CHAIN EXPLORER - vendored here by scripts/sync_source.py
+// (comment long-dashes normalized to hyphens; no code or logic change).
+//   base (8453): 0x82086452Fe75Cb217F44Cf8c33af638bf9018080
+// NOTE: this hook does NOT inherit AeonFee, so it takes no 10 bps protocol
+// fee onchain, unlike the AeonFee reference hooks in this dir.
 
 // FREEFORM hook scaffold. In freeform mode the deploy-uni-hook skill rewrites the
 // AEON:BODY region with callbacks generated from the user's prompt.

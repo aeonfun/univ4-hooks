@@ -7,7 +7,8 @@ broadcast/
 __pycache__/
 *.pyc
 
-# analyze-hook workflow scratch files
+# analyze-hook / weekly-sync workflow scratch files
 submission_summary.md
 pr_body.md
 issue_comment.md
+sync_summary.md
