@@ -189,12 +189,12 @@
         "arbitrum": "0xdaC850494b2A31c21b8AB6d22c4Af846A9f790c4",
         "unichain": "0xC3bFb8010F83E013FE9DE2525A8Be575310BD0c4"
       },
-      "mechanic": "Only lets you sell the token the pool has too much of, keeping it balanced.",
-      "plain": "A pool holds two tokens. This only lets you sell the one there's currently more of, so every trade pushes the pool back toward a 50/50 split. You can't pile more into the side that's already heavy - it self-corrects.",
+      "mechanic": "Keeps a pool trading around the price it opened at, within a 10% band.",
+      "plain": "The pool remembers the price it launched at. While the price stays within about 10% of that reference, a swap must pay in the side the pool has grown heavier on; once the price drifts more than 10% away, the gate flips and admits only the trade that pushes it back toward the reference, so the pool can never be shut. It works for any token pair and any starting price, not just a 1:1 pool.",
       "rules": [
-        "You may only sell whichever token the pool currently holds more of.",
-        "Every trade nudges the pool back toward a 50/50 balance.",
-        "Swaps that deepen the heavier side are rejected."
+        "Everything is judged against the pool's own opening price, not an implicit 1.0.",
+        "Within about 10% of that reference you may only pay in the heavier (or equal) side.",
+        "Past the 10% band only the rebalancing leg is admitted, so the pool is never one-directional."
       ],
       "fee": {
         "kind": "none",
@@ -304,11 +304,12 @@
         "arbitrum": "0x81e4FDB9a9787800aef889bA112AAdddd43C80c4",
         "unichain": "0x27D5FDf460643EB270B6E836d218968D6D7400C4"
       },
-      "mechanic": "Rejects any trade above a size cap, so only small swaps go through.",
-      "plain": "There's a maximum trade size. Any swap bigger than that cap is rejected before it runs, so the pool only ever fills small trades. Big players ('whales') have to break their order into smaller pieces or take it somewhere else.",
+      "mechanic": "Rejects any swap larger than 5% of the pool's reserve of the token being spent.",
+      "plain": "The maximum trade size scales with the pool: any swap whose amount is more than 5% of the pool's reserve of that same token is rejected before it runs. Because the cap is a fraction of the pool rather than a fixed token count, it behaves the same across any token decimals, so big players ('whales') must break their order into smaller pieces or take it elsewhere.",
       "rules": [
-        "Any swap above the fixed size cap is rejected before it runs.",
-        "Only small trades fill - whales must split their order or leave."
+        "A swap may move at most 5% of the pool's reserve of the token being spent.",
+        "The cap is a fraction of the pool, so it works the same regardless of token decimals.",
+        "Oversized swaps revert before they run."
       ],
       "fee": {
         "kind": "none",
