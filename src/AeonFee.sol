@@ -102,7 +102,11 @@ abstract contract AeonFee {
         IPoolManager.SwapParams calldata, /* params */
         BalanceDelta, /* delta */
         bytes calldata /* hookData */
-    ) internal virtual returns (int128) {
+    )
+        internal
+        virtual
+        returns (int128)
+    {
         return 0;
     }
 }

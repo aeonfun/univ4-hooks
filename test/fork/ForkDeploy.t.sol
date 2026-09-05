@@ -98,8 +98,7 @@ contract ForkDeployTest {
         uint256 beforeBal1 = _bal(key.currency1);
 
         router.swap(
-            key,
-            IPoolManager.SwapParams({zeroForOne: true, amountSpecified: -1e18, sqrtPriceLimitX96: MIN_SQRT + 1})
+            key, IPoolManager.SwapParams({zeroForOne: true, amountSpecified: -1e18, sqrtPriceLimitX96: MIN_SQRT + 1})
         );
 
         uint256 gained = (_bal(key.currency1) - beforeBal1) + (_bal(key.currency0) - beforeBal0);
@@ -128,7 +127,9 @@ contract ForkDeployTest {
     }
 
     function test_HeavierHand() public {
-        _deployAndInit(BEFORE_SWAP | AFTER_SWAP | AFTER_SWAP_RETURNS_DELTA, type(HeavierHand).creationCode, 3000);
+        _deployAndInit(
+            AFTER_INITIALIZE | BEFORE_SWAP | AFTER_SWAP | AFTER_SWAP_RETURNS_DELTA, type(HeavierHand).creationCode, 3000
+        );
     }
 
     function test_BlockEcho() public {

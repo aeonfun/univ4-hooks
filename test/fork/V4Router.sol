@@ -32,10 +32,7 @@ contract V4Router is IUnlockCallback {
         pm.unlock(abi.encode(uint8(0), key, liq, IPoolManager.SwapParams(false, 0, 0)));
     }
 
-    function swap(PoolKey calldata key, IPoolManager.SwapParams calldata p)
-        external
-        returns (BalanceDelta delta)
-    {
+    function swap(PoolKey calldata key, IPoolManager.SwapParams calldata p) external returns (BalanceDelta delta) {
         return abi.decode(pm.unlock(abi.encode(uint8(1), key, int256(0), p)), (BalanceDelta));
     }
 
@@ -49,10 +46,7 @@ contract V4Router is IUnlockCallback {
             (delta,) = pm.modifyLiquidity(
                 key,
                 IPoolManager.ModifyLiquidityParams({
-                    tickLower: TICK_LOWER,
-                    tickUpper: TICK_UPPER,
-                    liquidityDelta: liq,
-                    salt: bytes32(0)
+                    tickLower: TICK_LOWER, tickUpper: TICK_UPPER, liquidityDelta: liq, salt: bytes32(0)
                 }),
                 ""
             );
