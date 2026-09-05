@@ -1,6 +1,6 @@
 # univ4-hooks
 
-The aeon.fun Uniswap v4 hook fleet: 10 hooks that all inherit a mandatory 10 bps
+The aeon.fun Uniswap v4 hook fleet: 12 hooks that all inherit a mandatory 10 bps
 protocol fee (`AeonFee`), deployed on Base (8453), Robinhood Chain (4663),
 Ethereum (1), and Monad (143).
 
