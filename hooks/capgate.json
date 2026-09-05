@@ -8,10 +8,13 @@
   "stage": "deployed",
   "flags": "0xC4",
   "addresses": {
-    "robinhood": "0x6B567e25CC6E9d77f1A030A68Db39F86c03540c4",
-    "ethereum": "0xfebC2D261c006409eD765bAcfF039846770280C4",
-    "base": "0x0A914acb246063B4ED0F3a0FC13D0C0e8C8500c4",
-    "monad": "0xD4F21c282c7c1e8098D511039Ad39044488cC0c4"
+    "ethereum": "0x62Edc83Dc155F9dE77A58c65D9AD5762158f00c4",
+    "base": "0xa12bF4fC954B37cbe7Acc2fA652328071F8b00c4",
+    "robinhood": "0x57777eb796b2b01AeF0A0a6752217C5DBe9a00C4",
+    "monad": "0x00f39795c6d49B24de38a232b0F5d4BDfe4200c4",
+    "bnb": "0x58CAA0d759D282d4C505a15681d8Dd3A724580c4",
+    "arbitrum": "0x81e4FDB9a9787800aef889bA112AAdddd43C80c4",
+    "unichain": "0x27D5FDf460643EB270B6E836d218968D6D7400C4"
   },
   "mechanic": "Rejects any trade above a size cap, so only small swaps go through.",
   "plain": "There's a maximum trade size. Any swap bigger than that cap is rejected before it runs, so the pool only ever fills small trades. Big players ('whales') have to break their order into smaller pieces or take it somewhere else.",

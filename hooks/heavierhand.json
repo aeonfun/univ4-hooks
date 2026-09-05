@@ -6,12 +6,15 @@
   "klass": "GATE",
   "template": "freeform",
   "stage": "deployed",
-  "flags": "0xC4",
+  "flags": "0x10C4",
   "addresses": {
-    "robinhood": "0x6Df3BeBfBeC267221b819aC30Bb32e2F02C700c4",
-    "ethereum": "0x240339F2114F066016f36639e522a8A9C3b840c4",
-    "base": "0x2AD6936032d4201fc74041AfbC801FAAb1bf40c4",
-    "monad": "0x6F0FE61cae116edC23F00E74eB8604ADef4800c4"
+    "ethereum": "0xBc674333E0f06C24b164deE6bdE1CaA3e44710c4",
+    "base": "0x69072454d019C4167007C070Ee49CF06c8aC50C4",
+    "robinhood": "0x368575b8712E7A6b56B309F6b3CE20549e9C90C4",
+    "monad": "0x4429A70F33907c1b5f7471675D56cDF5090190c4",
+    "bnb": "0x26589E4873E7F5E0F3e0D20782A61c2495Fe90c4",
+    "arbitrum": "0xdaC850494b2A31c21b8AB6d22c4Af846A9f790c4",
+    "unichain": "0xC3bFb8010F83E013FE9DE2525A8Be575310BD0c4"
   },
   "mechanic": "Only lets you sell the token the pool has too much of, keeping it balanced.",
   "plain": "A pool holds two tokens. This only lets you sell the one there's currently more of, so every trade pushes the pool back toward a 50/50 split. You can't pile more into the side that's already heavy - it self-corrects.",

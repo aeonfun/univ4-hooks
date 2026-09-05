@@ -179,12 +179,15 @@
       "klass": "GATE",
       "template": "freeform",
       "stage": "deployed",
-      "flags": "0xC4",
+      "flags": "0x10C4",
       "addresses": {
-        "robinhood": "0x6Df3BeBfBeC267221b819aC30Bb32e2F02C700c4",
-        "ethereum": "0x240339F2114F066016f36639e522a8A9C3b840c4",
-        "base": "0x2AD6936032d4201fc74041AfbC801FAAb1bf40c4",
-        "monad": "0x6F0FE61cae116edC23F00E74eB8604ADef4800c4"
+        "ethereum": "0xBc674333E0f06C24b164deE6bdE1CaA3e44710c4",
+        "base": "0x69072454d019C4167007C070Ee49CF06c8aC50C4",
+        "robinhood": "0x368575b8712E7A6b56B309F6b3CE20549e9C90C4",
+        "monad": "0x4429A70F33907c1b5f7471675D56cDF5090190c4",
+        "bnb": "0x26589E4873E7F5E0F3e0D20782A61c2495Fe90c4",
+        "arbitrum": "0xdaC850494b2A31c21b8AB6d22c4Af846A9f790c4",
+        "unichain": "0xC3bFb8010F83E013FE9DE2525A8Be575310BD0c4"
       },
       "mechanic": "Only lets you sell the token the pool has too much of, keeping it balanced.",
       "plain": "A pool holds two tokens. This only lets you sell the one there's currently more of, so every trade pushes the pool back toward a 50/50 split. You can't pile more into the side that's already heavy - it self-corrects.",
@@ -200,8 +203,9 @@
         "note": "No fee of its own"
       },
       "date": "2026-08-01",
-      "flagBits": 196,
+      "flagBits": 4292,
       "callbacks": [
+        "afterInitialize",
         "beforeSwap",
         "afterSwap",
         "afterSwapReturnDelta"
@@ -292,10 +296,13 @@
       "stage": "deployed",
       "flags": "0xC4",
       "addresses": {
-        "robinhood": "0x6B567e25CC6E9d77f1A030A68Db39F86c03540c4",
-        "ethereum": "0xfebC2D261c006409eD765bAcfF039846770280C4",
-        "base": "0x0A914acb246063B4ED0F3a0FC13D0C0e8C8500c4",
-        "monad": "0xD4F21c282c7c1e8098D511039Ad39044488cC0c4"
+        "ethereum": "0x62Edc83Dc155F9dE77A58c65D9AD5762158f00c4",
+        "base": "0xa12bF4fC954B37cbe7Acc2fA652328071F8b00c4",
+        "robinhood": "0x57777eb796b2b01AeF0A0a6752217C5DBe9a00C4",
+        "monad": "0x00f39795c6d49B24de38a232b0F5d4BDfe4200c4",
+        "bnb": "0x58CAA0d759D282d4C505a15681d8Dd3A724580c4",
+        "arbitrum": "0x81e4FDB9a9787800aef889bA112AAdddd43C80c4",
+        "unichain": "0x27D5FDf460643EB270B6E836d218968D6D7400C4"
       },
       "mechanic": "Rejects any trade above a size cap, so only small swaps go through.",
       "plain": "There's a maximum trade size. Any swap bigger than that cap is rejected before it runs, so the pool only ever fills small trades. Big players ('whales') have to break their order into smaller pieces or take it somewhere else.",
