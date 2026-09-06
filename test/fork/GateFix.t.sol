@@ -24,6 +24,7 @@ import {FixedPoint96} from "@uniswap/v4-core/src/libraries/FixedPoint96.sol";
 
 import {HeavierHand} from "../../src/HeavierHand.sol";
 import {CapGate} from "../../src/CapGate.sol";
+import {TailTwins} from "../../src/TailTwins.sol";
 
 library console {
     address constant CONSOLE = 0x000000000000000000636F6e736F6c652e6c6f67;
@@ -63,6 +64,10 @@ contract GateFixTest {
 
     uint160 constant Q96 = 79228162514264337593543950336;
     uint160 constant SQRT_4 = 158456325028528675187087900672; // price 4.0 = 2 * Q96
+    // Price ~4.0 but with a NON-zero low byte (0x37 = 55). SQRT_1_1 = 2^96 and SQRT_4 = 2^97 both
+    // end in a zero byte, so a low-byte gate (TailTwins) is vacuous at either - it must be proven
+    // off a price whose low byte is not zero.
+    uint160 constant SQRT_ODD = 158456325028528675187087900727;
     uint160 constant MIN_SQRT = 4295128739;
     uint160 constant MAX_SQRT = 1461446703485210103287273052203988822378723970342;
 
@@ -82,13 +87,17 @@ contract GateFixTest {
     }
 
     function _pool(address hook) internal returns (PoolKey memory key, V4Router router) {
+        return _poolAt(hook, SQRT_4); // default: pool opens at PRICE 4.0, not 1:1
+    }
+
+    function _poolAt(address hook, uint160 sqrtP) internal returns (PoolKey memory key, V4Router router) {
         MockERC20 tA = new MockERC20("Fork A", "FA");
         MockERC20 tB = new MockERC20("Fork B", "FB");
         (Currency c0, Currency c1) = address(tA) < address(tB)
             ? (Currency.wrap(address(tA)), Currency.wrap(address(tB)))
             : (Currency.wrap(address(tB)), Currency.wrap(address(tA)));
         key = PoolKey({currency0: c0, currency1: c1, fee: 3000, tickSpacing: 60, hooks: IHooks(hook)});
-        PM.initialize(key, SQRT_4); // <-- pool opens at PRICE 4.0, not 1:1
+        PM.initialize(key, sqrtP);
 
         router = new V4Router(PM);
         MockERC20(Currency.unwrap(c0)).mint(address(router), 1e27);
@@ -199,5 +208,40 @@ contract GateFixTest {
             "over-cap swap must revert TradeTooLarge"
         );
         console.log("CG over-cap swap reverted TradeTooLarge");
+    }
+
+    // ---------------------------------------------------------------- TailTwins
+
+    // The tail-match mechanic is vacuous at 1:1: SQRT_1_1 = 2^96 has low byte 0, so requiredTail is
+    // a constant 0 and every ForkDeploy fixture that inits at parity never exercises the gate. Init
+    // OFF parity (low byte 0x37) so the required tail is nonzero and the gate actually binds.
+    function test_TailTwins_tailBindsOffParity() public {
+        address hook = _mineDeploy(BEFORE_SWAP | AFTER_SWAP | AFTER_SWAP_RETURNS_DELTA, type(TailTwins).creationCode);
+        (PoolKey memory key, V4Router router) = _poolAt(hook, SQRT_ODD);
+        TailTwins tt = TailTwins(hook);
+
+        // (1) required tail is the price's low byte - nonzero here, unlike the 1:1 blind spot.
+        uint256 tail = tt.requiredTail(key);
+        console.log("TT requiredTail @init", tail);
+        _eq(tail != 0, "requiredTail must be nonzero off parity (1:1 would give 0)");
+
+        // (2) a size whose low byte is a half-ring away (circular distance 128 > tolerance 16) is
+        //     rejected. Run this BEFORE the passing swap so the price - and thus the tail - is unmoved.
+        uint256 pass = tt.acceptableAmountAtOrAbove(key, 1e18); // low byte == tail
+        uint256 bad = (pass & ~uint256(0xff)) | ((tail + 128) & 0xff);
+        if (bad == 0) bad = 0x100;
+        _eq(
+            _swapReverts(router, key, true, -int256(bad), TailTwins.TailMismatch.selector),
+            "off-tail swap must revert TailMismatch"
+        );
+        console.log("TT off-tail swap reverted TailMismatch");
+
+        // (3) a tail-matching size clears the gate and actually moves the price - proving the gate
+        //     reads live slot0, not a frozen constant.
+        _eq(tt.isAcceptable(key, pass), "matching-tail size must be acceptable");
+        _swap(router, key, true, -int256(pass));
+        (uint160 spAfter,,,) = PM.getSlot0(key.toId());
+        _eq(spAfter != SQRT_ODD, "price must move after the swap (gate reads live price)");
+        console.log("TT matching-tail swap OK; requiredTail now", tt.requiredTail(key));
     }
 }
