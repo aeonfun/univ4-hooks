@@ -53,6 +53,7 @@ No confirmed findings.
 
 ## 7. Appendix
 
+- Listed on aeon.fun: [aeon.fun/hooks?hook=markethoursgate](https://www.aeon.fun/hooks?hook=markethoursgate) - open this hook in the marketplace.
 - Contract: [`0x82086452Fe75Cb217F44Cf8c33af638bf9018080` on BaseScan](https://basescan.org/address/0x82086452Fe75Cb217F44Cf8c33af638bf9018080) - verified source.
 - Registry entry: [`hooks/markethoursgate.json`](https://github.com/aeonfun/univ4-hooks/blob/main/hooks/markethoursgate.json) - flags + every-chain addresses.
 - Source: [`src/MarketHoursGate.sol`](https://github.com/aeonfun/univ4-hooks/blob/main/src/MarketHoursGate.sol) (a beforeSwap-only gate; does not inherit AeonFee).

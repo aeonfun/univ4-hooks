@@ -94,6 +94,7 @@ No confirmed findings.
 
 ## 7. Appendix
 
+- Listed on aeon.fun: [aeon.fun/hooks?hook=exactingate](https://www.aeon.fun/hooks?hook=exactingate) - open this hook in the marketplace.
 - Contract: [`0xeC78eE3F1FC117415a8006A0344Ccaff30aa40C4` on BaseScan](https://basescan.org/address/0xeC78eE3F1FC117415a8006A0344Ccaff30aa40C4) - verified source.
 - Registry entry: [`hooks/exactingate.json`](https://github.com/aeonfun/univ4-hooks/blob/main/hooks/exactingate.json) - flags + every-chain addresses.
 - Source: [`src/ExactInGate.sol`](https://github.com/aeonfun/univ4-hooks/blob/main/src/ExactInGate.sol) on the shared [`src/AeonFee.sol`](https://github.com/aeonfun/univ4-hooks/blob/main/src/AeonFee.sol) 10 bps base.

@@ -54,6 +54,7 @@ No confirmed findings.
 
 ## 7. Appendix
 
+- Listed on aeon.fun: [aeon.fun/hooks?hook=blockecho](https://www.aeon.fun/hooks?hook=blockecho) - open this hook in the marketplace.
 - Contract: [`0x5e48f905661D75501CA756eDB3403dA98F0400C4` on BaseScan](https://basescan.org/address/0x5e48f905661D75501CA756eDB3403dA98F0400C4) - verified source.
 - Registry entry: [`hooks/blockecho.json`](https://github.com/aeonfun/univ4-hooks/blob/main/hooks/blockecho.json) - flags + every-chain addresses.
 - Source: [`src/BlockEcho.sol`](https://github.com/aeonfun/univ4-hooks/blob/main/src/BlockEcho.sol) on the shared [`src/AeonFee.sol`](https://github.com/aeonfun/univ4-hooks/blob/main/src/AeonFee.sol) 10 bps base.

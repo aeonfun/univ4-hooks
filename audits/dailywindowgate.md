@@ -51,6 +51,7 @@ No confirmed findings.
 
 ## 7. Appendix
 
+- Listed on aeon.fun: [aeon.fun/hooks?hook=dailywindowgate](https://www.aeon.fun/hooks?hook=dailywindowgate) - open this hook in the marketplace.
 - Contract: [`0x752B180116f5110dCBEa9564a43ACBEF82ebc080` on BaseScan](https://basescan.org/address/0x752B180116f5110dCBEa9564a43ACBEF82ebc080) - verified source.
 - Registry entry: [`hooks/dailywindowgate.json`](https://github.com/aeonfun/univ4-hooks/blob/main/hooks/dailywindowgate.json) - flags + every-chain addresses.
 - Source: [`src/DailyWindowGate.sol`](https://github.com/aeonfun/univ4-hooks/blob/main/src/DailyWindowGate.sol) (a beforeSwap-only gate; does not inherit AeonFee).

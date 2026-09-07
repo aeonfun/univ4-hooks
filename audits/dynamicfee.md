@@ -53,6 +53,7 @@ No candidates survived to triage; the surface was reasoned clean directly. Class
 
 ## 7. Appendix
 
+- Listed on aeon.fun: [aeon.fun/hooks?hook=dynamicfee](https://www.aeon.fun/hooks?hook=dynamicfee) - open this hook in the marketplace.
 - Contract: [`0x723b16eF13a1b9A2BD63238BEC47cDF1d4A010C4` on BaseScan](https://basescan.org/address/0x723b16eF13a1b9A2BD63238BEC47cDF1d4A010C4) - verified source.
 - Registry entry: [`hooks/dynamicfee.json`](https://github.com/aeonfun/univ4-hooks/blob/main/hooks/dynamicfee.json) - flags + every-chain addresses.
 - Source: [`src/DynamicFee.sol`](https://github.com/aeonfun/univ4-hooks/blob/main/src/DynamicFee.sol) on the shared [`src/AeonFee.sol`](https://github.com/aeonfun/univ4-hooks/blob/main/src/AeonFee.sol) 10 bps base.

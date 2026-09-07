@@ -63,6 +63,7 @@ No confirmed findings.
 
 ## 7. Appendix
 
+- Listed on aeon.fun: [aeon.fun/hooks?hook=tailtwins](https://www.aeon.fun/hooks?hook=tailtwins) - open this hook in the marketplace.
 - Contract: [`0x9818dDD1102c9606Cd693aC17A7B8B17609480c4` on BaseScan](https://basescan.org/address/0x9818dDD1102c9606Cd693aC17A7B8B17609480c4) - verified source.
 - Registry entry: [`hooks/tailtwins.json`](https://github.com/aeonfun/univ4-hooks/blob/main/hooks/tailtwins.json) - flags + every-chain addresses.
 - Source: [`src/TailTwins.sol`](https://github.com/aeonfun/univ4-hooks/blob/main/src/TailTwins.sol) on the shared [`src/AeonFee.sol`](https://github.com/aeonfun/univ4-hooks/blob/main/src/AeonFee.sol) 10 bps base.

@@ -52,6 +52,7 @@ Actors and trust boundaries: **swapper (anyone)** may swap through a LegacyLedge
 
 ## 7. Appendix
 
+- Listed on aeon.fun: [aeon.fun/hooks?hook=legacyledger](https://www.aeon.fun/hooks?hook=legacyledger) - open this hook in the marketplace.
 - Contract: [`0xDb4a0eb0410407d6C22A35c27288834e0D9F4044` on BaseScan](https://basescan.org/address/0xDb4a0eb0410407d6C22A35c27288834e0D9F4044) - verified source.
 - Registry entry: [`hooks/legacyledger.json`](https://github.com/aeonfun/univ4-hooks/blob/main/hooks/legacyledger.json) - flags + every-chain addresses.
 - Source: [`src/LegacyLedger.sol`](https://github.com/aeonfun/univ4-hooks/blob/main/src/LegacyLedger.sol) on the shared [`src/AeonFee.sol`](https://github.com/aeonfun/univ4-hooks/blob/main/src/AeonFee.sol) 10 bps base.
