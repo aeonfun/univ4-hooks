@@ -58,6 +58,7 @@ Actors & trust boundaries: **anyone** can swap the pool (indirectly triggering a
 
 ## 7. Appendix
 
+- Listed on aeon.fun: [aeon.fun/hooks?hook=crownclash](https://www.aeon.fun/hooks?hook=crownclash) - open this hook in the marketplace.
 - Contract: [`0xD24D29a47Adb8786072Ab2Cb9925dC8Ba36Bc044` on BaseScan](https://basescan.org/address/0xD24D29a47Adb8786072Ab2Cb9925dC8Ba36Bc044) - verified source.
 - Registry entry: [`hooks/crownclash.json`](https://github.com/aeonfun/univ4-hooks/blob/main/hooks/crownclash.json) - flags + every-chain addresses.
 - Source: [`src/CrownClash.sol`](https://github.com/aeonfun/univ4-hooks/blob/main/src/CrownClash.sol) on the shared [`src/AeonFee.sol`](https://github.com/aeonfun/univ4-hooks/blob/main/src/AeonFee.sol) 10 bps base.

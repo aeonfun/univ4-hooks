@@ -54,6 +54,7 @@ No candidate reached even provisional status this run; each vulnerability class 
 
 ## 7. Appendix
 
+- Listed on aeon.fun: [aeon.fun/hooks?hook=heavierhand](https://www.aeon.fun/hooks?hook=heavierhand) - open this hook in the marketplace.
 - Contract: [`0x69072454d019C4167007C070Ee49CF06c8aC50C4` on BaseScan](https://basescan.org/address/0x69072454d019C4167007C070Ee49CF06c8aC50C4) - verified source.
 - Registry entry: [`hooks/heavierhand.json`](https://github.com/aeonfun/univ4-hooks/blob/main/hooks/heavierhand.json) - flags + every-chain addresses.
 - Source: [`src/HeavierHand.sol`](https://github.com/aeonfun/univ4-hooks/blob/main/src/HeavierHand.sol) on the shared [`src/AeonFee.sol`](https://github.com/aeonfun/univ4-hooks/blob/main/src/AeonFee.sol) 10 bps base.

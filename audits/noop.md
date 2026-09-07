@@ -52,6 +52,7 @@ Actors and trust boundaries: the only trusted caller is the immutable Uniswap v4
 
 ## 7. Appendix
 
+- Listed on aeon.fun: [aeon.fun/hooks?hook=noop](https://www.aeon.fun/hooks?hook=noop) - open this hook in the marketplace.
 - Contract: [`0xFBa729A7d8fc48cBb261A845A0f26281ED7800C4` on BaseScan](https://basescan.org/address/0xFBa729A7d8fc48cBb261A845A0f26281ED7800C4) - verified source.
 - Registry entry: [`hooks/noop.json`](https://github.com/aeonfun/univ4-hooks/blob/main/hooks/noop.json) - flags + every-chain addresses.
 - Source: [`src/NoOp.sol`](https://github.com/aeonfun/univ4-hooks/blob/main/src/NoOp.sol) on the shared [`src/AeonFee.sol`](https://github.com/aeonfun/univ4-hooks/blob/main/src/AeonFee.sol) 10 bps base.

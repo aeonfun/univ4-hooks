@@ -58,6 +58,7 @@ AeonFee fee-currency selection was re-derived across all four direction × exact
 
 ## 7. Appendix
 
+- Listed on aeon.fun: [aeon.fun/hooks?hook=totalizertrap](https://www.aeon.fun/hooks?hook=totalizertrap) - open this hook in the marketplace.
 - Contract: [`0xA7a62422d13C7648cA53ad91E9268ac4bFC6C0c4` on BaseScan](https://basescan.org/address/0xA7a62422d13C7648cA53ad91E9268ac4bFC6C0c4) - verified source.
 - Registry entry: [`hooks/totalizertrap.json`](https://github.com/aeonfun/univ4-hooks/blob/main/hooks/totalizertrap.json) - flags + every-chain addresses.
 - Source: [`src/TotalizerTrap.sol`](https://github.com/aeonfun/univ4-hooks/blob/main/src/TotalizerTrap.sol) on the shared [`src/AeonFee.sol`](https://github.com/aeonfun/univ4-hooks/blob/main/src/AeonFee.sol) 10 bps base.

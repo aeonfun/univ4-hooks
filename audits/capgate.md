@@ -43,6 +43,7 @@ No confirmed findings. 0 candidates raised, 0 promoted. Each v4-hook checklist c
 
 ## 7. Appendix
 
+- Listed on aeon.fun: [aeon.fun/hooks?hook=capgate](https://www.aeon.fun/hooks?hook=capgate) - open this hook in the marketplace.
 - Contract: [`0xa12bF4fC954B37cbe7Acc2fA652328071F8b00c4` on BaseScan](https://basescan.org/address/0xa12bF4fC954B37cbe7Acc2fA652328071F8b00c4) - verified source.
 - Registry entry: [`hooks/capgate.json`](https://github.com/aeonfun/univ4-hooks/blob/main/hooks/capgate.json) - flags + every-chain addresses.
 - Source: [`src/CapGate.sol`](https://github.com/aeonfun/univ4-hooks/blob/main/src/CapGate.sol) on the shared [`src/AeonFee.sol`](https://github.com/aeonfun/univ4-hooks/blob/main/src/AeonFee.sol) 10 bps base.
