@@ -26,5 +26,6 @@
     "recipient": "",
     "note": "No fee of its own"
   },
-  "date": "2026-08-02"
+  "date": "2026-08-02",
+  "auditUrl": "https://github.com/aeonfun/univ4-hooks/blob/main/audits/tailtwins.md"
 }

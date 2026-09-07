@@ -26,5 +26,6 @@
     "recipient": "LP",
     "note": "Dynamic swap fee, rises with volatility"
   },
-  "date": "2026-07-30"
+  "date": "2026-07-30",
+  "auditUrl": "https://github.com/aeonfun/univ4-hooks/blob/main/audits/dynamicfee.md"
 }

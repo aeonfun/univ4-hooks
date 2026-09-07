@@ -88,14 +88,14 @@
         "note": "Dynamic swap fee, rises with volatility"
       },
       "date": "2026-07-30",
+      "auditUrl": "https://github.com/aeonfun/univ4-hooks/blob/main/audits/dynamicfee.md",
       "flagBits": 4292,
       "callbacks": [
         "afterInitialize",
         "beforeSwap",
         "afterSwap",
         "afterSwapReturnDelta"
-      ],
-      "auditUrl": ""
+      ]
     },
     {
       "name": "NoOp",
@@ -126,13 +126,13 @@
         "note": "No fee of its own"
       },
       "date": "2026-07-31",
+      "auditUrl": "https://github.com/aeonfun/univ4-hooks/blob/main/audits/noop.md",
       "flagBits": 196,
       "callbacks": [
         "beforeSwap",
         "afterSwap",
         "afterSwapReturnDelta"
-      ],
-      "auditUrl": ""
+      ]
     },
     {
       "name": "BlockEcho",
@@ -163,13 +163,13 @@
         "note": "No fee of its own"
       },
       "date": "2026-08-01",
+      "auditUrl": "https://github.com/aeonfun/univ4-hooks/blob/main/audits/blockecho.md",
       "flagBits": 196,
       "callbacks": [
         "beforeSwap",
         "afterSwap",
         "afterSwapReturnDelta"
-      ],
-      "auditUrl": ""
+      ]
     },
     {
       "name": "HeavierHand",
@@ -203,14 +203,14 @@
         "note": "No fee of its own"
       },
       "date": "2026-08-01",
+      "auditUrl": "https://github.com/aeonfun/univ4-hooks/blob/main/audits/heavierhand.md",
       "flagBits": 4292,
       "callbacks": [
         "afterInitialize",
         "beforeSwap",
         "afterSwap",
         "afterSwapReturnDelta"
-      ],
-      "auditUrl": ""
+      ]
     },
     {
       "name": "TailTwins",
@@ -241,13 +241,13 @@
         "note": "No fee of its own"
       },
       "date": "2026-08-02",
+      "auditUrl": "https://github.com/aeonfun/univ4-hooks/blob/main/audits/tailtwins.md",
       "flagBits": 196,
       "callbacks": [
         "beforeSwap",
         "afterSwap",
         "afterSwapReturnDelta"
-      ],
-      "auditUrl": ""
+      ]
     },
     {
       "name": "TotalizerTrap",
@@ -278,13 +278,13 @@
         "note": "No fee of its own"
       },
       "date": "2026-08-02",
+      "auditUrl": "https://github.com/aeonfun/univ4-hooks/blob/main/audits/totalizertrap.md",
       "flagBits": 196,
       "callbacks": [
         "beforeSwap",
         "afterSwap",
         "afterSwapReturnDelta"
-      ],
-      "auditUrl": ""
+      ]
     },
     {
       "name": "CapGate",
@@ -318,13 +318,13 @@
         "note": "No fee of its own"
       },
       "date": "2026-08-03",
+      "auditUrl": "https://github.com/aeonfun/univ4-hooks/blob/main/audits/capgate.md",
       "flagBits": 196,
       "callbacks": [
         "beforeSwap",
         "afterSwap",
         "afterSwapReturnDelta"
-      ],
-      "auditUrl": ""
+      ]
     },
     {
       "name": "CrownClash",
@@ -355,12 +355,12 @@
         "note": "0.07% of each swap to the treasury"
       },
       "date": "2026-08-03",
+      "auditUrl": "https://github.com/aeonfun/univ4-hooks/blob/main/audits/crownclash.md",
       "flagBits": 68,
       "callbacks": [
         "afterSwap",
         "afterSwapReturnDelta"
-      ],
-      "auditUrl": ""
+      ]
     },
     {
       "name": "ExactInGate",
@@ -390,13 +390,13 @@
         "note": "No fee of its own"
       },
       "date": "2026-08-03",
+      "auditUrl": "https://github.com/aeonfun/univ4-hooks/blob/main/audits/exactingate.md",
       "flagBits": 196,
       "callbacks": [
         "beforeSwap",
         "afterSwap",
         "afterSwapReturnDelta"
-      ],
-      "auditUrl": ""
+      ]
     },
     {
       "name": "LegacyLedger",
@@ -427,12 +427,12 @@
         "note": "0.05% of each swap to the treasury"
       },
       "date": "2026-08-03",
+      "auditUrl": "https://github.com/aeonfun/univ4-hooks/blob/main/audits/legacyledger.md",
       "flagBits": 68,
       "callbacks": [
         "afterSwap",
         "afterSwapReturnDelta"
-      ],
-      "auditUrl": ""
+      ]
     },
     {
       "name": "DailyWindowGate",
@@ -461,11 +461,11 @@
       },
       "date": "2026-09-04",
       "deployer": "0x0DE98e661606EcFC448da7A8276DdE4de45200C8",
+      "auditUrl": "https://github.com/aeonfun/univ4-hooks/blob/main/audits/dailywindowgate.md",
       "flagBits": 128,
       "callbacks": [
         "beforeSwap"
-      ],
-      "auditUrl": ""
+      ]
     },
     {
       "name": "MarketHoursGate",
@@ -494,11 +494,11 @@
       },
       "date": "2026-09-04",
       "deployer": "0x0DE98e661606EcFC448da7A8276DdE4de45200C8",
+      "auditUrl": "https://github.com/aeonfun/univ4-hooks/blob/main/audits/markethoursgate.md",
       "flagBits": 128,
       "callbacks": [
         "beforeSwap"
-      ],
-      "auditUrl": ""
+      ]
     }
   ]
 }
