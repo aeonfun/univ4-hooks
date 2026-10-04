@@ -4,7 +4,7 @@ Autonomous `sc-audit` reports for the aeon.fun Uniswap v4 hook fleet. Each hook'
 verified on-chain Base source was audited threat-model-first (Slither + an agentic
 invariant / access-control / oracle pass + a fuzz arm gated on findings) against the
 full 11-class v4-hook checklist, with every vendored `@uniswap/v4-core` file
-SHA-256-diffed against the genuine npm release. **All 12 hooks: CLEAN (0 confirmed).**
+SHA-256-diffed against the genuine npm release. **All 12 hooks: CLEAN (0 confirmed).** Community hooks audited on request are listed below the fleet rows.
 
 | Hook | Category | Full audit | Marketplace | Verdict | Date |
 |------|----------|-----------|-------------|---------|------|
@@ -20,6 +20,7 @@ SHA-256-diffed against the genuine npm release. **All 12 hooks: CLEAN (0 confirm
 | NoOp | Access | [noop.md](./noop.md) | [aeon.fun/hooks](https://www.aeon.fun/hooks?hook=noop) | CLEAN (0) | 2026-09-07 |
 | TailTwins | Games | [tailtwins.md](./tailtwins.md) | [aeon.fun/hooks](https://www.aeon.fun/hooks?hook=tailtwins) | CLEAN (0) | 2026-09-07 |
 | TotalizerTrap | Games | [totalizertrap.md](./totalizertrap.md) | [aeon.fun/hooks](https://www.aeon.fun/hooks?hook=totalizertrap) | CLEAN (0) | 2026-09-07 |
+| Twigpine Wrap Hook (community) | Orders | [twigpine-wrap-hook.md](./twigpine-wrap-hook.md) | [aeon.fun/hooks](https://www.aeon.fun/hooks?hook=twigpine-wrap-hook) | CLEAN (0 novel, 1 known low) | 2026-10-04 |
 
 Each audit links back to its hook on the marketplace, and each hook on
 [aeon.fun/hooks](https://www.aeon.fun/hooks) links to its full audit here - the two stay in sync via
