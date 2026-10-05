@@ -36,3 +36,5 @@ jobs:
         run: python3 scripts/validate.py
       - name: hooklist.json + HOOKS.md are up to date
         run: python3 scripts/aggregate.py --check
+      - name: sync_source unit tests
+        run: python3 -m unittest discover -s scripts -p "test_*.py" -v
