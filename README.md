@@ -1,7 +1,8 @@
 # univ4-hooks
 
 The aeon.fun Uniswap v4 hook fleet: 12 hooks deployed on Base (8453), Robinhood
-Chain (4663), Ethereum (1), and Monad (143). Most inherit a mandatory 10 bps
+Chain (4663), Ethereum (1), and Monad (143), plus three ETH game hooks on Base and
+Robinhood (source in `src/vendor/XclGames`). Most inherit a mandatory 10 bps
 protocol fee (`AeonFee`); the two beforeSwap-only window gates (DailyWindowGate,
 MarketHoursGate) were deployed as pure gates and take no fee.
 
@@ -22,6 +23,9 @@ MarketHoursGate) were deployed as pure gates and take no fee.
 | CapGate | Rejects swaps above a fixed size cap. |
 | DailyWindowGate | Swaps clear only in a fixed 10-minute daily window (00:00-00:10 UTC). beforeSwap-only gate, no AeonFee. |
 | MarketHoursGate | Swaps clear only during US market hours (09:30-16:00 ET, Mon-Fri). beforeSwap-only gate, no AeonFee. |
+| LastBuyerWins | ETH pools: every swap pays 0.2% into a pot; a big enough buy resets a 1 hour clock, and when it runs out the last buyer claims 80%. |
+| ComboBreaker | ETH pools: back-to-back buys build a combo and pay less; the sell that breaks the streak pays a combo-scaled fee, and the pot is split among the streak's buyers. |
+| TeamWar | ETH pools: join red or blue; members pay 0.25% into their team's weekly pot, and the higher-volume team takes both pots. |
 
 ## AeonFee base
 

@@ -1,0 +1,32 @@
+{
+  "name": "ComboBreaker",
+  "source": "aeon",
+  "verified": true,
+  "category": "Games",
+  "klass": "VALUE",
+  "template": "freeform",
+  "stage": "deployed",
+  "flags": "0x20CC",
+  "addresses": {
+    "base": "0xc6aa5B60c7822186d1612ea0653F9FDA645F20cC",
+    "robinhood": "0x85C98FfF5Bee81278b4dE807465a4D86F39F20cc"
+  },
+  "mechanic": "Buy in a row to build a combo and pay less. The big sell that breaks the streak pays its buyers.",
+  "plain": "A streak game for ETH pools. Back-to-back buys grow a combo, and each buy in the streak pays a smaller fee (0.30% down to 0.04%). A sell big enough to break the streak pays a breaker fee that grows with the combo (up to 5%), and the streak's whole pot is split among its buyers by how much ETH they bought. A buy only shares the pot once it is 10 minutes old; a newer buy just gets its own fee back. Smaller sells chip in 0.30% and keep the streak alive. A streak with no buys for 24 hours closes on its own.",
+  "rules": [
+    "A buy of at least MIN_BUY adds 1 to the combo and pays 0.30% minus 0.02% per combo step, down to 0.04%.",
+    "A sell of at least max(MIN_BREAK, 10% of the streak's volume) breaks the streak and pays 0.30% plus 0.10% per combo step, up to 5%.",
+    "Smaller sells and buys pay 0.30% into the pot and leave the combo alone.",
+    "At close the pot is split by ETH bought; a buy counts only once 10 minutes old, and newer buys get their own fee back.",
+    "A streak can break only after its first buy is 10 minutes old; with no buy for 24 hours it closes with no breaker fee."
+  ],
+  "fee": {
+    "kind": "dynamic",
+    "bps": null,
+    "recipient": "streak pot",
+    "note": "0.04%-0.30% on buys, up to 5% on the breaking sell, all into the pot"
+  },
+  "date": "2026-10-06",
+  "auditUrl": "https://github.com/aeonfun/univ4-hooks/blob/main/audits/combobreaker.md",
+  "deployer": "0x0DE98e661606EcFC448da7A8276DdE4de45200C8"
+}

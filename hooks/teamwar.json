@@ -1,0 +1,31 @@
+{
+  "name": "TeamWar",
+  "source": "aeon",
+  "verified": true,
+  "category": "Games",
+  "klass": "VALUE",
+  "template": "freeform",
+  "stage": "deployed",
+  "flags": "0x20CC",
+  "addresses": {
+    "base": "0x8DfA52588d4423e96a93E6923BdE3240af6320cC",
+    "robinhood": "0x9C657d8637E98b9299Be6e4e23d52fD2713aA0Cc"
+  },
+  "mechanic": "Pick red or blue. Each week the team that trades more ETH takes the losing team's pot.",
+  "plain": "A weekly team game for ETH pools. Join red or blue with joinTeam(). Every trade you make then pays 0.25% of its ETH side into your team's pot and adds to your team's weekly volume. When the week ends (Monday 00:00 UTC), the team with more volume splits both pots, shared by how much each member traded. A tie gives each team its own pot back. Players who never join trade normally and pay no game fee.",
+  "rules": [
+    "Join a team per pool with joinTeam(); switching takes effect the next week.",
+    "A member's swap pays 0.25% of its ETH side into their team's weekly pot and adds its ETH size to the team's volume.",
+    "After Monday 00:00 UTC the higher-volume team splits both pots by member volume; a tie returns each team its own pot.",
+    "Non-members pay no game fee; claims are pull-only per (pool, week) via claim()."
+  ],
+  "fee": {
+    "kind": "fixed",
+    "bps": 25,
+    "recipient": "team pot",
+    "note": "0.25% of the ETH side into your team's pot, members only"
+  },
+  "date": "2026-10-06",
+  "auditUrl": "https://github.com/aeonfun/univ4-hooks/blob/main/audits/teamwar.md",
+  "deployer": "0x0DE98e661606EcFC448da7A8276DdE4de45200C8"
+}
