@@ -57,6 +57,29 @@ HeavierHand Base 0x2AD6936032d4201fc74041AfbC801FAAb1bf40c4, Robinhood
 0xfebC2D261c006409eD765bAcfF039846770280C4, Monad
 0xD4F21c282c7c1e8098D511039Ad39044488cC0c4.
 
+## ETH game hooks: LastBuyerWins, ComboBreaker, TeamWar (2026-10-06)
+
+Three game hooks for native-ETH pools, on the shared `EthGameHook` base (game fee in ETH on all
+four swap shapes, pull-only payouts) plus AeonFee. Flags `0x20CC` (beforeInitialize, beforeSwap +
+returns delta, afterSwap + returns delta), so pools need the Uniswap Labs allowlist to be routed.
+Built with `via_ir` and 800 optimizer runs (see `foundry.toml`). Deployer
+0x0DE98e661606EcFC448da7A8276DdE4de45200C8. Verified on Basescan (Base) and Sourcify
+(Robinhood, exact_match). Constructor floors: `MIN_BUY` 0.001 ETH, ComboBreaker `MIN_BREAK`
+0.01 ETH, TeamWar `MIN_SWAP` 0.001 ETH.
+
+| Hook | Base (8453) | Robinhood (4663) |
+|------|-------------|------------------|
+| LastBuyerWins | 0x5D505d56d4B62f5F83493b4acb03353bBde760CC | 0x94DE41E76700443F3d6673a397B00d41CF6ea0cc |
+| ComboBreaker | 0xc6aa5B60c7822186d1612ea0653F9FDA645F20cC | 0x85C98FfF5Bee81278b4dE807465a4D86F39F20cc |
+| TeamWar | 0x8DfA52588d4423e96a93E6923BdE3240af6320cC | 0x9C657d8637E98b9299Be6e4e23d52fD2713aA0Cc |
+
+Deploy txs: Base 0x1a18a0fd0eb4fda016636ee472891f5166d9aebb05c25cabdf3e93cbd0e8489c,
+0x4077065a1dd7401ac714fd0347dcb631ea71d6f9092359459f5d0dc53d2ac9f0,
+0x785f392de0ff7a0d4dddb58e8a1531c95eda27c1012aec3edbb5a41a20114417; Robinhood
+0x6ace99c4148b61b7035ca7a080bac894dec9686c25c09968ce3d50d7428cde82,
+0x11e0bdb33176c4b886c2cdea3ef3a862f123756a4f26774494d090d1e746feb0,
+0xf9f3df9cbf52563d34785ba0ef58b024ff9ed13e36b8f01670fab7e82a258c94 (in table order).
+
 ## Deploying
 
 Every hook is deployed through the canonical CREATE2 proxy

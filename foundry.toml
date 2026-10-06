@@ -8,3 +8,7 @@ optimizer = true
 optimizer_runs = 200
 remappings = ["@uniswap/v4-core/=lib/v4-core/"]
 ffi = false
+# The xcl game hooks (src/vendor/XclGames) were deployed with via_ir and 800 optimizer runs;
+# build them the same way so the bytecode matches the verified deployments.
+additional_compiler_profiles = [{ name = "xcl", via_ir = true, optimizer_runs = 800 }]
+compilation_restrictions = [{ paths = "src/vendor/XclGames/**", via_ir = true, optimizer_runs = 800 }]

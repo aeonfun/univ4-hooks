@@ -55,8 +55,8 @@
       "explorerApi": "https://api.etherscan.io/v2/api"
     }
   },
-  "count": 13,
-  "verifiedCount": 12,
+  "count": 16,
+  "verifiedCount": 15,
   "communityCount": 1,
   "hooks": [
     {
@@ -498,6 +498,124 @@
       "flagBits": 128,
       "callbacks": [
         "beforeSwap"
+      ]
+    },
+    {
+      "name": "ComboBreaker",
+      "source": "aeon",
+      "verified": true,
+      "category": "Games",
+      "klass": "VALUE",
+      "template": "freeform",
+      "stage": "deployed",
+      "flags": "0x20CC",
+      "addresses": {
+        "base": "0xc6aa5B60c7822186d1612ea0653F9FDA645F20cC",
+        "robinhood": "0x85C98FfF5Bee81278b4dE807465a4D86F39F20cc"
+      },
+      "mechanic": "Buy in a row to build a combo and pay less. The big sell that breaks the streak pays its buyers.",
+      "plain": "A streak game for ETH pools. Back-to-back buys grow a combo, and each buy in the streak pays a smaller fee (0.30% down to 0.04%). A sell big enough to break the streak pays a breaker fee that grows with the combo (up to 5%), and the streak's whole pot is split among its buyers by how much ETH they bought. A buy only shares the pot once it is 10 minutes old; a newer buy just gets its own fee back. Smaller sells chip in 0.30% and keep the streak alive. A streak with no buys for 24 hours closes on its own.",
+      "rules": [
+        "A buy of at least MIN_BUY adds 1 to the combo and pays 0.30% minus 0.02% per combo step, down to 0.04%.",
+        "A sell of at least max(MIN_BREAK, 10% of the streak's volume) breaks the streak and pays 0.30% plus 0.10% per combo step, up to 5%.",
+        "Smaller sells and buys pay 0.30% into the pot and leave the combo alone.",
+        "At close the pot is split by ETH bought; a buy counts only once 10 minutes old, and newer buys get their own fee back.",
+        "A streak can break only after its first buy is 10 minutes old; with no buy for 24 hours it closes with no breaker fee."
+      ],
+      "fee": {
+        "kind": "dynamic",
+        "bps": null,
+        "recipient": "streak pot",
+        "note": "0.04%-0.30% on buys, up to 5% on the breaking sell, all into the pot"
+      },
+      "date": "2026-10-06",
+      "auditUrl": "https://github.com/aeonfun/univ4-hooks/blob/main/audits/combobreaker.md",
+      "deployer": "0x0DE98e661606EcFC448da7A8276DdE4de45200C8",
+      "flagBits": 8396,
+      "callbacks": [
+        "beforeInitialize",
+        "beforeSwap",
+        "afterSwap",
+        "beforeSwapReturnDelta",
+        "afterSwapReturnDelta"
+      ]
+    },
+    {
+      "name": "LastBuyerWins",
+      "source": "aeon",
+      "verified": true,
+      "category": "Games",
+      "klass": "VALUE",
+      "template": "freeform",
+      "stage": "deployed",
+      "flags": "0x20CC",
+      "addresses": {
+        "base": "0x5D505d56d4B62f5F83493b4acb03353bBde760CC",
+        "robinhood": "0x94DE41E76700443F3d6673a397B00d41CF6ea0cc"
+      },
+      "mechanic": "Every big enough buy resets a 1 hour clock. When it hits zero, the last buyer takes 80% of the pot.",
+      "plain": "A countdown game for ETH pools. Every trade pays 0.2% of its ETH side into the pool's pot. A buy above the current minimum makes you the last buyer and resets a 1 hour clock. If nobody buys before the clock runs out, you win 80% of the pot and the other 20% starts the next round. The minimum buy rises with the pot (1% of it), so a big pot cannot be sniped with dust. Winnings are claimed, never pushed.",
+      "rules": [
+        "Every swap pays 0.2% of its ETH side into the pool's pot.",
+        "A buy of at least max(MIN_BUY, 1% of the pot) becomes the last buyer and resets the 1 hour clock.",
+        "When the clock runs out, the last buyer can claim 80% of the pot; the rest seeds the next round.",
+        "Settlement happens on the next swap or when anyone calls settle(); payouts are pull-only via claim()."
+      ],
+      "fee": {
+        "kind": "fixed",
+        "bps": 20,
+        "recipient": "pool pot",
+        "note": "0.2% of the ETH side into the pot"
+      },
+      "date": "2026-10-06",
+      "auditUrl": "https://github.com/aeonfun/univ4-hooks/blob/main/audits/lastbuyerwins.md",
+      "deployer": "0x0DE98e661606EcFC448da7A8276DdE4de45200C8",
+      "flagBits": 8396,
+      "callbacks": [
+        "beforeInitialize",
+        "beforeSwap",
+        "afterSwap",
+        "beforeSwapReturnDelta",
+        "afterSwapReturnDelta"
+      ]
+    },
+    {
+      "name": "TeamWar",
+      "source": "aeon",
+      "verified": true,
+      "category": "Games",
+      "klass": "VALUE",
+      "template": "freeform",
+      "stage": "deployed",
+      "flags": "0x20CC",
+      "addresses": {
+        "base": "0x8DfA52588d4423e96a93E6923BdE3240af6320cC",
+        "robinhood": "0x9C657d8637E98b9299Be6e4e23d52fD2713aA0Cc"
+      },
+      "mechanic": "Pick red or blue. Each week the team that trades more ETH takes the losing team's pot.",
+      "plain": "A weekly team game for ETH pools. Join red or blue with joinTeam(). Every trade you make then pays 0.25% of its ETH side into your team's pot and adds to your team's weekly volume. When the week ends (Monday 00:00 UTC), the team with more volume splits both pots, shared by how much each member traded. A tie gives each team its own pot back. Players who never join trade normally and pay no game fee.",
+      "rules": [
+        "Join a team per pool with joinTeam(); switching takes effect the next week.",
+        "A member's swap pays 0.25% of its ETH side into their team's weekly pot and adds its ETH size to the team's volume.",
+        "After Monday 00:00 UTC the higher-volume team splits both pots by member volume; a tie returns each team its own pot.",
+        "Non-members pay no game fee; claims are pull-only per (pool, week) via claim()."
+      ],
+      "fee": {
+        "kind": "fixed",
+        "bps": 25,
+        "recipient": "team pot",
+        "note": "0.25% of the ETH side into your team's pot, members only"
+      },
+      "date": "2026-10-06",
+      "auditUrl": "https://github.com/aeonfun/univ4-hooks/blob/main/audits/teamwar.md",
+      "deployer": "0x0DE98e661606EcFC448da7A8276DdE4de45200C8",
+      "flagBits": 8396,
+      "callbacks": [
+        "beforeInitialize",
+        "beforeSwap",
+        "afterSwap",
+        "beforeSwapReturnDelta",
+        "afterSwapReturnDelta"
       ]
     },
     {

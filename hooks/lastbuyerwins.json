@@ -1,0 +1,31 @@
+{
+  "name": "LastBuyerWins",
+  "source": "aeon",
+  "verified": true,
+  "category": "Games",
+  "klass": "VALUE",
+  "template": "freeform",
+  "stage": "deployed",
+  "flags": "0x20CC",
+  "addresses": {
+    "base": "0x5D505d56d4B62f5F83493b4acb03353bBde760CC",
+    "robinhood": "0x94DE41E76700443F3d6673a397B00d41CF6ea0cc"
+  },
+  "mechanic": "Every big enough buy resets a 1 hour clock. When it hits zero, the last buyer takes 80% of the pot.",
+  "plain": "A countdown game for ETH pools. Every trade pays 0.2% of its ETH side into the pool's pot. A buy above the current minimum makes you the last buyer and resets a 1 hour clock. If nobody buys before the clock runs out, you win 80% of the pot and the other 20% starts the next round. The minimum buy rises with the pot (1% of it), so a big pot cannot be sniped with dust. Winnings are claimed, never pushed.",
+  "rules": [
+    "Every swap pays 0.2% of its ETH side into the pool's pot.",
+    "A buy of at least max(MIN_BUY, 1% of the pot) becomes the last buyer and resets the 1 hour clock.",
+    "When the clock runs out, the last buyer can claim 80% of the pot; the rest seeds the next round.",
+    "Settlement happens on the next swap or when anyone calls settle(); payouts are pull-only via claim()."
+  ],
+  "fee": {
+    "kind": "fixed",
+    "bps": 20,
+    "recipient": "pool pot",
+    "note": "0.2% of the ETH side into the pot"
+  },
+  "date": "2026-10-06",
+  "auditUrl": "https://github.com/aeonfun/univ4-hooks/blob/main/audits/lastbuyerwins.md",
+  "deployer": "0x0DE98e661606EcFC448da7A8276DdE4de45200C8"
+}
