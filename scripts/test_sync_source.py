@@ -132,6 +132,68 @@ class ProcessHook(unittest.TestCase):
         self.assertEqual(r["status"], "added")
         self.assertFalse(os.path.exists(os.path.join(self.root, "src")))
 
+    def test_rejects_a_source_path_that_escapes_its_own_vendor_dir(self):
+        # an unimported extra file whose key walks out of src/vendor/<Name>/ onto a tracked file
+        evil_sources = {
+            "src/EvilHook.sol": "contract EvilHook {}",
+            "../../AeonFee.sol": "// PWNED\ncontract AeonFee {}",
+        }
+        ss.fetch_source = lambda meta, addr, key: ("EvilHook", evil_sources, [])
+
+        # A real, pre-existing file sitting exactly where the traversal targets -
+        # standing in for the repo's actual src/AeonFee.sol.
+        target = os.path.join(self.root, "src", "AeonFee.sol")
+        os.makedirs(os.path.dirname(target))
+        with open(target, "w") as f:
+            f.write("// SPDX-License-Identifier: MIT\ncontract AeonFee {}\n")
+
+        r = ss.process_hook(self.hook, self.chains, "key", write=True, verify=True)
+
+        self.assertEqual(r["status"], "no-verified-source")
+        self.assertTrue(any("unsafe-source-path" in t for t in r["tried"]), r["tried"])
+        with open(target) as f:
+            self.assertEqual(f.read(), "// SPDX-License-Identifier: MIT\ncontract AeonFee {}\n")
+        self.assertFalse(os.path.exists(os.path.join(self.root, "src", "EvilHook.sol")))
+        self.assertFalse(os.path.exists(os.path.join(self.root, "src", "vendor", "TwigWrap")))
+
+    def test_unwritable_source_path_skips_the_listing_not_the_sync(self):
+        # "x" as a file and "x/y" under it cannot both be written
+        clash = {"src/Clash.sol": "contract Clash {}", "x": "// a", "x/y": "// b"}
+        ss.fetch_source = lambda meta, addr, key: ("Clash", clash, [])
+        r = ss.process_hook(self.hook, self.chains, "key", write=True)
+        self.assertEqual(r["status"], "no-verified-source")
+        self.assertTrue(any("unwritable-source-path" in t for t in r["tried"]), r["tried"])
+        self.assertFalse(os.path.exists(os.path.join(self.root, "src", "TwigWrap.sol")))
+        self.assertFalse(os.path.exists(os.path.join(self.root, "src", "vendor", "TwigWrap")))
+
+
+class VendorEscapes(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self._saved_root = ss.hl.REPO_ROOT
+        ss.hl.REPO_ROOT = self.tmp.name
+        self.vendor_abs = os.path.join(self.tmp.name, "src", "vendor", "Foo")
+
+    def tearDown(self):
+        ss.hl.REPO_ROOT = self._saved_root
+        self.tmp.cleanup()
+
+    def test_traversal_key_escapes(self):
+        self.assertTrue(ss.vendor_escapes("src/vendor/Foo/../../AeonFee.sol", self.vendor_abs))
+
+    def test_nested_key_stays_inside(self):
+        self.assertFalse(ss.vendor_escapes("src/vendor/Foo/lib/openzeppelin/IERC20.sol", self.vendor_abs))
+
+    def test_sibling_dir_with_same_prefix_escapes(self):
+        self.assertTrue(ss.vendor_escapes("src/vendor/Foo/../FooEvil/x.sol", self.vendor_abs))
+
+    def test_key_naming_the_vendor_dir_itself_escapes(self):
+        for key in ("", ".", "a/.."):
+            self.assertTrue(ss.vendor_escapes(f"src/vendor/Foo/{key}", self.vendor_abs), key)
+
+    def test_nul_byte_escapes(self):
+        self.assertTrue(ss.vendor_escapes("src/vendor/Foo/a\0.sol", self.vendor_abs))
+
 
 if __name__ == "__main__":
     unittest.main()
