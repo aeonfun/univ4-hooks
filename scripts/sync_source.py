@@ -206,6 +206,21 @@ def fetch_source(meta, address, api_key):
         return None
 
 
+def vendor_escapes(dest_rel: str, vendor_abs: str) -> bool:
+    """True iff dest_rel (repo-root-relative) would resolve outside vendor_abs.
+
+    A verified multi-file build's source-path strings are chosen by whoever
+    verified the contract on the chain explorer, not by this repo - a key like
+    "../../AeonFee.sol" is a valid, compiling source-map entry that an explorer
+    will happily accept, and resolves outside src/vendor/<Name>/ straight into
+    this repo's own tracked files. Every vendored write must be checked against
+    this before it touches disk.
+    """
+    dest_abs = os.path.abspath(os.path.join(hl.REPO_ROOT, dest_rel))
+    vendor_abs = os.path.abspath(vendor_abs)
+    return os.path.commonpath([dest_abs, vendor_abs]) != vendor_abs
+
+
 def forge_build():
     """(ok, first error line) for a forge build of the whole repo."""
     try:
@@ -252,6 +267,16 @@ def process_hook(hook, chains, api_key, write, verify=False):
         dests = {p: (f"src/{fname}.sol" if p == main_path else f"{vendor_rel}/{p}") for p in sources}
         vendored = sorted(p for p in sources if p != main_path)
 
+        vendor_abs = os.path.join(hl.REPO_ROOT, vendor_rel)
+        unsafe = next((p for p in vendored if vendor_escapes(dests[p], vendor_abs)), None)
+        if unsafe is not None:
+            # A source-map key that escapes this hook's own vendor directory is
+            # never safe to trust, no matter how harmless-looking the rest of the
+            # verified build is - skip this listing entirely rather than write
+            # any part of it.
+            tried.append(f"{chain}:unsafe-source-path:{unsafe}")
+            continue
+
         entries = [(c, a, chains[c]["chainId"]) for c, a in addresses.items() if c in chains]
         has_fee = inherits_aeonfee(main_content, sources)
         body = normalize_dashes(rewrite_imports(main_path, main_content, dests, remappings))
@@ -266,10 +291,15 @@ def process_hook(hook, chains, api_key, write, verify=False):
         if not write:
             return result
 
-        vendor_abs = os.path.join(hl.REPO_ROOT, vendor_rel)
         shutil.rmtree(vendor_abs, ignore_errors=True)
         for path in vendored:
             dst = os.path.join(hl.REPO_ROOT, dests[path])
+            # Re-assert right at the write site, independent of the check above:
+            # this is the one line that can turn an attacker-chosen source path
+            # into a write outside src/vendor/<Name>/, so it must never run on an
+            # unverified destination even if a future refactor drops the earlier
+            # guard.
+            assert not vendor_escapes(dests[path], vendor_abs), f"refusing to write outside {vendor_rel}: {dst}"
             os.makedirs(os.path.dirname(dst), exist_ok=True)
             with open(dst, "w") as f:
                 f.write(normalize_dashes(rewrite_imports(path, sources[path], dests, remappings)))

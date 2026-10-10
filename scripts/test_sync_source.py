@@ -132,6 +132,55 @@ class ProcessHook(unittest.TestCase):
         self.assertEqual(r["status"], "added")
         self.assertFalse(os.path.exists(os.path.join(self.root, "src")))
 
+    def test_rejects_a_source_path_that_escapes_its_own_vendor_dir(self):
+        # Finding #1 (path traversal): a verified build's source-map keys are
+        # chosen by whoever verified the contract on the chain explorer, not by
+        # this repo. A key like "../../AeonFee.sol" is a normal-looking,
+        # unimported extra file that changes nothing about what compiles/
+        # verifies, but resolves outside src/vendor/<Name>/ straight onto a file
+        # this repo actually tracks. Reproduced live against the real CLI
+        # entrypoint (python3 scripts/sync_source.py --write --verify) during
+        # this fix's own review - see the PR description for that run's output.
+        evil_sources = {
+            "src/EvilHook.sol": "contract EvilHook {}",
+            "../../AeonFee.sol": "// PWNED\ncontract AeonFee {}",
+        }
+        ss.fetch_source = lambda meta, addr, key: ("EvilHook", evil_sources, [])
+
+        # A real, pre-existing file sitting exactly where the traversal targets -
+        # standing in for the repo's actual src/AeonFee.sol.
+        target = os.path.join(self.root, "src", "AeonFee.sol")
+        os.makedirs(os.path.dirname(target))
+        with open(target, "w") as f:
+            f.write("// SPDX-License-Identifier: MIT\ncontract AeonFee {}\n")
+
+        r = ss.process_hook(self.hook, self.chains, "key", write=True, verify=True)
+
+        self.assertEqual(r["status"], "no-verified-source")
+        self.assertTrue(any("unsafe-source-path" in t for t in r["tried"]), r["tried"])
+        with open(target) as f:
+            self.assertEqual(f.read(), "// SPDX-License-Identifier: MIT\ncontract AeonFee {}\n")
+        self.assertFalse(os.path.exists(os.path.join(self.root, "src", "EvilHook.sol")))
+        self.assertFalse(os.path.exists(os.path.join(self.root, "src", "vendor", "TwigWrap")))
+
+
+class VendorEscapes(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self._saved_root = ss.hl.REPO_ROOT
+        ss.hl.REPO_ROOT = self.tmp.name
+        self.vendor_abs = os.path.join(self.tmp.name, "src", "vendor", "Foo")
+
+    def tearDown(self):
+        ss.hl.REPO_ROOT = self._saved_root
+        self.tmp.cleanup()
+
+    def test_traversal_key_escapes(self):
+        self.assertTrue(ss.vendor_escapes("src/vendor/Foo/../../AeonFee.sol", self.vendor_abs))
+
+    def test_nested_key_stays_inside(self):
+        self.assertFalse(ss.vendor_escapes("src/vendor/Foo/lib/openzeppelin/IERC20.sol", self.vendor_abs))
+
 
 if __name__ == "__main__":
     unittest.main()
