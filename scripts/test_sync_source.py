@@ -133,14 +133,7 @@ class ProcessHook(unittest.TestCase):
         self.assertFalse(os.path.exists(os.path.join(self.root, "src")))
 
     def test_rejects_a_source_path_that_escapes_its_own_vendor_dir(self):
-        # Finding #1 (path traversal): a verified build's source-map keys are
-        # chosen by whoever verified the contract on the chain explorer, not by
-        # this repo. A key like "../../AeonFee.sol" is a normal-looking,
-        # unimported extra file that changes nothing about what compiles/
-        # verifies, but resolves outside src/vendor/<Name>/ straight onto a file
-        # this repo actually tracks. Reproduced live against the real CLI
-        # entrypoint (python3 scripts/sync_source.py --write --verify) during
-        # this fix's own review - see the PR description for that run's output.
+        # an unimported extra file whose key walks out of src/vendor/<Name>/ onto a tracked file
         evil_sources = {
             "src/EvilHook.sol": "contract EvilHook {}",
             "../../AeonFee.sol": "// PWNED\ncontract AeonFee {}",
@@ -163,6 +156,16 @@ class ProcessHook(unittest.TestCase):
         self.assertFalse(os.path.exists(os.path.join(self.root, "src", "EvilHook.sol")))
         self.assertFalse(os.path.exists(os.path.join(self.root, "src", "vendor", "TwigWrap")))
 
+    def test_unwritable_source_path_skips_the_listing_not_the_sync(self):
+        # "x" as a file and "x/y" under it cannot both be written
+        clash = {"src/Clash.sol": "contract Clash {}", "x": "// a", "x/y": "// b"}
+        ss.fetch_source = lambda meta, addr, key: ("Clash", clash, [])
+        r = ss.process_hook(self.hook, self.chains, "key", write=True)
+        self.assertEqual(r["status"], "no-verified-source")
+        self.assertTrue(any("unwritable-source-path" in t for t in r["tried"]), r["tried"])
+        self.assertFalse(os.path.exists(os.path.join(self.root, "src", "TwigWrap.sol")))
+        self.assertFalse(os.path.exists(os.path.join(self.root, "src", "vendor", "TwigWrap")))
+
 
 class VendorEscapes(unittest.TestCase):
     def setUp(self):
@@ -180,6 +183,16 @@ class VendorEscapes(unittest.TestCase):
 
     def test_nested_key_stays_inside(self):
         self.assertFalse(ss.vendor_escapes("src/vendor/Foo/lib/openzeppelin/IERC20.sol", self.vendor_abs))
+
+    def test_sibling_dir_with_same_prefix_escapes(self):
+        self.assertTrue(ss.vendor_escapes("src/vendor/Foo/../FooEvil/x.sol", self.vendor_abs))
+
+    def test_key_naming_the_vendor_dir_itself_escapes(self):
+        for key in ("", ".", "a/.."):
+            self.assertTrue(ss.vendor_escapes(f"src/vendor/Foo/{key}", self.vendor_abs), key)
+
+    def test_nul_byte_escapes(self):
+        self.assertTrue(ss.vendor_escapes("src/vendor/Foo/a\0.sol", self.vendor_abs))
 
 
 if __name__ == "__main__":

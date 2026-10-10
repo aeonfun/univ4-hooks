@@ -207,18 +207,19 @@ def fetch_source(meta, address, api_key):
 
 
 def vendor_escapes(dest_rel: str, vendor_abs: str) -> bool:
-    """True iff dest_rel (repo-root-relative) would resolve outside vendor_abs.
+    """True unless dest_rel (repo-root-relative) lands strictly inside vendor_abs.
 
-    A verified multi-file build's source-path strings are chosen by whoever
-    verified the contract on the chain explorer, not by this repo - a key like
-    "../../AeonFee.sol" is a valid, compiling source-map entry that an explorer
-    will happily accept, and resolves outside src/vendor/<Name>/ straight into
-    this repo's own tracked files. Every vendored write must be checked against
-    this before it touches disk.
+    Source-map keys are chosen by whoever verified the contract, so a key like
+    "../../AeonFee.sol" would write onto this repo's own files. A key that
+    resolves to the vendor dir itself ("", ".", "a/..") or holds a NUL byte
+    counts as escaping too: it could only fail at open() and take the whole
+    sync down with it.
     """
+    if "\0" in dest_rel:
+        return True
     dest_abs = os.path.abspath(os.path.join(hl.REPO_ROOT, dest_rel))
     vendor_abs = os.path.abspath(vendor_abs)
-    return os.path.commonpath([dest_abs, vendor_abs]) != vendor_abs
+    return dest_abs == vendor_abs or os.path.commonpath([dest_abs, vendor_abs]) != vendor_abs
 
 
 def forge_build():
@@ -270,10 +271,7 @@ def process_hook(hook, chains, api_key, write, verify=False):
         vendor_abs = os.path.join(hl.REPO_ROOT, vendor_rel)
         unsafe = next((p for p in vendored if vendor_escapes(dests[p], vendor_abs)), None)
         if unsafe is not None:
-            # A source-map key that escapes this hook's own vendor directory is
-            # never safe to trust, no matter how harmless-looking the rest of the
-            # verified build is - skip this listing entirely rather than write
-            # any part of it.
+            # skip the whole listing, never write part of it
             tried.append(f"{chain}:unsafe-source-path:{unsafe}")
             continue
 
@@ -292,17 +290,20 @@ def process_hook(hook, chains, api_key, write, verify=False):
             return result
 
         shutil.rmtree(vendor_abs, ignore_errors=True)
-        for path in vendored:
-            dst = os.path.join(hl.REPO_ROOT, dests[path])
-            # Re-assert right at the write site, independent of the check above:
-            # this is the one line that can turn an attacker-chosen source path
-            # into a write outside src/vendor/<Name>/, so it must never run on an
-            # unverified destination even if a future refactor drops the earlier
-            # guard.
-            assert not vendor_escapes(dests[path], vendor_abs), f"refusing to write outside {vendor_rel}: {dst}"
-            os.makedirs(os.path.dirname(dst), exist_ok=True)
-            with open(dst, "w") as f:
-                f.write(normalize_dashes(rewrite_imports(path, sources[path], dests, remappings)))
+        try:
+            for path in vendored:
+                dst = os.path.join(hl.REPO_ROOT, dests[path])
+                # checked again here so a refactor of the guard above can't open a write outside
+                if vendor_escapes(dests[path], vendor_abs):
+                    raise RuntimeError(f"refusing to write outside {vendor_rel}: {dst}")
+                os.makedirs(os.path.dirname(dst), exist_ok=True)
+                with open(dst, "w") as f:
+                    f.write(normalize_dashes(rewrite_imports(path, sources[path], dests, remappings)))
+        except OSError as e:
+            # e.g. keys "x" and "x/y" in one build: one bad listing never breaks the weekly sync
+            shutil.rmtree(vendor_abs, ignore_errors=True)
+            tried.append(f"{chain}:unwritable-source-path:{e.strerror}")
+            continue
         os.makedirs(SRC_DIR, exist_ok=True)
         with open(dest, "w") as f:
             f.write(body)
@@ -345,7 +346,9 @@ def main():
     for r in broken:
         print(f"{warn}BROKEN  {r['name']:<20} {r['file']} does not compile, not added ({r['error']})")
     for r in missing:
-        print(f"MISSING {r['name']:<20} no verified source ({', '.join(r['tried'])})")
+        # a source path that tries to leave its vendor dir is a planted-build signal, not a miss
+        flag = warn if any(":unsafe-source-path:" in t for t in r["tried"]) else ""
+        print(f"{flag}MISSING {r['name']:<20} no verified source ({', '.join(r['tried'])})")
     print(f"\n{len(has)} already sourced, {len(added)} added, {len(broken)} do not compile, "
           f"{len(missing)} still missing.")
 
