@@ -7,12 +7,17 @@ on:
 
 jobs:
   build-test:
-    runs-on: ${{ github.repository_owner == 'aeonfun' && 'blacksmith-2vcpu-ubuntu-2404' || 'ubuntu-latest' }}
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
 
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
+        with:
+          # Its RPC cache key ends in the commit sha, so every run saved a new
+          # cache no later run could hit; the fork tests that would use it are
+          # skipped below anyway.
+          cache: false
 
       - name: Build
         run: forge build
