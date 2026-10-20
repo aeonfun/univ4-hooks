@@ -4,13 +4,12 @@ Autonomous `sc-audit` reports for the aeon.fun Uniswap v4 hook fleet. Each hook'
 verified on-chain Base source was audited threat-model-first (Slither + an agentic
 invariant / access-control / oracle pass + a fuzz arm gated on findings) against the
 full 11-class v4-hook checklist, with every vendored `@uniswap/v4-core` file
-SHA-256-diffed against the genuine npm release. **The original 12 hooks: CLEAN (0 confirmed).** The three ETH game hooks (2026-10-06) list their accepted risks in their reports. Community hooks audited on request are listed below the fleet rows.
+SHA-256-diffed against the genuine npm release. **The original 12 hooks: CLEAN (0 confirmed).** The ETH game hooks (2026-10-06) list their accepted risks in their reports. Community hooks audited on request are listed below the fleet rows.
 
 | Hook | Category | Full audit | Marketplace | Verdict | Date |
 |------|----------|-----------|-------------|---------|------|
 | BlockEcho | Games | [blockecho.md](./blockecho.md) | [aeon.fun/hooks](https://www.aeon.fun/hooks?hook=blockecho) | CLEAN (0) | 2026-09-07 |
 | CapGate | Access | [capgate.md](./capgate.md) | [aeon.fun/hooks](https://www.aeon.fun/hooks?hook=capgate) | CLEAN (0) | 2026-09-06 |
-| ComboBreaker | Games | [combobreaker.md](./combobreaker.md) | [aeon.fun/hooks](https://www.aeon.fun/hooks?hook=combobreaker) | 0 open, 2 accepted risks | 2026-10-06 |
 | CrownClash | Rewards | [crownclash.md](./crownclash.md) | [aeon.fun/hooks](https://www.aeon.fun/hooks?hook=crownclash) | CLEAN (0) | 2026-09-07 |
 | DailyWindowGate | Access | [dailywindowgate.md](./dailywindowgate.md) | [aeon.fun/hooks](https://www.aeon.fun/hooks?hook=dailywindowgate) | CLEAN (0) | 2026-09-07 |
 | DynamicFee | Fees | [dynamicfee.md](./dynamicfee.md) | [aeon.fun/hooks](https://www.aeon.fun/hooks?hook=dynamicfee) | CLEAN (0) | 2026-09-07 |
