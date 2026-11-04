@@ -4,10 +4,12 @@ entry.
 
 Scope is the repo itself: every hooks/<slug>.json already carries the hook's
 name and its deployed address(es). This script finds the listings that have no
-matching src/<Name>.sol, pulls the verified source from the chain's explorer
-(using the address in the JSON), and writes it under src/ so all listed hooks
-have source in-repo, not just a registry row. It never touches a hook that
-already has a src file, and never overwrites an existing lib/ file.
+matching src/<Name>.sol (or src/vendor/<Project>/src/<Name>.sol declaring the
+contract, for hooks vendored as a whole project), pulls the verified source from
+the chain's explorer (using the address in the JSON), and writes it under src/
+so all listed hooks have source in-repo, not just a registry row. It never
+touches a hook that already has source, and never overwrites an existing lib/
+file.
 
 For each missing hook it:
   - tries each address the listing has, on its chain, until one returns verified
@@ -235,14 +237,43 @@ def forge_build():
     return False, err
 
 
+def existing_source(fname: str):
+    """Repo-relative path of the source this listing already has, or None.
+
+    Two layouts count: the sync's own `src/<Name>.sol`, and a hand-vendored
+    project kept whole under `src/vendor/<Project>/src/<Name>.sol` (the XclGames
+    hooks, built with their own compiler settings so the bytecode matches the
+    deployment). A vendored file only counts if it declares `contract <Name>`,
+    so a dependency that happens to share the name never hides a missing hook.
+    """
+    if os.path.exists(os.path.join(SRC_DIR, fname + ".sol")):
+        return f"src/{fname}.sol"
+    decl = re.compile(r"^\s*contract\s+" + re.escape(fname) + r"\b", re.M)
+    vendor_dir = os.path.join(SRC_DIR, "vendor")
+    try:
+        projects = sorted(os.listdir(vendor_dir))
+    except OSError:
+        return None
+    for project in projects:
+        path = os.path.join(vendor_dir, project, "src", fname + ".sol")
+        try:
+            with open(path) as f:
+                if decl.search(f.read()):
+                    return f"src/vendor/{project}/src/{fname}.sol"
+        except OSError:
+            continue
+    return None
+
+
 def process_hook(hook, chains, api_key, write, verify=False):
     """Returns a dict describing the outcome for one listing."""
     name = hook["name"]
     fname = src_filename(name)
     dest = os.path.join(SRC_DIR, fname + ".sol")
     slug = hl.slugify(name)
-    if os.path.exists(dest):
-        return {"slug": slug, "name": name, "status": "has-source"}
+    have = existing_source(fname)
+    if have:
+        return {"slug": slug, "name": name, "status": "has-source", "file": have}
 
     addresses = hook.get("addresses", {}) or {}
     tried = []

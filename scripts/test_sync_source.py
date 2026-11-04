@@ -156,6 +156,38 @@ class ProcessHook(unittest.TestCase):
         self.assertFalse(os.path.exists(os.path.join(self.root, "src", "EvilHook.sol")))
         self.assertFalse(os.path.exists(os.path.join(self.root, "src", "vendor", "TwigWrap")))
 
+    def _write(self, rel, content):
+        path = os.path.join(self.root, rel)
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(path, "w") as f:
+            f.write(content)
+
+    def _no_fetch(self, *a):
+        raise AssertionError("fetched source for a hook that already has it")
+
+    def test_hook_vendored_as_a_project_counts_as_sourced(self):
+        # LastBuyerWins / TeamWar live in src/vendor/XclGames/src/, not src/<Name>.sol;
+        # the sync re-vendored them every week until this was counted.
+        self._write("src/vendor/XclGames/src/TwigWrap.sol",
+                    "pragma solidity 0.8.26;\ncontract TwigWrap is EthGameHook {}\n")
+        ss.fetch_source = self._no_fetch
+        r = ss.process_hook(self.hook, self.chains, "key", write=True)
+        self.assertEqual(r["status"], "has-source")
+        self.assertEqual(r["file"], "src/vendor/XclGames/src/TwigWrap.sol")
+        self.assertFalse(os.path.exists(os.path.join(self.root, "src", "TwigWrap.sol")))
+
+    def test_top_level_src_file_still_counts(self):
+        self._write("src/TwigWrap.sol", "contract TwigWrap {}\n")
+        ss.fetch_source = self._no_fetch
+        r = ss.process_hook(self.hook, self.chains, "key", write=False)
+        self.assertEqual((r["status"], r["file"]), ("has-source", "src/TwigWrap.sol"))
+
+    def test_vendored_file_without_the_contract_does_not_count(self):
+        # a dep that only shares the file name (or names the contract in a comment) is not the hook
+        self._write("src/vendor/Other/src/TwigWrap.sol", "// see contract TwigWrap\nlibrary TwigWrapLib {}\n")
+        r = ss.process_hook(self.hook, self.chains, "key", write=False)
+        self.assertEqual(r["status"], "added")
+
     def test_unwritable_source_path_skips_the_listing_not_the_sync(self):
         # "x" as a file and "x/y" under it cannot both be written
         clash = {"src/Clash.sol": "contract Clash {}", "x": "// a", "x/y": "// b"}
