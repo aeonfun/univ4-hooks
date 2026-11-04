@@ -6,8 +6,16 @@ name: weekly-sync
 # the chain explorer (by the address in the JSON) and vendors it, plus the rest of
 # its verified build under src/vendor/<Name>/. --verify drops any hook that does
 # not compile here (logged as a warning), so one bad listing cannot turn this red.
-# If anything was added it opens a PR for review; a quiet week is a no-op. Never
-# merges on its own.
+# If anything was added it force-pushes the one bot branch chore/source-sync and
+# opens a PR from it, or updates the PR already open there, so there is never more
+# than one sync PR. A quiet week, or a week whose result matches what that branch
+# already holds, is a no-op. Never merges on its own.
+#
+# Token: a PR or push made with GITHUB_TOKEN does not trigger other workflows, so
+# the required ci / build-test check would never run on the sync PR. Set the repo
+# secret GH_GLOBAL (classic PAT, `repo` scope, same convention as the other aeonfun
+# automation) and the push + PR go out under it, so CI runs. Without it this falls
+# back to GITHUB_TOKEN and CI has to be started by hand on the PR.
 
 on:
   schedule:
@@ -24,6 +32,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+        with:
+          # the push below goes out with this token; GITHUB_TOKEN pushes trigger no CI
+          token: ${{ secrets.GH_GLOBAL || secrets.GITHUB_TOKEN }}
 
       - uses: actions/setup-python@v7
         with:
@@ -53,16 +64,17 @@ jobs:
         if: steps.diff.outputs.changed == 'true'
         run: forge build
 
-      - name: Open a PR
+      - name: Open or update the sync PR
         if: steps.diff.outputs.changed == 'true'
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_GLOBAL || secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
-          branch="chore/source-sync-$(date -u +%Y%m%d)"
+          # one fixed, bot-owned branch: rebuilt from main each run and force-pushed
+          branch="chore/source-sync"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git checkout -b "$branch"
+          git checkout -B "$branch"
           git add src
           git commit -F - <<'EOF'
           chore: sync verified source for listed hooks
@@ -70,7 +82,14 @@ jobs:
           Backfilled by scripts/sync_source.py from the chain explorers. See the PR
           body for which listings and libraries were added.
           EOF
-          git push -u origin "$branch"
+          # same tree as the branch already holds: nothing new, leave the PR (and its CI) alone
+          if git fetch --depth=1 origin "$branch" 2>/dev/null \
+            && git diff --quiet FETCH_HEAD HEAD; then
+            echo "chore/source-sync already holds this sync, nothing to push."
+            exit 0
+          fi
+          git push --force origin "$branch"
           gh pr create --base main --head "$branch" \
             --title "chore: weekly hook source sync" \
-            --body-file sync_summary.md
+            --body-file sync_summary.md \
+            || gh pr edit "$branch" --body-file sync_summary.md
