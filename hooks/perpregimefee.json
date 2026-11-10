@@ -1,0 +1,29 @@
+{
+  "name": "PerpRegimeFee",
+  "source": "aeon",
+  "verified": false,
+  "category": "Fees",
+  "klass": "VALUE",
+  "template": "freeform",
+  "stage": "deployed",
+  "flags": "0xC4",
+  "addresses": {
+    "base": "0x190D7F16f9385026cb243BD78F1181427d4Cc0C4",
+    "elysium": "0x1dF778Efb0116CCCfA92c613703D4F3A66BC00C4"
+  },
+  "mechanic": "reprices the lp fee off hyperliquid perp regimes, with a protocol + operator skim each swap",
+  "plain": "a dynamic-fee v4 hook. an oracle sets the market regime and beforeSwap overrides the lp fee to match (risk_on 0.10%, neutral 0.30%, risk_off 1.00%). afterSwap takes a mandatory 10 bps aeon fee plus a 10 bps operator fee, on exact-in and exact-out.",
+  "rules": [
+    "beforeSwap sets the lp fee from the oracle regime: risk_on 0.10%, neutral 0.30% default, risk_off 1.00%",
+    "only the oracle rotates the regime (updateRegime, onlyOracle)",
+    "10 bps aeon fee + 10 bps operator fee, taken to immutable recipients, no custody"
+  ],
+  "fee": {
+    "kind": "dynamic",
+    "bps": 20,
+    "recipient": "0x805073311cB90854029Df7De4b25211F7a18cd7a",
+    "note": "10 bps aeon + 10 bps operator, atop the dynamic regime lp fee"
+  },
+  "date": "2026-11-10",
+  "deployer": "0x805073311cB90854029Df7De4b25211F7a18cd7a"
+}

@@ -28,7 +28,10 @@
     },
     "source": {
       "type": "string",
-      "enum": ["aeon", "community"],
+      "enum": [
+        "aeon",
+        "community"
+      ],
       "description": "aeon = shipped by the aeon fleet; community = third-party submission."
     },
     "verified": {
@@ -37,22 +40,41 @@
     },
     "category": {
       "type": "string",
-      "enum": ["Fees", "Rewards", "Access", "Games", "Orders", "Launch"],
+      "enum": [
+        "Fees",
+        "Rewards",
+        "Access",
+        "Games",
+        "Orders",
+        "Launch"
+      ],
       "description": "Marketplace category on aeon.fun/hooks."
     },
     "klass": {
       "type": "string",
-      "enum": ["VALUE", "FEE", "GATE"],
+      "enum": [
+        "VALUE",
+        "FEE",
+        "GATE"
+      ],
       "description": "The hook's own character on top of the universal AeonFee: VALUE moves tokens, FEE sets a dynamic LP fee, GATE decides yes/no on a swap."
     },
     "template": {
       "type": "string",
-      "enum": ["dynamic", "noop", "freeform"],
+      "enum": [
+        "dynamic",
+        "noop",
+        "freeform"
+      ],
       "description": "Which deploy-uni-hook template it was built from."
     },
     "stage": {
       "type": "string",
-      "enum": ["template", "deployed", "frontend"],
+      "enum": [
+        "template",
+        "deployed",
+        "frontend"
+      ],
       "description": "Lifecycle: template = pre-audited template set, deployed = live onchain, frontend = also has a wallet-connectable demo."
     },
     "flags": {
@@ -66,13 +88,30 @@
       "additionalProperties": false,
       "description": "One deployed address per chain. aeon fleet hooks ship to all four; a community submission is usually one chain.",
       "properties": {
-        "ethereum": { "$ref": "#/$defs/address" },
-        "base": { "$ref": "#/$defs/address" },
-        "robinhood": { "$ref": "#/$defs/address" },
-        "monad": { "$ref": "#/$defs/address" },
-        "bnb": { "$ref": "#/$defs/address" },
-        "arbitrum": { "$ref": "#/$defs/address" },
-        "unichain": { "$ref": "#/$defs/address" }
+        "ethereum": {
+          "$ref": "#/$defs/address"
+        },
+        "base": {
+          "$ref": "#/$defs/address"
+        },
+        "robinhood": {
+          "$ref": "#/$defs/address"
+        },
+        "monad": {
+          "$ref": "#/$defs/address"
+        },
+        "bnb": {
+          "$ref": "#/$defs/address"
+        },
+        "arbitrum": {
+          "$ref": "#/$defs/address"
+        },
+        "unichain": {
+          "$ref": "#/$defs/address"
+        },
+        "elysium": {
+          "$ref": "#/$defs/address"
+        }
       }
     },
     "mechanic": {
@@ -91,7 +130,11 @@
       "type": "array",
       "minItems": 1,
       "maxItems": 8,
-      "items": { "type": "string", "minLength": 1, "maxLength": 200 },
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+      },
       "description": "The exact rules the hook enforces, one per line."
     },
     "auditUrl": {
@@ -113,16 +156,25 @@
     "fee": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["kind"],
+      "required": [
+        "kind"
+      ],
       "description": "The fee the hook itself takes on a swap, on top of the pool's LP fee and (for aeon hooks) the universal 10 bps AeonFee emitted at the top of the registry. Optional - a maintainer fills it if a submitter leaves it blank.",
       "properties": {
         "kind": {
           "type": "string",
-          "enum": ["none", "fixed", "dynamic"],
+          "enum": [
+            "none",
+            "fixed",
+            "dynamic"
+          ],
           "description": "none = the hook takes no fee of its own; fixed = a flat bps rate; dynamic = varies (e.g. with volatility)."
         },
         "bps": {
-          "type": ["number", "null"],
+          "type": [
+            "number",
+            "null"
+          ],
           "minimum": 0,
           "maximum": 10000,
           "description": "Flat fee rate in basis points (100 bps = 1%); 0 for none, null when dynamic."
