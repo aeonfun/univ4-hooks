@@ -78,6 +78,21 @@ Deploy txs: Base 0x1a18a0fd0eb4fda016636ee472891f5166d9aebb05c25cabdf3e93cbd0e84
 0x11e0bdb33176c4b886c2cdea3ef3a862f123756a4f26774494d090d1e746feb0,
 0xf9f3df9cbf52563d34785ba0ef58b024ff9ed13e36b8f01670fab7e82a258c94 (in table order).
 
+## Elysium (99901)
+
+Chain reference for the Elysium deployment (Kinetiq's HyperEVM Arbitrum Orbit L2,
+gas token HYPE). Used by the community hook PerpRegimeFee (`hooks/perpregimefee.json`),
+not part of the fleet tables above.
+
+- Uniswap v4 PoolManager: 0xE2e105d3F7209A9DA11f83cCf3E7398a753823F1
+- StateView: 0x27eD73aE0652fdCf71d6793412A7525f32bE9dfE
+- RPC: https://rpc.elysium.kinetiq.xyz
+- Explorer (Blockscout): https://elysium.kinetiq.xyz/explorer
+
+The PoolManager and StateView are the official Uniswap v4 deployment for Elysium,
+listed under "Elysium: 99901" in the Uniswap v4 deployments docs:
+https://developers.uniswap.org/docs/protocols/v4/deployments
+
 ## Deploying
 
 Every hook is deployed through the canonical CREATE2 proxy

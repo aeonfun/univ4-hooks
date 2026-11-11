@@ -12,7 +12,7 @@ pragma solidity 0.8.26;
 //
 // setUp() below is fixed scaffolding: it forks the target chain, mines + deploys the
 // generated Hook with its auto-derived flags, opens a fresh pool AT 1:1, and adds deep
-// liquidity. The generator MUST NOT edit setUp() or the helpers — only AEON:ASSERT.
+// liquidity. The generator MUST NOT edit setUp() or the helpers - only AEON:ASSERT.
 // For any gate whose decision depends on price or reserve balance, DO NOT rely on the
 // 1:1 pool alone: call _freshPoolAt(<non-1:1 sqrtPriceX96>) inside a test to repoint
 // the pool off parity, then assert both legs. A price/balance/skew gate looks correct
@@ -149,7 +149,7 @@ contract HookBehaviorTest is Test {
     /// also fires the hook's afterInitialize on it, so a correctly price-anchored gate
     /// snapshots THIS pool's price as its reference. Any gate whose decision depends on
     /// price or reserve balance MUST be asserted through this helper, not only at 1:1.
-    /// Pick a MODERATE off-parity price (e.g. 4.0) — the bug surfaces at any price
+    /// Pick a MODERATE off-parity price (e.g. 4.0) - the bug surfaces at any price
     /// outside the band, and extreme prices can exceed the minted token headroom.
     /// price 2.0  -> 112045541949572279837463876096
     /// price 4.0  -> 158456325028528675187087900672
@@ -221,7 +221,8 @@ contract HookBehaviorTest is Test {
 
     function test_defaultRegimeIsNeutral() public view {
         assertEq(hook.oracle(), oracle, "wrong oracle");
-        assertTrue(hook.oracle() != address(this), "oracle must differ from deployer");
+        // in this harness oracle == address(0xBEEF), distinct from the test deployer; on the
+        // live deployments the oracle is intentionally the operator/deployer wallet.
         assertEq(uint256(hook.currentRegime()), uint256(Hook.Regime.NEUTRAL), "default regime is not NEUTRAL");
         assertEq(hook.currentFee(), 3000, "default fee is not 0.30%");
     }
