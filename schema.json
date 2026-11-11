@@ -72,7 +72,8 @@
         "monad": { "$ref": "#/$defs/address" },
         "bnb": { "$ref": "#/$defs/address" },
         "arbitrum": { "$ref": "#/$defs/address" },
-        "unichain": { "$ref": "#/$defs/address" }
+        "unichain": { "$ref": "#/$defs/address" },
+        "elysium": { "$ref": "#/$defs/address" }
       }
     },
     "mechanic": {

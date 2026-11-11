@@ -1,0 +1,3 @@
+v4-core=https://github.com/Uniswap/v4-core.git@59d3ecf53afa9264a16bba0e38f4c5d2231f80bc
+v4-periphery=https://github.com/Uniswap/v4-periphery.git@c6e4754dab11bd38c6f08ac51c3c868569e93d64
+forge-std=https://github.com/foundry-rs/forge-std.git@v1.9.7

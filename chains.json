@@ -5,5 +5,6 @@
   "monad":    { "chainId": 143,   "name": "Monad",      "explorer": "https://monadscan.com",                    "explorerApiType": "etherscan",  "explorerApi": "https://api.etherscan.io/v2/api" },
   "bnb":      { "chainId": 56,    "name": "BNB Chain",  "explorer": "https://bscscan.com",                      "explorerApiType": "etherscan",  "explorerApi": "https://api.etherscan.io/v2/api" },
   "arbitrum": { "chainId": 42161, "name": "Arbitrum",   "explorer": "https://arbiscan.io",                      "explorerApiType": "etherscan",  "explorerApi": "https://api.etherscan.io/v2/api" },
-  "unichain": { "chainId": 130,   "name": "Unichain",   "explorer": "https://uniscan.xyz",                      "explorerApiType": "etherscan",  "explorerApi": "https://api.etherscan.io/v2/api" }
+  "unichain": { "chainId": 130,   "name": "Unichain",   "explorer": "https://uniscan.xyz",                      "explorerApiType": "etherscan",  "explorerApi": "https://api.etherscan.io/v2/api" },
+  "elysium":  { "chainId": 99901, "name": "Elysium",    "explorer": "https://elysium.kinetiq.xyz/explorer",     "explorerApiType": "blockscout", "explorerApi": "https://elysium.kinetiq.xyz/explorer/api" }
 }

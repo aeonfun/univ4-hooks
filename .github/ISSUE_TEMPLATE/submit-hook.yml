@@ -29,6 +29,7 @@ body:
         - bnb
         - arbitrum
         - unichain
+        - elysium
     validations:
       required: true
   - type: input
