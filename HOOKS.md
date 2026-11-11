@@ -27,5 +27,5 @@
 | Hook | Category | Fee | Flags | Chains | What it does |
 |------|----------|-----|-------|--------|--------------|
 | Twigpine Wrap Hook | Orders | none | `0x2888` | [Base](https://basescan.org/address/0xf7423f48886F86F551B517254d21AF4267732888) | 1:1 wrapper hook for TWIG (Twigpine), the ERC20Wrapper of GITLAWB on Base |
-| PerpRegimeFee | Fees | Fixed 10 bps operator fee, on top of the universal 10 bps AeonFee and the dynamic regime LP fee. | `0xC4` | [Base](https://basescan.org/address/0x190D7F16f9385026cb243BD78F1181427d4Cc0C4) [Elysium](https://elysium.kinetiq.xyz/explorer/address/0x1dF778Efb0116CCCfA92c613703D4F3A66BC00C4) | Reprices the LP fee off Hyperliquid perp regimes, with a fixed operator skim on top of the universal AeonFee. |
+| PerpRegimeFee | Fees | Fixed 10 bps operator fee, on top of the universal 10 bps AeonFee and the dynamic regime LP fee. | `0xC4` | [Base](https://basescan.org/address/0x190D7F16f9385026cb243BD78F1181427d4Cc0C4) [Elysium](https://elysium.kinetiq.xyz/explorer/address/0x1dF778Efb0116CCCfA92c613703D4F3A66BC00C4) | Sets the LP fee from a market regime posted by the operator's wallet, with a fixed operator skim on top of the universal AeonFee. |
 

@@ -633,8 +633,8 @@
         "base": "0x190D7F16f9385026cb243BD78F1181427d4Cc0C4",
         "elysium": "0x1dF778Efb0116CCCfA92c613703D4F3A66BC00C4"
       },
-      "mechanic": "Reprices the LP fee off Hyperliquid perp regimes, with a fixed operator skim on top of the universal AeonFee.",
-      "plain": "A dynamic-fee v4 hook. An oracle sets the market regime and beforeSwap overrides the LP fee to match (risk-on 0.10%, neutral 0.30%, risk-off 1.00%). On top of the universal 10 bps AeonFee, afterSwap takes a fixed 10 bps operator fee, on exact-in and exact-out.",
+      "mechanic": "Sets the LP fee from a market regime posted by the operator's wallet, with a fixed operator skim on top of the universal AeonFee.",
+      "plain": "A dynamic-fee v4 hook. The operator's wallet sets the market regime and beforeSwap overrides the LP fee to match (risk-on 0.10%, neutral 0.30%, risk-off 1.00%). On top of the universal 10 bps AeonFee, afterSwap takes a fixed 10 bps operator fee, on exact-in and exact-out.",
       "rules": [
         "beforeSwap sets the LP fee from the oracle regime: risk-on 0.10%, neutral 0.30% (default), risk-off 1.00%.",
         "The regime fee only applies to pools created with the dynamic-fee flag; a static-fee pool ignores the override but still pays the operator skim.",
