@@ -15,7 +15,8 @@ name: weekly-sync
 # the required ci / build-test check would never run on the sync PR. Set the repo
 # secret GH_GLOBAL (classic PAT, `repo` scope, same convention as the other aeonfun
 # automation) and the push + PR go out under it, so CI runs. Without it this falls
-# back to GITHUB_TOKEN and CI has to be started by hand on the PR.
+# back to GITHUB_TOKEN and dispatches ci on the sync branch itself (a
+# workflow_dispatch from GITHUB_TOKEN does run), so the check lands on the PR head.
 
 on:
   schedule:
@@ -25,6 +26,8 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  # to dispatch ci on the sync branch when GH_GLOBAL is not set
+  actions: write
 
 jobs:
   sync:
@@ -68,6 +71,7 @@ jobs:
         if: steps.diff.outputs.changed == 'true'
         env:
           GH_TOKEN: ${{ secrets.GH_GLOBAL || secrets.GITHUB_TOKEN }}
+          HAS_GH_GLOBAL: ${{ secrets.GH_GLOBAL != '' }}
         run: |
           set -euo pipefail
           # one fixed, bot-owned branch: rebuilt from main each run and force-pushed
@@ -93,3 +97,7 @@ jobs:
             --title "chore: weekly hook source sync" \
             --body-file sync_summary.md \
             || gh pr edit "$branch" --body-file sync_summary.md
+          # a GITHUB_TOKEN push starts no CI: dispatch it on the branch head
+          if [ "$HAS_GH_GLOBAL" != "true" ]; then
+            gh workflow run ci.yml --ref "$branch"
+          fi

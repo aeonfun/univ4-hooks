@@ -4,6 +4,9 @@ on:
   push:
     branches: [main]
   pull_request:
+  # Bot PRs opened with GITHUB_TOKEN (analyze-hook, weekly-sync) trigger no
+  # pull_request run, so those workflows dispatch this one on the PR branch.
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
