@@ -13,6 +13,8 @@ permissions:
   contents: write
   pull-requests: write
   issues: write
+  # to dispatch ci + hooklist on the PR branch (see "Run CI on the PR")
+  actions: write
 
 jobs:
   scaffold:
@@ -94,6 +96,19 @@ jobs:
             --title "hook: ${slug} (from #${ISSUE})" \
             --body-file pr_body.md)"
           echo "url=$url" >> "$GITHUB_OUTPUT"
+          echo "branch=$branch" >> "$GITHUB_OUTPUT"
+
+      # A PR opened with GITHUB_TOKEN starts no pull_request workflows, but a
+      # workflow_dispatch from GITHUB_TOKEN does run. Both check the branch head,
+      # which is the PR head, so their checks land on the PR.
+      - name: Run CI on the PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: ${{ steps.pr.outputs.branch }}
+        run: |
+          set -euo pipefail
+          gh workflow run ci.yml --ref "$BRANCH"
+          gh workflow run hooklist.yml --ref "$BRANCH"
 
       - name: Comment on the issue
         if: success()

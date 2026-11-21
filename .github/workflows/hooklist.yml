@@ -19,6 +19,9 @@ on:
       - "scripts/**"
       - "hooklist.json"
       - "HOOKS.md"
+  # analyze-hook dispatches this on its PR branch (GITHUB_TOKEN PRs trigger no
+  # pull_request run).
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
