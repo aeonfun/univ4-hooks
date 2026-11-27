@@ -1,4 +1,13 @@
-# univ4-hooks
+<p align="center">
+  <img src="docs/assets/readme-hero.jpg" alt="univ4-hooks - Uniswap v4 hook registry. 12 hooks on 4 chains, 10 bps protocol fee." width="100%" />
+</p>
+
+<p align="center">
+  <strong>Star us&nbsp;❤️&nbsp;→</strong>&nbsp;&nbsp;
+  <a href="https://github.com/aeonfun/univ4-hooks/stargazers"><img src="docs/assets/btn-star.svg" alt="Star univ4-hooks on GitHub" height="34" align="absmiddle"></a>&nbsp;&nbsp;
+  <a href="https://x.com/aeonframework"><img src="docs/assets/btn-x.svg" alt="@aeonframework on X" height="34" align="absmiddle"></a>&nbsp;&nbsp;
+  <a href="https://bankr.bot/discover/0xbf8e8f0e8866a7052f948c16508644347c57aba3"><img src="docs/assets/btn-bankr.svg" alt="$AEON on Bankr" height="34" align="absmiddle"></a>
+</p>
 
 The aeon.fun Uniswap v4 hook fleet: 12 hooks deployed on Base (8453), Robinhood
 Chain (4663), Ethereum (1), and Monad (143), plus two ETH game hooks on Base and
